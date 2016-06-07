@@ -11,7 +11,7 @@ public function getConnection($url){
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 	$result = curl_exec($ch);
 	curl_close($ch);
-	$this->convertJsonToXml($result);
+	return $this->convertJsonToXml($result);
 }
 
 public function convertJsonToXml($json){
@@ -20,10 +20,10 @@ public function convertJsonToXml($json){
 	$xml = new SimpleXMLElement("<root></root>");
 	$this->arrayToXml($array, $xml);
 	header('Content-Type: application/xml');
-	echo $xml->asXML();
+	return $xml->asXML();
 }
 
-public function arrayToXml($array, &$xml){
+private function arrayToXml($array, &$xml){
    foreach($array as $key => $value) {
         if(is_array($value)) {
             if(!is_numeric($key)){
@@ -40,8 +40,9 @@ public function arrayToXml($array, &$xml){
 }	
 }
 
-$utils = new Utils();
-$utils->getConnection("http://opendata.dbbahnpark.info/api/beta/stations");
+//TESTING ONLY
+//$utils = new Utils();
+//echo($utils->getConnection("http://opendata.dbbahnpark.info/api/beta/stations"));
 
 
 
