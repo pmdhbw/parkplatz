@@ -19,7 +19,6 @@ public function convertJsonToXml($json){
 	$array = json_decode ($json, true);
 	$xml = new SimpleXMLElement("<root></root>");
 	$this->arrayToXml($array, $xml);
-	header('Content-Type: application/xml');
 	return $xml->asXML();
 }
 
@@ -41,8 +40,9 @@ private function arrayToXml($array, &$xml){
 }
 
 //TESTING ONLY
-//$utils = new Utils();
-//echo($utils->getConnection("http://opendata.dbbahnpark.info/api/beta/stations"));
+$utils = new Utils();
+header('Content-Type: application/xml');
+echo($utils->getConnection("http://opendata.dbbahnpark.info/api/beta/stations"));
 
 
 
