@@ -40,9 +40,9 @@ private function arrayToXml($array, &$xml){
 }
 
 //TESTING ONLY
-$utils = new Utils();
-header('Content-Type: application/xml');
-echo($utils->getConnection("http://opendata.dbbahnpark.info/api/beta/stations"));
+// $utils = new Utils();
+// header('Content-Type: application/xml');
+// echo($utils->getConnection("http://opendata.dbbahnpark.info/api/beta/stations"));
 
 
 
