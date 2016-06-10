@@ -1,3 +1,4 @@
 # parkplatz
-PM Projekt für Parkplatzsuche#
-Als Framework wird Symfony genutzt
+PM Projekt für Parkplatzsuche
+
+Als Framework wird Symfony genutzt!
