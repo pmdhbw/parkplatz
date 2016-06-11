@@ -2,6 +2,7 @@
 //Created 03.06.16 by Enrico Kaack
 //
 //Contains the json_xml converter and the connection handler
+namespace AppBundle\Model; 
 class Utils{
 
 
@@ -11,15 +12,14 @@ public function getConnection($url){
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 	$result = curl_exec($ch);
 	curl_close($ch);
-	return $this->convertJsonToXml($result);
+	return $this->convertJsonToXml($result); //chaged --> returns now the xml object and not the string! TK
 }
 
 public function convertJsonToXml($json){
-	
 	$array = json_decode ($json, true);
-	$xml = new SimpleXMLElement("<root></root>");
+	$xml = new \SimpleXMLElement("<root></root>");
 	$this->arrayToXml($array, $xml);
-	return $xml->asXML();
+	return $xml;  //chaged --> returns now the xml object and not the string! TK
 }
 
 private function arrayToXml($array, &$xml){
@@ -29,11 +29,11 @@ private function arrayToXml($array, &$xml){
                 $subnode = $xml->addChild("$key");
                 $this->arrayToXml($value, $subnode);
             }else{
-                $subnode = $xml->addChild("element$key");
+                $subnode = $xml->addChild("element");  //stop inserting useless elements TK
                 $this->arrayToXml($value, $subnode);
             }
         }else {
-            $xml->addChild("$key",htmlspecialchars("$value"));
+            $xml->addChild($key,htmlspecialchars("$value"));
         }
     }
 }	
@@ -42,7 +42,7 @@ private function arrayToXml($array, &$xml){
 //TESTING ONLY
 // $utils = new Utils();
 // header('Content-Type: application/xml');
-// echo($utils->getConnection("http://opendata.dbbahnpark.info/api/beta/stations"));
+// echo($utils->getConnection("http://opendata.dbbahnpark.info/api/beta/occupancy"));
 
 
 
