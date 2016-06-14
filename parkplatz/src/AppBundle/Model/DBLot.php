@@ -1,5 +1,5 @@
 <?php
-//Created by Torben Krieger / 11.06.2013
+//Created by Torben Krieger / 11.06.2016
 //Probleme: sehr langsam durch vielzahl an Schleifen!
 namespace AppBundle\Model;
 
@@ -21,7 +21,6 @@ class DBLot{
                     $this->appendOcc($parkingLot->parkraumId->__toString(), $subnode);
             }
             return $returnXml->asXML();
-            
         }
 
         public function getLot($lot){
