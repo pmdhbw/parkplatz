@@ -1,17 +1,67 @@
 <!DOCTYPE HTML>
 <html lang="de">
 <head>
-    <meta charset="utf-8">
+																													<!--metadata -->
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+	<meta http-equiv="content-script-type" content="text/javascript" />
+	<meta http-equiv="content-style-type" content="text/css" />
+	<meta http-equiv="content-language" content="de" />
+	<meta name="author" content="PMDHBW" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>DB-Parkplatzsuche</title>
-    
-    <link rel="icon" type="image/vnd.microsoft.icon" href="/favicon.ico">
-    
+	<link rel="icon" type="image/vnd.microsoft.icon" href="/favicon.ico">
+																													<!--own css and js -->
+    <link rel="stylesheet" href="defaultstyle.css">
+    <script language="javascript" type="text/javascript" src="/script.js"></script>
 </head>
+<!-- ------------------------------------------------------------------------- -->
+<body onload="init()">																								<!--init gets called when loading site to fill selectoptions-->
+<div id="main">
+    <div id="top">
+        <div id="heading">
+            <img src="/logo.png" width="10%" />
+            <h1>DB-Parkplatzsuche</h1>
+        </div>
+		
+        <div id="selectionbox">
+            <div id="selectionleft">
+                <label>Bahnhof</label><br>
+                <select id="station" onchange="update()" style="width:200px;"></select><br>
+                <label>Suchradius in km</label><br>
+                <input type="text" id="radius" value="5" onchange="update()" style="text-align:right; width:200px;" >
+            </div>
+			
+            <div id="selectionright">
+				
+            </div>
+        </div>
+    </div>
+<!-- -------------------------------------------------------------------------- -->
+    <div id="map" onload="mapinit()"> 		<!-- map -->
+    </div>
+<!-- -------------------------------------------------------------------------- -->
+    <div id="table">   						<!-- table--> 
+		<table>
+			<thead>
+				<tr>
+					<th>Name</th>
+					<th>Parkart</th>
+					<th>Zufahrt</th>
+					<th>Entfernung</th>
+					<th>Stellplätze</th>
+					<th>Stellplätze belegt</th>
+					<th>Öffnungszeiten</th>
+					<th>Betreiber</th>
+					<th>Zahlung</th>
+					<th>Bemerkungen</th>
+				</tr>
+			</thead>
+			<tbody id="tablebody">			<!-- tablebody gets filled with update() after selection of radius or station -->
+			</tbody>
+		</table>
+    </div>
 
-<body>
 
-<h1> Das ist ein Test </h1>
-
+</div>
 </body>
 </html>
