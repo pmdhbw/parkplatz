@@ -40,11 +40,11 @@ class ContentSupplier {
 		$list = array();
 			
 		$ch = curl_init("http://data.deutschebahn.com/datasets/haltestellen/D_Bahnhof_2016_01_alle.csv");
-		$result = curl_exec($ch
+		$result = curl_exec($ch);
 		
-		$rows = explode("\n", $result);
+		$rows = \explode("\n", $result);
 		foreach($rows as $item){
-			$cell = explode(";", $item);
+			$cell = \explode(";", $item);
 			$entity = new MasterStation();
 			$entity->setBahnhofsNummer($cell[0]);
 			$entity->setName($cell[2]);

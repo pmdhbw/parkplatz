@@ -3,7 +3,7 @@
 
 <xsl:template match="/">
     <select>
-      <xsl:for-each select="root/parkingLot"> <--- TODO: insert correct node --->
+      <xsl:for-each select="root/parkingLot"> 
       
       <option><xsl:value-of select="parkraumBahnhofName"/></option>
     
