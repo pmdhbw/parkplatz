@@ -37,6 +37,7 @@ class ContentSupplier {
 			$entity->setName($cell[2]);
 			$entity->setLongitude($cell[4]);
 			$entity->setLatitude($cell[5]);
+			$entity->setTime(time());
 			$list[] = $entity;
 		}
 		
