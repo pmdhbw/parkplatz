@@ -1,6 +1,12 @@
 function init() {
+  $.ajax({
+    url: "/parkplatz/web/app_dev.php/dblot",
+    context: document.body
+  }).done(function() {
+    console.log("done");
+  });
 	
-	writeHTML(xml "/XSLT_Stations.xsl" station)				//!!!!!!insert stations XML
+	writeHTML(xml, "/XSLT_Stations.xsl", station)				//!!!!!!insert stations XML
 	
 }
 
@@ -12,7 +18,7 @@ function update() {					//update map (id="map") and table on bottom of page (id=
 	
 															//!!!!!!! mapcode
 	
-	writeHTML(xml xslfortable tablebody)					//!!!!!!!insert parkinglot XML and corresponding XSLT
+	writeHTML(xml, xslfortable, tablebody)					//!!!!!!!insert parkinglot XML and corresponding XSLT
 	
 }
 
@@ -32,7 +38,7 @@ xhttp.send("");
 return xhttp.responseXML;
 }
 
-function writeHTML(xml xsl id)					//takes
+function writeHTML(xml, xsl, id)					//takes
 {
 xml = loadXMLDoc(xml);
 xsl = loadXMLDoc(xsl);
