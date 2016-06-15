@@ -1,7 +1,8 @@
 function init() {
   $.ajax({
     url: "/parkplatz/web/app_dev.php/dblot",
-    context: document.body
+    context: document.body,
+    dataType: "xml"
   }).done(function(param) {
     console.log("done");
 	  writeHTML(param, "/XSLT_Stations.xsl", station)
