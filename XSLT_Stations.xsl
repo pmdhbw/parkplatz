@@ -3,9 +3,9 @@
 
 <xsl:template match="/">
     <select>
-      <xsl:for-each select="parkingLot/parkraumBahnhofName"> <--- TODO: insert correct node --->
+      <xsl:for-each select="root/parkingLot"> <--- TODO: insert correct node --->
       
-      <option><xsl:value-of select="title"/></option>
+      <option><xsl:value-of select="parkraumBahnhofName"/></option>
     
       
       </xsl:for-each>
