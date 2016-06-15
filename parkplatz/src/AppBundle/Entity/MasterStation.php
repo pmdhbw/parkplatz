@@ -18,6 +18,11 @@ class MasterStation {
     private $bahnhofsNummer;
 
     /**
+    * @ORM\Column(type="integer")
+    */
+    private $timeCreated;
+
+    /**
      * @ORM\Column(type="string", length=30)
      */
     private $station;
@@ -36,6 +41,16 @@ class MasterStation {
      * @ORM\Column(type="string", length=5)
      */
     private $plz;
+
+    /**
+    * @ORM\Column(type="float")
+    */
+    private $stationGeoLatitude;
+
+    /**
+    * @ORM\Column(type="float")
+    */
+    private $stationGeoLongitude;
 
     /**
      * Set bahnhofsNummer
@@ -155,5 +170,77 @@ class MasterStation {
     public function getPlz()
     {
         return $this->plz;
+    }
+
+    /**
+     * Set timeCreated
+     *
+     * @param integer $timeCreated
+     *
+     * @return MasterStation
+     */
+    public function setTimeCreated($timeCreated)
+    {
+        $this->timeCreated = $timeCreated;
+
+        return $this;
+    }
+
+    /**
+     * Get timeCreated
+     *
+     * @return integer
+     */
+    public function getTimeCreated()
+    {
+        return $this->timeCreated;
+    }
+
+    /**
+     * Set stationGeoLatitude
+     *
+     * @param float $stationGeoLatitude
+     *
+     * @return MasterStation
+     */
+    public function setStationGeoLatitude($stationGeoLatitude)
+    {
+        $this->stationGeoLatitude = $stationGeoLatitude;
+
+        return $this;
+    }
+
+    /**
+     * Get stationGeoLatitude
+     *
+     * @return float
+     */
+    public function getStationGeoLatitude()
+    {
+        return $this->stationGeoLatitude;
+    }
+
+    /**
+     * Set stationGeoLongitude
+     *
+     * @param float $stationGeoLongitude
+     *
+     * @return MasterStation
+     */
+    public function setStationGeoLongitude($stationGeoLongitude)
+    {
+        $this->stationGeoLongitude = $stationGeoLongitude;
+
+        return $this;
+    }
+
+    /**
+     * Get stationGeoLongitude
+     *
+     * @return float
+     */
+    public function getStationGeoLongitude()
+    {
+        return $this->stationGeoLongitude;
     }
 }

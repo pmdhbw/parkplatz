@@ -12,6 +12,11 @@ use Doctrine\ORM\Mapping as ORM;
 class Lot {
 
     /**
+    * @ORM\Column(type="integer")
+    */
+    private $timeCreated;
+
+    /**
     * @ORM\Column(type="string", length=20)
     */
     private $type;
@@ -2098,5 +2103,29 @@ class Lot {
     public function getText()
     {
         return $this->text;
+    }
+
+    /**
+     * Set timeCreated
+     *
+     * @param integer $timeCreated
+     *
+     * @return Lot
+     */
+    public function setTimeCreated($timeCreated)
+    {
+        $this->timeCreated = $timeCreated;
+
+        return $this;
+    }
+
+    /**
+     * Get timeCreated
+     *
+     * @return integer
+     */
+    public function getTimeCreated()
+    {
+        return $this->timeCreated;
     }
 }
