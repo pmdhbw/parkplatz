@@ -1,5 +1,5 @@
 <?php
-//Created 03.06.16 by Enrico Kaack
+//Created by Enrico Kaack
 //
 //Contains the json_xml converter and the connection handler
 namespace AppBundle\Model; 
