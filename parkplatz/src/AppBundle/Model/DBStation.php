@@ -1,5 +1,5 @@
 <?php
-//Created by Torben Krieger / 11.06.2016
+//Created by Torben Krieger 
 
 namespace AppBundle\Model;
 
