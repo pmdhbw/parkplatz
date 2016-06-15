@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 class Station {
 
     /**
-     * @ORM\Column(type="string", length=20)
+     * @ORM\Column(type="string", nullable=true, length=20)
      */
     private $type;
 
@@ -23,17 +23,17 @@ class Station {
     private $bahnhofsNummer;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="string", nullable=true, length=30)
      */
     private $cityTitle;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="string", nullable=true, length=30)
      */
     private $street;
 
     /**
-     * @ORM\Column(type="string", length=5)
+     * @ORM\Column(type="string", nullable=true, length=5)
      */
     private $plz;
 
@@ -43,37 +43,37 @@ class Station {
     private $evaNummer;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $isDbBahnpark;
 
     /**
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", nullable=true)
      */
     private $isPublished;
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="string", nullable=true, nullable=true, length=10)
      */
     private $mainPicId;
 
     /**
-     * @ORM\Column(type="string", length=10)
+     * @ORM\Column(type="string", nullable=true, length=10)
      */
     private $mainPicId_en;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="string", nullable=true, length=30)
      */
     private $station;
 
     /**
-    * @ORM\Column(type="float")
+    * @ORM\Column(type="float", nullable=true)
     */
     private $stationGeoLatitude;
 
     /**
-    * @ORM\Column(type="float")
+    * @ORM\Column(type="float", nullable=true)
     */
     private $stationGeoLongitude;
 

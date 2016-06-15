@@ -18,37 +18,37 @@ class MasterStation {
     private $bahnhofsNummer;
 
     /**
-    * @ORM\Column(type="integer")
+    * @ORM\Column(type="integer",)
     */
     private $timeCreated;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="string", length=30, nullable=true)
      */
     private $station;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="string", length=30, nullable=true)
      */
     private $cityTitle;
 
     /**
-     * @ORM\Column(type="string", length=30)
+     * @ORM\Column(type="string", length=30, nullable=true)
      */
     private $street;
 
     /**
-     * @ORM\Column(type="string", length=5)
+     * @ORM\Column(type="string", length=5, nullable=true)
      */
     private $plz;
 
     /**
-    * @ORM\Column(type="float")
+    * @ORM\Column(type="float", nullable=true)
     */
     private $stationGeoLatitude;
 
     /**
-    * @ORM\Column(type="float")
+    * @ORM\Column(type="float", nullable=true)
     */
     private $stationGeoLongitude;
 

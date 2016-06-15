@@ -7,7 +7,7 @@ class Utils{
 
 
 public function getConnection($url){
-	return $this->convertJsonToXml($this->runService($url)); //chaged --> returns now the xml object and not the string! TK
+	return $this->convertJsonToXml(json_encode($this->runService($url))); //chaged --> returns now the xml object and not the string! TK
 }
 
 public function runService($url){
@@ -16,7 +16,7 @@ public function runService($url){
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 	$result = curl_exec($ch);
 	curl_close($ch);
-	return $result; //chaged --> returns now the xml object and not the string! TK
+	return json_decode($result); //chaged --> returns now the xml object and not the string! TK
 }
 
 public function convertJsonToXml($json){

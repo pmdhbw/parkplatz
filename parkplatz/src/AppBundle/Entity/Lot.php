@@ -17,77 +17,77 @@ class Lot {
     private $timeCreated;
 
     /**
-    * @ORM\Column(type="string", length=20)
+    * @ORM\Column(type="string", nullable=true, length=20)
     */
     private $type;
 
     /**
-    * @ORM\Column(type="string", length=100)
+    * @ORM\Column(type="string", nullable=true, length=100)
     */
     private $bundesland;
 
     /**
-    * @ORM\Column(type="boolean")
+    * @ORM\Column(type="boolean", nullable=true)
     */
     private $isPublished;
 
     /**
-    * @ORM\Column(type="string", length=200)
+    * @ORM\Column(type="string", nullable=true, length=200)
     */
     private $parkraumAusserBetriebText;
 
     /**
-    * @ORM\Column(type="string", length=200)
+    * @ORM\Column(type="string", nullable=true, length=200)
     */
     private $parkraumAusserBetrieb_en;
 
     /**
-    * @ORM\Column(type="string", length=100)
+    * @ORM\Column(type="string", nullable=true, length=100)
     */
     private $parkraumBahnhofName;
 
     /**
-    * @ORM\Column(type="string", length=20)
+    * @ORM\Column(type="string", nullable=true, length=20)
     */
     private $parkraumBahnhofNummer;
 
     /**
-    * @ORM\Column(type="string", length=50)
+    * @ORM\Column(type="string", nullable=true, length=50)
     */
     private $parkraumBemerkung;
 
     /**
-    * @ORM\Column(type="string", length=50)
+    * @ORM\Column(type="string", nullable=true, length=50)
     */
     private $parkraumBemerkung_en;
 
     /**
-    * @ORM\Column(type="string", length=50)
+    * @ORM\Column(type="string", nullable=true, length=50)
     */
     private $parkraumBetreiber;
 
     /**
-    * @ORM\Column(type="string", length=50)
+    * @ORM\Column(type="string", nullable=true, length=50)
     */
     private $parkraumDisplayName;
 
     /**
-    * @ORM\Column(type="string", length=10)
+    * @ORM\Column(type="string", nullable=true, length=10)
     */
     private $parkraumEntfernung;
 
     /**
-    * @ORM\Column(type="float")
+    * @ORM\Column(type="float", nullable=true)
     */
     private $parkraumGeoLatitude;
 
     /**
-    * @ORM\Column(type="float")
+    * @ORM\Column(type="float", nullable=true)
     */
     private $parkraumGeoLongitude;
 
     /**
-    * @ORM\Column(type="string", length=4)
+    * @ORM\Column(type="string", nullable=true, length=4)
     */
     private $parkraumHausnummer;
 
@@ -98,282 +98,282 @@ class Lot {
     private $parkraumId;
 
     /**
-    * @ORM\Column(type="boolean")
+    * @ORM\Column(type="boolean", nullable=true)
     */
     private $parkraumIsAusserBetrieb;
 
     /**
-    * @ORM\Column(type="boolean")
+    * @ORM\Column(type="boolean", nullable=true)
     */
     private $parkraumIsDbBahnPark;
 
     /**
-    * @ORM\Column(type="boolean")
+    * @ORM\Column(type="boolean", nullable=true)
     */
     private $parkraumIsOpenData;
 
     /**
-    * @ORM\Column(type="boolean")
+    * @ORM\Column(type="boolean", nullable=true)
     */
     private $parkraumIsParktagesproduktDbFern;
 
         /**
-    * @ORM\Column(type="string", length=10)
+    * @ORM\Column(type="string", nullable=true, length=10)
     */
     private $parkraumKennung;
 
         /**
-    * @ORM\Column(type="string", length=40)
+    * @ORM\Column(type="string", nullable=true, length=40)
     */
     private $parkraumName;
 
     /**
-    * @ORM\Column(type="string", length=25)
+    * @ORM\Column(type="string", nullable=true, length=25)
     */
     private $parkraumOeffnungszeiten;
 
     /**
-    * @ORM\Column(type="string", length=25)
+    * @ORM\Column(type="string", nullable=true, length=25)
     */
     private $parkraumOeffnungszeiten_en;
 
     /**
-    * @ORM\Column(type="string", length=25)
+    * @ORM\Column(type="string", nullable=true, length=25)
     */
     private $parkraumParkTypName;
 
     /**
-    * @ORM\Column(type="string", length=25)
+    * @ORM\Column(type="string", nullable=true, length=25)
     */
     private $parkraumParkart;
 
     /**
-    * @ORM\Column(type="string", length=25)
+    * @ORM\Column(type="string", nullable=true, length=25)
     */
     private $parkraumReservierung;
 
     /**
-    * @ORM\Column(type="string", length=150)
+    * @ORM\Column(type="string", nullable=true, length=150)
     */
     private $parkraumSlogan;
 
     /**
-    * @ORM\Column(type="string", length=150)
+    * @ORM\Column(type="string", nullable=true, length=150)
     */
     private $parkraumSlogan_en;
 
     /**
-    * @ORM\Column(type="string", length=5)
+    * @ORM\Column(type="string", nullable=true, length=5)
     */
     private $parkraumStellplaetze;
 
     /**
-    * @ORM\Column(type="string", length=30)
+    * @ORM\Column(type="string", nullable=true, length=30)
     */
     private $parkraumTechnik;
 
     /**
-    * @ORM\Column(type="string", length=30)
+    * @ORM\Column(type="string", nullable=true, length=30)
     */
     private $parkraumTechnik_en;
 
     /**
-    * @ORM\Column(type="string", length=75)
+    * @ORM\Column(type="string", nullable=true, length=75)
     */
     private $parkraumURL;
 
     /**
-    * @ORM\Column(type="string", length=75)
+    * @ORM\Column(type="string", nullable=true, length=75)
     */
     private $parkraumZufahrt;
 
     /**
-    * @ORM\Column(type="string", length=75)
+    * @ORM\Column(type="string", nullable=true, length=75)
     */
     private $parkraumZufahrt_en;
 
     /**
-    * @ORM\Column(type="string", length=8)
+    * @ORM\Column(type="string", nullable=true, length=8)
     */
     private $tarif1MonatAutomat;
 
     /**
-    * @ORM\Column(type="string", length=8)
+    * @ORM\Column(type="string", nullable=true, length=8)
     */
     private $tarif1MonatDauerparken;
 
     /**
-    * @ORM\Column(type="string", length=8)
+    * @ORM\Column(type="string", nullable=true, length=8)
     */
     private $tarif1MonatDauerparkenFesterStellplatz;
 
     /**
-    * @ORM\Column(type="string", length=5)
+    * @ORM\Column(type="string", nullable=true, length=5)
     */
     private $tarif1Std;
 
     /**
-    * @ORM\Column(type="string", length=5)
+    * @ORM\Column(type="string", nullable=true, length=5)
     */
     private $tarif1Tag;
 
     /**
-    * @ORM\Column(type="string", length=5)
+    * @ORM\Column(type="string", nullable=true, length=5)
     */
     private $tarif1TagRabattDB;
 
     /**
-    * @ORM\Column(type="string", length=5)
+    * @ORM\Column(type="string", nullable=true, length=5)
     */
     private $tarif1Woche;
 
     /**
-    * @ORM\Column(type="string", length=5)
+    * @ORM\Column(type="string", nullable=true, length=5)
     */
     private $tarif1WocheRabattDB;
 
     /**
-    * @ORM\Column(type="string", length=5)
+    * @ORM\Column(type="string", nullable=true, length=5)
     */
     private $tarif20Min;
 
     /**
-    * @ORM\Column(type="string", length=5)
+    * @ORM\Column(type="string", nullable=true, length=5)
     */
     private $tarif30Min;
 
     /**
-    * @ORM\Column(type="string", length=30)
+    * @ORM\Column(type="string", nullable=true, length=30)
     */
     private $tarifBemerkung;
 
     /**
-    * @ORM\Column(type="string", length=30)
+    * @ORM\Column(type="string", nullable=true, length=30)
     */
     private $tarifBemerkung_en;
 
     /**
-    * @ORM\Column(type="string", length=5)
+    * @ORM\Column(type="string", nullable=true, length=5)
     */
     private $tarifFreiparkzeit;
 
     /**
-    * @ORM\Column(type="string", length=5)
+    * @ORM\Column(type="string", nullable=true, length=5)
     */
     private $tarifFreiparkzeit_en;
 
     /**
-    * @ORM\Column(type="boolean")
+    * @ORM\Column(type="boolean", nullable=true)
     */
     private $tarifMonatIsDauerparken;
 
     /**
-    * @ORM\Column(type="boolean")
+    * @ORM\Column(type="boolean", nullable=true)
     */
     private $tarifMonatIsParkAndRide;
 
     /**
-    * @ORM\Column(type="boolean")
+    * @ORM\Column(type="boolean", nullable=true)
     */
     private $tarifMonatIsParkscheinautomat;
 
      /**
-    * @ORM\Column(type="string", length=50)
+    * @ORM\Column(type="string", nullable=true, length=50)
     */
     private $tarifParkdauer;
 
     /**
-    * @ORM\Column(type="string", length=50)
+    * @ORM\Column(type="string", nullable=true, length=50)
     */
     private $tarifParkdauer_en;
 
     /**
-    * @ORM\Column(type="boolean")
+    * @ORM\Column(type="boolean", nullable=true)
     */
     private $tarifRabattDBIsBahnCard;
 
     /**
-    * @ORM\Column(type="boolean")
+    * @ORM\Column(type="boolean", nullable=true)
     */
     private $tarifRabattDBIsParkAndRail;
 
     /**
-    * @ORM\Column(type="boolean")
+    * @ORM\Column(type="boolean", nullable=true)
     */
     private $tarifRabattDBIsbahncomfort;
 
     /**
-    * @ORM\Column(type="string", length=5)
+    * @ORM\Column(type="string", nullable=true, length=5)
     */
     private $tarifSondertarif;
 
     /**
-    * @ORM\Column(type="string", length=5)
+    * @ORM\Column(type="string", nullable=true, length=5)
     */
     private $tarifSondertarif_en;
 
     /**
-    * @ORM\Column(type="string", length=5)
+    * @ORM\Column(type="string", nullable=true, length=5)
     */
     private $tarifWieRabattDB;
 
     /**
-    * @ORM\Column(type="string", length=5)
+    * @ORM\Column(type="string", nullable=true, length=5)
     */
     private $tarifWieRabattDB_en;
 
     /**
-    * @ORM\Column(type="string", length=5)
+    * @ORM\Column(type="string", nullable=true, length=5)
     */
     private $tarifWoVorverkaufDB;
 
     /**
-    * @ORM\Column(type="string", length=5)
+    * @ORM\Column(type="string", nullable=true, length=5)
     */
     private $tarifWoVorverkaufDB_en;
 
     /**
-    * @ORM\Column(type="string", length=5)
+    * @ORM\Column(type="string", nullable=true, length=5)
     */
     private $zahlungKundenkarten;
 
     /**
-    * @ORM\Column(type="string", length=50)
+    * @ORM\Column(type="string", nullable=true, length=50)
     */
     private $zahlungMedien;
 
     /**
-    * @ORM\Column(type="string", length=50)
+    * @ORM\Column(type="string", nullable=true, length=50)
     */
     private $zahlungMedien_en;
 
     /**
-    * @ORM\Column(type="string", length=50)
+    * @ORM\Column(type="string", nullable=true, length=50)
     */
     private $zahlungMobil;
 
     /**
-    * @ORM\Column(type="boolean")
+    * @ORM\Column(type="boolean", nullable=true)
     */
     private $validData;
 
     /**
-    * @ORM\Column(type="string", length=19)
+    * @ORM\Column(type="string", nullable=true, length=19)
     */
     private $timestamp;
 
     /**
-    * @ORM\Column(type="string", length=19)
+    * @ORM\Column(type="string", nullable=true, length=19)
     */
     private $timeSegment;
 
     /**
-    * @ORM\Column(type="integer")
+    * @ORM\Column(type="integer", nullable=true)
     */
     private $category;
 
     /**
-    * @ORM\Column(type="string", length=5)
+    * @ORM\Column(type="string", nullable=true, length=5)
     */
     private $text;
 
