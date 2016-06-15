@@ -9,12 +9,12 @@ function init() {
   });
 }
 
-
 function mapinit() {			                                   	//initialize map for first display
 	
 }
 
 function update() {				                                  	//update map (id="map") and table on bottom of page (id="tablebody")
+}
 	
 														    	//!!!!!!! mapcode
 
