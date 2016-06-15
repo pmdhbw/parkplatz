@@ -2,6 +2,8 @@
 
 use Symfony\Component\HttpFoundation\Request;
 
+umask(0002);
+
 /**
  * @var Composer\Autoload\ClassLoader
  */
