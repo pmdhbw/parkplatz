@@ -22,7 +22,7 @@ class MapController extends Controller
      */
     public function getParkingLot($lot){
 
-        $this->init();
+        $this->init(); //can be removed as far as frontend uses /init route
         $csup = new ContentSupplier($this->getDoctrine()->getManager(), $this->get('database_connection'));
         $dbLot= new DBLot();
         $rspString = '';
@@ -46,7 +46,7 @@ class MapController extends Controller
      */
     public function getStations($station){
 
-        $this->init();
+        $this->init(); //can be removed as far as frontend uses /init route
         $dbStation = new DBStation();
                 $rspString = '';
         if($station == -1) // return all
@@ -61,6 +61,15 @@ class MapController extends Controller
             200,
             array('Content-Type' => 'application/XML')
         );
+    }
+
+    /**
+     * @Route("/init", , name="init_data")
+     */
+    private function init(){
+        $this->checkDB();
+        $csup = new ContentSupplier($this->getDoctrine()->getManager(), $this->get('database_connection'));
+        $csup->refresh();
     }
 
     private function checkDB() {
@@ -89,11 +98,5 @@ class MapController extends Controller
         $application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
         $application->setAutoExit(false);
         $application->run(new \Symfony\Component\Console\Input\ArrayInput($command));
-    }
-
-    private function init(){
-        $this->checkDB();
-        $csup = new ContentSupplier($this->getDoctrine()->getManager(), $this->get('database_connection'));
-        $csup->refresh();
     }
 }

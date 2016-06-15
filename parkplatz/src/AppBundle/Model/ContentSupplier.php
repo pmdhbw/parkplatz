@@ -24,11 +24,14 @@ class ContentSupplier {
 
     public function refresh(){
         if((time() - $this->checkUpdateTime('lot')) > $this->lotLifetime ){
-			$this->updateDBData();
+			$this->updateDBLots();
+			$this->updateDBStations();
+			$this->remapStationGeo();
         }
 
         if((time() - $this->checkUpdateTime('masterstation')) > $this->masterLifetime ){
-
+			//$this->loadStationList();  //error iregendwo
+			$this->remapStationGeo();
         }
     }
 
@@ -41,7 +44,29 @@ class ContentSupplier {
         return $time["time_created"];
     }
 
-	private function updateDBData(){
+	private function updateDBStations(){
+		//empty table
+		$statement = "DELETE FROM station";
+        $this->dbCon->query($statement);
+		//get db stations for service
+		$util = new Utils();
+		$dbStations = $util->runService('http://opendata.dbbahnpark.info/api/beta/stations');
+		//loop over them to insert them in the db
+		foreach($dbStations->results as $dbStation){
+			$station = new Station();
+			foreach($dbStation as $name => $value){
+				//set evry property
+				$func = 'set'.$this->makeGenericFuncName($name);
+				$station->$func($value);
+			}
+			//add object to execution queue
+			$this->entityMgr->persist($station);
+		}
+		//execute db inserts
+		$this->entityMgr->flush();
+	}
+
+	private function updateDBLots(){
 		//empty table
 		$statement = "DELETE FROM lot";
         $this->dbCon->query($statement);
@@ -55,7 +80,7 @@ class ContentSupplier {
 			$lot = new Lot();
 			foreach ($dblot as $name => $value) {
 				$func = 'set'.$this->makeGenericFuncName($name);
-				$lot->$func($value); //generic call of getter and setter
+				$lot->$func($value); //generic call of setter
 				//add occ data if exists
 				if(array_key_exists($dblot->parkraumId, $occ_map)){
 					$dbocc = $dboccs->allocations[$occ_map[$dblot->parkraumId]]->allocation;
@@ -91,10 +116,16 @@ class ContentSupplier {
 		$func = str_replace('_e', 'E', $func);
 		return $func;
 	}
+
+	private function remapStationGeo(){
+		//todo map station geo coordinates from masterdata geo's
+	}
 	
 	private function loadStationList(){
-		$list = array();
-			
+		//empty table
+		$statement = "DELETE FROM masterstation";
+        $this->dbCon->query($statement);
+
 		$ch = curl_init("http://data.deutschebahn.com/datasets/haltestellen/D_Bahnhof_2016_01_alle.csv");
 		$result = curl_exec($ch);
 		
@@ -107,10 +138,10 @@ class ContentSupplier {
 			$entity->setLongitude($cell[4]);
 			$entity->setLatitude($cell[5]);
 			$entity->setTime(time());
-			$list[] = $entity;
+			$this->entityMgr->persist($entity);
 		}
 		
-		// TODO: write on DB after succesfull testing
+		$this->entityMgr->flush();
 	}
     
 	//Deprecated
