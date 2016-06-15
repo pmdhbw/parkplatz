@@ -68,3 +68,21 @@ body {
 	-moz-box-shadow: 6px 6px 19px 0px rgba(0,0,0,0.75);
 	box-shadow: 6px 6px 19px 0px rgba(0,0,0,0.75);
 }
+
+table{
+	width:100%;
+	border-collapse: collapse;
+}
+
+table,th,td{
+	border: 2px solid black;
+	padding: 5px 0px 5px 0px;
+}
+
+th{
+	font-weight:bold;
+}
+
+td{
+	font-weigt:normal;
+}

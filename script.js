@@ -4,10 +4,8 @@ function init() {
     context: document.body
   }).done(function(param) {
     console.log("done");
+	writeHTML(param, "/XSLT_Stations.xsl", station)
   });
-	
-	writeHTML(xml, "/XSLT_Stations.xsl", station)				//!!!!!!insert stations XML
-	
 }
 
 function mapinit() {				//initialize map for first display
