@@ -4,15 +4,23 @@
 //Keeps track of updating contant regually
 namespace AppBundle\Model;
 
+use Doctrine\ORM\Query\ResultSetMapping;
 
 class ContentSupplier {
     private $lastUpdateTime;
-    public function __constructor(){
-        $this->checkUpdateTime();
+    private $entityMgr;
+    public function __constructor($entityMgr) {
+        $this->entityMgr = $entityMgr;
+        $this->checkUpdateTime('lot');
     }
 
-    private function checkUpdateTime(){
-        $dbmanager = 0;
+    private function checkUpdateTime($table) {
+        $statement = "SELECT UPDATE_TIME 
+                      FROM information_schema.tables
+                      WHERE TABLE_SCHEMA = 'parkplatz'
+                        AND TABLE_NAME = '$table'";
+        $query = $entityMgr->createQuery($statement);
+        $date = $query->getResults();
     }
     
 }
