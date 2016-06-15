@@ -10,6 +10,7 @@ use \Exception;
 
 use AppBundle\Model\DBLot;
 use AppBundle\Model\DBStation;
+use AppBundle\Model\ContentSupplier;
 use AppBundle\Entity\Lot;
 use AppBundle\Entity\MasterStation;
 use AppBundle\Entity\Station;
@@ -21,7 +22,8 @@ class MapController extends Controller
      */
     public function getParkingLot($lot){
 
-        $this->checkDB();
+        $this->init();
+        $csup = new ContentSupplier($this->getDoctrine()->getManager(), $this->get('database_connection'));
         $dbLot= new DBLot();
         $rspString = '';
         if($lot == -1) // return all
@@ -44,7 +46,7 @@ class MapController extends Controller
      */
     public function getStations($station){
 
-        $this->checkDB();
+        $this->init();
         $dbStation = new DBStation();
                 $rspString = '';
         if($station == -1) // return all
@@ -63,7 +65,7 @@ class MapController extends Controller
 
     private function checkDB() {
         try {
-        $schemaManager = $this->getDoctrine()->getConnection()->getSchemaManager();
+            $schemaManager = $this->getDoctrine()->getConnection()->getSchemaManager();
             $tables = $schemaManager->listTables();
             $countOfTables = 0;
             foreach ($tables as $table){
@@ -87,5 +89,11 @@ class MapController extends Controller
         $application = new \Symfony\Bundle\FrameworkBundle\Console\Application($kernel);
         $application->setAutoExit(false);
         $application->run(new \Symfony\Component\Console\Input\ArrayInput($command));
+    }
+
+    private function init(){
+        $this->checkDB();
+        $csup = new ContentSupplier($this->getDoctrine()->getManager(), $this->get('database_connection'));
+        $csup->refresh();
     }
 }

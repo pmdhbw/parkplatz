@@ -2,7 +2,7 @@ function init() {
   $.ajax({
     url: "/parkplatz/web/app_dev.php/dblot",
     context: document.body
-  }).done(function() {
+  }).done(function(param) {
     console.log("done");
   });
 	

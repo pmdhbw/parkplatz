@@ -7,12 +7,16 @@ class Utils{
 
 
 public function getConnection($url){
+	return $this->convertJsonToXml($this->runService($url)); //chaged --> returns now the xml object and not the string! TK
+}
+
+public function runService($url){
 	$ch = curl_init();
 	curl_setopt($ch, CURLOPT_URL, $url);
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 	$result = curl_exec($ch);
 	curl_close($ch);
-	return $this->convertJsonToXml($result); //chaged --> returns now the xml object and not the string! TK
+	return $result; //chaged --> returns now the xml object and not the string! TK
 }
 
 public function convertJsonToXml($json){
