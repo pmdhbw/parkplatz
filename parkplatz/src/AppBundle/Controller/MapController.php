@@ -1,5 +1,5 @@
 <?php
-//Created by Torben Krieger / 11.06.2013
+//Created by Torben Krieger
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
