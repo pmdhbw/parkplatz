@@ -38,7 +38,6 @@ return xhttp.responseXML;
 
 function writeHTML(xml, xsl, id)					//takes
 {
-xml = loadXMLDoc(xml);
 xsl = loadXMLDoc(xsl);
 // code for IE
 if (window.ActiveXObject || xhttp.responseType == "msxml-document")
