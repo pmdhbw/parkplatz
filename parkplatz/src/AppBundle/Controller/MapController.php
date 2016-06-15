@@ -94,6 +94,6 @@ class MapController extends Controller
     private function init(){
         $this->checkDB();
         $csup = new ContentSupplier($this->getDoctrine()->getManager(), $this->get('database_connection'));
-        $csup->refresh();
+        //$csup->refresh();
     }
 }
