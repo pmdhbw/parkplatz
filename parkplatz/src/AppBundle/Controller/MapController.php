@@ -64,7 +64,7 @@ class MapController extends Controller
     }
 
     /**
-     * @Route("/init", , name="init_data")
+     * @Route("/init", name="init_data")
      */
     private function init(){
         $this->checkDB();
