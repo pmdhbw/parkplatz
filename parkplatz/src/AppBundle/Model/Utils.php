@@ -16,7 +16,7 @@ public function runService($url){
 	curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 	$result = curl_exec($ch);
 	curl_close($ch);
-	return json_decode($result); //chaged --> returns now the xml object and not the string! TK
+	return json_decode($result); //chaged --> returns now object and not the string! TK
 }
 
 public function convertJsonToXml($json){
@@ -26,18 +26,24 @@ public function convertJsonToXml($json){
 	return $xml;  //chaged --> returns now the xml object and not the string! TK
 }
 
+public function objectToXml($obj){
+    $xml = new \SimpleXMLElement("<root></root>");
+	$this->arrayToXml($obj, $xml);
+	return $xml;
+}
+
 private function arrayToXml($array, &$xml){
    foreach($array as $key => $value) {
         if(is_array($value)) {
             if(!is_numeric($key)){
-                $subnode = $xml->addChild("$key");
+                $subnode = $xml->addChild($key);
                 $this->arrayToXml($value, $subnode);
             }else{
                 $subnode = $xml->addChild("element");  //stop inserting useless elements TK
                 $this->arrayToXml($value, $subnode);
             }
         }else {
-            $xml->addChild($key,htmlspecialchars("$value"));
+            $xml->addChild($key,htmlspecialchars((string) $value));
         }
     }
 }	

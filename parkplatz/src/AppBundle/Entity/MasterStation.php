@@ -15,42 +15,42 @@ class MasterStation {
      * @ORM\Column(type="integer")
      * @ORM\Id
      */
-    private $bahnhofsNummer;
+    public $bahnhofsNummer;
 
     /**
     * @ORM\Column(type="integer",)
     */
-    private $timeCreated;
+    public $timeCreated;
 
     /**
      * @ORM\Column(type="string", length=30, nullable=true)
      */
-    private $station;
+    public $station;
 
     /**
      * @ORM\Column(type="string", length=30, nullable=true)
      */
-    private $cityTitle;
+    public $cityTitle;
 
     /**
      * @ORM\Column(type="string", length=30, nullable=true)
      */
-    private $street;
+    public $street;
 
     /**
      * @ORM\Column(type="string", length=5, nullable=true)
      */
-    private $plz;
+    public $plz;
 
     /**
     * @ORM\Column(type="float", nullable=true)
     */
-    private $stationGeoLatitude;
+    public $stationGeoLatitude;
 
     /**
     * @ORM\Column(type="float", nullable=true)
     */
-    private $stationGeoLongitude;
+    public $stationGeoLongitude;
 
     /**
      * Set bahnhofsNummer

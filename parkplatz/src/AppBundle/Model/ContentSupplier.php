@@ -40,8 +40,11 @@ class ContentSupplier {
                       FROM $table
                       LIMIT 1";
         $res = $this->dbCon->fetchAll($statement);
-		$time = &$res[0];
-        return $time["time_created"];
+		if(!empty($res)){
+			$time = &$res[0];
+        	return $time["time_created"];
+		}
+		return 360*24*60*60;
     }
 
 	private function updateDBStations(){
@@ -81,18 +84,16 @@ class ContentSupplier {
 			foreach ($dblot as $name => $value) {
 				$func = 'set'.$this->makeGenericFuncName($name);
 				$lot->$func($value); //generic call of setter
-				//add occ data if exists
-				if(array_key_exists($dblot->parkraumId, $occ_map)){
-					$dbocc = $dboccs->allocations[$occ_map[$dblot->parkraumId]]->allocation;
-					$lot->setValidData($dbocc->validData);
-					$lot->setTimestamp($dbocc->timestamp);
-					$lot->setTimeSegment($dbocc->timeSegment);
-					$lot->setCategory($dbocc->category);
-					$lot->setText($dbocc->text);
-				}
-				$lot->setTimeCreated(time());
-				
 			}
+			//add occ data if exists
+			if(array_key_exists($dblot->parkraumId, $occ_map)){
+				$dbocc = $dboccs->allocations[$occ_map[$dblot->parkraumId]]->allocation;
+				foreach($dbocc as $name => $value){
+					$func = 'set'.$this->makeGenericFuncName($name);
+					$lot->$func($value); //generic call of setter
+				}
+			}
+			$lot->setTimeCreated(time());
 			$this->entityMgr->persist($lot);
 		}
 		$this->entityMgr->flush();

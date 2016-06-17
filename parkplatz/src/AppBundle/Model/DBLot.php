@@ -5,6 +5,51 @@ namespace AppBundle\Model;
 
 class DBLot{
 
+    private $doctrine;
+
+    public function __construct($doc){
+        $this->doctrine = $doc;
+    }
+
+    public function getDBLot($lotId){
+        $repo = $this->doctrine->getRepository('AppBundle:Lot');
+        $lot = $repo->find($lotId);
+        return $this->objectToXml($lot)->asXML();
+    }
+
+    public function getDBLots(){
+        $em = $this->doctrine->getManager();
+        //to get more attributes add column in select statement
+        $query = $em->createQuery(
+            'SELECT l.parkraumId, l.parkraumBahnhofName, l.parkraumGeoLatitude,
+                    l.parkraumGeoLongitude, l.parkraumKennung, l.validData, l.category,
+                    l.text 
+             FROM AppBundle:Lot l');
+        $lots = $query->getResult();
+        return $this->objectToXml($lots)->asXML();
+    }
+
+    private function objectToXml(&$lots){
+        $xml = new \SimpleXmlElement("<lots></lots>");
+        if(is_array($lots)){
+            foreach ($lots as $lot) {
+                $this->addChildXml($lot, $xml);
+            }
+        } else {
+            $this->addChildXml($lots, $xml);
+        }
+        return $xml;
+    }
+
+    private function addChildXml(&$lot, &$xml){
+            $child = $xml->addChild("lot");
+            foreach ($lot as $key => $value) {
+                $child->addChild($key, htmlspecialchars((string) $value));
+            }
+    }
+    
+    //
+    //old code ... 
         private $allOccs;
         private $occMap;
 
