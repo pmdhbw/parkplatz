@@ -14,68 +14,68 @@ class Station {
     /**
      * @ORM\Column(type="string", nullable=true, length=20)
      */
-    private $type;
+    public $type;
 
     /**
      * @ORM\Column(type="integer")
      * @ORM\Id
      */
-    private $bahnhofsNummer;
+    public $bahnhofsNummer;
 
     /**
      * @ORM\Column(type="string", nullable=true, length=30)
      */
-    private $cityTitle;
+    public $cityTitle;
 
     /**
      * @ORM\Column(type="string", nullable=true, length=30)
      */
-    private $street;
+    public $street;
 
     /**
      * @ORM\Column(type="string", nullable=true, length=5)
      */
-    private $plz;
+    public $plz;
 
     /**
      * @ORM\Column(type="integer")
      */
-    private $evaNummer;
+    public $evaNummer;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isDbBahnpark;
+    public $isDbBahnpark;
 
     /**
      * @ORM\Column(type="boolean", nullable=true)
      */
-    private $isPublished;
+    public $isPublished;
 
     /**
      * @ORM\Column(type="string", nullable=true, nullable=true, length=10)
      */
-    private $mainPicId;
+    public $mainPicId;
 
     /**
      * @ORM\Column(type="string", nullable=true, length=10)
      */
-    private $mainPicId_en;
+    public $mainPicId_en;
 
     /**
      * @ORM\Column(type="string", nullable=true, length=30)
      */
-    private $station;
+    public $station;
 
     /**
     * @ORM\Column(type="float", nullable=true)
     */
-    private $stationGeoLatitude;
+    public $stationGeoLatitude;
 
     /**
     * @ORM\Column(type="float", nullable=true)
     */
-    private $stationGeoLongitude;
+    public $stationGeoLongitude;
 
     /**
      * Set type

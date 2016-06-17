@@ -4,7 +4,7 @@
 namespace AppBundle\Model;
 
 class DBStation{
-    private $stationXml;
+    private $doctrine;
     private $workingNode;
 
     public function __construct(){

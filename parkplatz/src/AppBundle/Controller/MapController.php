@@ -24,14 +24,14 @@ class MapController extends Controller
 
         $this->init(); //can be removed as far as frontend uses /init route
         $csup = new ContentSupplier($this->getDoctrine()->getManager(), $this->get('database_connection'));
-        $dbLot= new DBLot();
+        $dbLot= new DBLot($this->getDoctrine());
         $rspString = '';
         if($lot == -1) // return all
         {
-            $rspString = $dbLot->getLots();
+            $rspString = $dbLot->getDBLots();
             
         } else { // return only the wished lot
-            $rspString = $dbLot->getLot($lot);
+            $rspString = $dbLot->getDBLot($lot);
         }
         return new Response(
             $rspString,
