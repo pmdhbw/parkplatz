@@ -27,11 +27,30 @@
             <div id="selectionleft">
                 <label>Bahnhof</label><br>
                 <select id="station" onchange="update()" style="width:200px;"></select><br>
-                <label>Suchradius in km</label><br>
-                <input type="text" id="radius" value="5" onchange="update()" style="text-align:right; width:200px;" >
+                <label>Suchradius in m</label><br>
+                <input type="text" id="radius" value="500" onchange="update()" style="text-align:right; width:35px;" >
             </div>
 			
             <div id="selectionright">
+				<label>freie Parkplätze</label><br>
+				<select id="free" style="width:50px;" onchanged="updateSelect">
+					<option value="0">egal</option>
+					<option value="1">0-10</option>
+					<option value="2">10-30</option>
+					<option value="3">30-50</option>
+					<option value="4">>50</option>
+				</select><br>
+				<label>Zahlungsart</label><br>
+				<select id="pay" style="width:50px;" onchanged="updateSelect">
+					<option value="0">egal</option>
+					<option value="1">EC-Karte</option>
+					<option value="2">Kreditkarte</option>
+					<option value="3">Bar</option>
+				</select><br>
+				<label>zeige nur Parkhäuser</label>
+				<input type="checkbox" name="house" value="Parkhaus" onchanged="updateSelect"><br>
+				<label>zeige nur offene</label>
+				<input type="checkbox" name="open" value="open" onchanged="updateSelect"><br>
             </div>
 			
 			<div id="clear">
@@ -43,7 +62,7 @@
     </div>
 <!-- -------------------------------------------------------------------------- -->
     <div id="table">   																	<!-- table--> 
-		<table>
+		<table id="tab">
 			<thead>
 				<tr>
 					<th>Name</th>

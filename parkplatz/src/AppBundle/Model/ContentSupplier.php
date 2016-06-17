@@ -23,16 +23,17 @@ class ContentSupplier {
     }
 
     public function refresh(){
-        if((time() - $this->checkUpdateTime('lot')) > $this->lotLifetime ){
-			$this->updateDBLots();
-			$this->updateDBStations();
-			$this->remapStationGeo();
-        }
+	//if((time() - $this->checkUpdateTime('masterstation')) > $this->masterLifetime ){
+			$this->loadStationList();  //error iregendwo
+			//$this->remapStationGeo();
+      //  }
+       // if((time() - $this->checkUpdateTime('lot')) > $this->lotLifetime ){
+		//	$this->updateDBLots();
+			//$this->updateDBStations();
+		//	$this->remapStationGeo();
+        //}
 
-        if((time() - $this->checkUpdateTime('masterstation')) > $this->masterLifetime ){
-			//$this->loadStationList();  //error iregendwo
-			$this->remapStationGeo();
-        }
+        
     }
 
     private function checkUpdateTime($table) {
@@ -127,19 +128,30 @@ class ContentSupplier {
 		$statement = "DELETE FROM masterstation";
         $this->dbCon->query($statement);
 
-		$ch = curl_init("http://data.deutschebahn.com/datasets/haltestellen/D_Bahnhof_2016_01_alle.csv");
+		$ch = curl_init("http://download-data.deutschebahn.com/static/datasets/haltestellen/D_Bahnhof_2016_01_alle.csv");
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1); 
 		$result = curl_exec($ch);
-		
+
 		$rows = \explode("\n", $result);
+		
+		$isFirst = true;
 		foreach($rows as $item){
-			$cell = \explode(";", $item);
-			$entity = new MasterStation();
-			$entity->setBahnhofsNummer($cell[0]);
-			$entity->setName($cell[2]);
-			$entity->setLongitude($cell[4]);
-			$entity->setLatitude($cell[5]);
-			$entity->setTime(time());
-			$this->entityMgr->persist($entity);
+			if ($isFirst == false){
+				$cell = \explode(";", $item);
+				//var_dump($cell);
+				if (isset($cell[0], $cell[2], $cell[4], $cell[5])){
+					$entity = new MasterStation();
+					$entity->setBahnhofsNummer($cell[0]);
+					$entity->setStation($cell[2]);
+					$entity->setStationGeoLatitude($cell[4]);
+					$entity->setStationGeoLongitude($cell[5]);
+					$entity->setTimeCreated(time());
+					//var_dump($entity);
+					$this->entityMgr->persist($entity);
+				}
+				
+			}
+			$isFirst = false;
 		}
 		
 		$this->entityMgr->flush();
