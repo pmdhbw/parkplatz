@@ -137,14 +137,18 @@ class ContentSupplier {
 		foreach($rows as $item){
 			if ($isFirst == false){
 				$cell = \explode(";", $item);
-				$entity = new MasterStation();
-				$entity->setBahnhofsNummer($cell[0]);
-				$entity->setStation($cell[2]);
-				$entity->setStationGeoLatitude($cell[4]);
-				$entity->setStationGeoLongitude($cell[5]);
-				$entity->setTimeCreated(time());
-				//var_dump($entity);
-				$this->entityMgr->persist($entity);
+				//var_dump($cell);
+				if (isset($cell[0], $cell[2], $cell[4], $cell[5])){
+					$entity = new MasterStation();
+					$entity->setBahnhofsNummer($cell[0]);
+					$entity->setStation($cell[2]);
+					$entity->setStationGeoLatitude($cell[4]);
+					$entity->setStationGeoLongitude($cell[5]);
+					$entity->setTimeCreated(time());
+					//var_dump($entity);
+					$this->entityMgr->persist($entity);
+				}
+				
 			}
 			$isFirst = false;
 		}
