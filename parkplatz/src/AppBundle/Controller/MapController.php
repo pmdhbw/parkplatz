@@ -47,7 +47,7 @@ class MapController extends Controller
     public function getStations($station){
 
         $this->init(); //can be removed as far as frontend uses /init route
-        $dbStation = new DBStation();
+        $dbStation = new DBStation($this->getDoctrine());
                 $rspString = '';
         if($station == -1) // return all
         {
