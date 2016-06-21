@@ -1,17 +1,18 @@
 $(document).ready(function() {
-  // Load options for stations.
+  // Load options for stations and initialize map
   new Transformation()
-  .setXml("parkplatz/web/app_dev.php/dblot")
+  .setXml("parkplatz/web/app.php/dblot")
   .setXslt("XSLT_Stations.xsl")
   .transform("station");
 });
 
 function updateSelect(){
+  //set visibility of table rows according to current selection
 
   //reset table to visible
   var table = document.getElementById("tab");
   for (var i=0, row; row = table.rows[i];i++){
-  row.style.visibility = "visible"
+  row.style.visibility = "visible";
   }
 
   //declaration of variables for settings
@@ -36,7 +37,7 @@ function updateSelect(){
     cell = row.cells[8];
     if ((cell.text.indexOf(val))>-1){
       row.style.visibility = "collapse";
-      }
+    }
     cell = row.cells[1];
     if (housechecked && (cell.text.indexOf("Parkhaus")>-1)){
       row.style.visibility = "collapse";
@@ -86,4 +87,42 @@ function updateSelect(){
       }
     }
   }
+}
+
+function update(){
+  //update map after selection of station or radius has changed
+
+  //start by collecting the current data for executing the radius search
+  var station = document.getElementById("station");
+  var long = station.getAttribute("data-longitude");
+  var lat = station.getAttribute("data-latitude");
+  var radius = document.getElementById("radius").value;
+
+  var str = "?radius=" + encodeURIComponent(radius) + "&long="
+  + encodeURIComponent(long) + "&lat=" + encodeURIComponent(lat);
+
+  //open httprequest
+  if (window.XMLHttpRequest) {
+        xmlhttp = new XMLHttpRequest();
+    }
+  else { 
+        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+    }
+  xmlhttp.open("POST","parkplatz/web/app.php/dbrange", true);
+  //send data
+  xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xmlhttp.send(str);
+  //listen for answer from php and post data into table
+  xmlhttp.onreadystatechange=function(){
+    if (xmlhttp.readyState == 4){
+        if(xmlhttp.status != 200){
+            alert ("Es ist ein Fehler aufgetreten beim Senden der Daten");
+        }
+        else if (xmlhttp.status == 200){
+          var content = xmlhttp.responseText;
+          var tablebody = document.getElementById("tablebody");
+          tablebody.innerHTML = content;
+        }
+    }
+  };
 }
