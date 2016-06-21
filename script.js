@@ -101,28 +101,65 @@ function update(){
   var str = "?radius=" + encodeURIComponent(radius) + "&long="
   + encodeURIComponent(long) + "&lat=" + encodeURIComponent(lat);
 
-  //open httprequest
+  //open xhttprequest
   if (window.XMLHttpRequest) {
-        xmlhttp = new XMLHttpRequest();
+        var xhttp = new XMLHttpRequest();
     }
-  else { 
-        xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  else { //IE
+        var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
-  xmlhttp.open("POST","parkplatz/web/app.php/dbrange", true);
+  xhttp.open("POST","parkplatz/web/app.php/dbrange", false);
   //send data
-  xmlhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xmlhttp.send(str);
+  xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+  xhttp.send(str);
   //listen for answer from php and post data into table
-  xmlhttp.onreadystatechange=function(){
-    if (xmlhttp.readyState == 4){
-        if(xmlhttp.status != 200){
+  xhttp.onreadystatechange=function(){
+    if (xhttp.readyState == 4){
+        if(xhttp.status != 200){
             alert ("Es ist ein Fehler aufgetreten beim Senden der Daten");
         }
-        else if (xmlhttp.status == 200){
-          var content = xmlhttp.responseText;
-          var tablebody = document.getElementById("tablebody");
-          tablebody.innerHTML = content;
+        else if (xhttp.status == 200){
+          var xml = xhttp.responseText;
+          var xsl = loadXMLDoc("xxx") //!!!!!!!!!! insert XSL file
+          XSLTransform(xml, xsl, "tablebody");
         }
     }
   };
+}
+
+
+
+
+//XSL Transformation functions for testing with update() function
+//will be deleted if tests fail and framework used instead
+
+function loadXMLDoc(filename){
+  //loads XML Document from file
+  if (window.ActiveXObject){ //IE
+    var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  }
+  else{ //rest
+    var xhttp = new XMLHttpRequest();
+  }
+  xhttp.open("GET", filename, false);
+  try {xhttp.responseType = "msxml-document"} catch(err) {} //throws error on IE11
+  xhttp.send("");
+  return xhttp.responseXML;
+}
+
+function XSLTransform(xml, xsl, id){
+//does xsl transformation on xml and pastes it into the note with id
+//xml and xsl have to be STRINGS
+//code for IE
+  if (window.ActiveXObject){
+    ex = xml.transformNode(xsl);
+    document.getElementById(id).innerHTML = ex;
+  }
+//code for Chrome, Firefox, Opera, etc.
+  else if (document.implementation && document.implementation.createDocument){
+    xsltProcessor = new XSLTProcessor();
+    xsltProcessor.importStylesheet(xsl);
+    resultDocument = xsltProcessor.transformToFragment(xml, document);
+    document.getElementById(id).appendChild(resultDocument);
+  }
 }
