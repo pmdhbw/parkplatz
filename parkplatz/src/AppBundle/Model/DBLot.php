@@ -21,14 +21,16 @@ class DBLot{
         //to get more attributes add column in select statement
         $query = $em->createQuery(
             'SELECT l.parkraumId, l.parkraumBahnhofName, l.parkraumGeoLatitude,
-                    l.parkraumGeoLongitude, l.parkraumKennung, l.validData, l.category,
+                    l.parkraumGeoLongitude, l.parkraumKennung, l.parkraumKennung, l.parkraumParkart,
+                    l.validData, l.category, l.parkraumStellplaetze, l.parkraumOeffnungszeiten, l.parkraumBetreiber,
+                    l.zahlungMedien, l.parkraumBemerkung, l.tarif30Min, l.tarif1Std, l.tarif1Tag, l.tarif1Woche,
                     l.text 
              FROM AppBundle:Lot l');
         $lots = $query->getResult();
         return $this->objectToXml($lots)->asXML();
     }
 
-    private function objectToXml(&$lots){
+    public function objectToXml(&$lots){
         $xml = new \SimpleXmlElement("<lots></lots>");
         if(isset($lots)){
             if(is_array($lots)){
