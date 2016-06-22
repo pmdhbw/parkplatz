@@ -99,6 +99,17 @@ class MapController extends Controller
         );
     }
 
+    /**
+    *@Route("/reset", name="reset")
+    */
+    public function reset(){
+        $this->execCommand(array("command" => "cache:clear","--env=prod" => true, "--no-debug" => true));
+        return new Response(
+            "reseted",
+            200
+        );
+    }
+
     private function checkDB() { //achtung veränderungen vom db model werden nicht registriert/reloaded
         try {
             $schemaManager = $this->getDoctrine()->getConnection()->getSchemaManager();
