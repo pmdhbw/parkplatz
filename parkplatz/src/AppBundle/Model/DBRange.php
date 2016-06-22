@@ -24,10 +24,10 @@ class DBRange{
         $right->buildFromGeo($earthRadius, $long, $lat);
 
         $vec->build($radius, -$radius, 0);
-        var_dump($vec);
+        //var_dump($vec);
         $left->add($vec);
         $vec->build(-$radius, $radius, 0);
-        var_dump($vec);
+        //var_dump($vec);
         $right->add($vec);
 
         $geoLeft = $left->buildApproxGeo($earthRadius);
@@ -39,19 +39,23 @@ class DBRange{
         $em = $this->doctrine->getManager();
         //to get more attributes add column in select statement
         //bis jetzt nur parkplätze gesucht
-        var_dump($geoLeft->getLatDeg());
-        var_dump($geoLeft->getLongDeg());
-        var_dump($geoRight->getLatDeg());
-        var_dump($geoRight->getLongDeg());
+        //var_dump($geoLeft->getLatDeg());
+        //var_dump($geoLeft->getLongDeg());
+        //var_dump($geoRight->getLatDeg());
+        //var_dump($geoRight->getLongDeg());
         $query = $em->createQuery(
             "SELECT l.parkraumId, l.parkraumBahnhofName, l.parkraumGeoLatitude,
-                    l.parkraumGeoLongitude, l.parkraumKennung, l.validData, l.category,
+                    l.parkraumGeoLongitude, l.parkraumKennung, l.parkraumKennung, l.parkraumParkart,
+                    l.validData, l.category, l.parkraumStellplaetze, l.parkraumOeffnungszeiten, l.parkraumBetreiber,
+                    l.zahlungMedien, l.parkraumBemerkung, l.tarif30Min, l.tarif1Std, l.tarif1Tag, l.tarif1Woche,
                     l.text 
              FROM AppBundle:Lot l
              WHERE l.parkraumGeoLongitude >= ".$geoLeft->getLongDeg()." AND l.parkraumGeoLatitude >= ".$geoLeft->getLatDeg()." AND 
                     l.parkraumGeoLongitude <= ".$geoRight->getLongDeg()." AND l.parkraumGeoLatitude <= ".$geoRight->getLatDeg());
         $lots = $query->getResult();
-        var_dump($lots);
+        //var_dump($lots);
+        $dblot = new DBLot($this->doctrine);
+        return $dblot->objectToXml($lots)->asXML();
     }
 
 }
