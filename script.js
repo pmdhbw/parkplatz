@@ -1,7 +1,7 @@
 $(document).ready(function() {
   // Load options for stations and initialize map
   new Transformation()
-  .setXml("parkplatz/web/app.php/dblot")
+  .setXml("parkplatz/web/app_dev.php/dbstation")
   .setXslt("XSLT_Stations.xsl")
   .transform("station");
 });
