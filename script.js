@@ -120,7 +120,7 @@ function update(){
         }
         else if (xhttp.status == 200){
           var xml = xhttp.responseText;
-          var xsl = loadXMLDoc("xxx") //!!!!!!!!!! insert XSL file
+          var xsl = loadXMLDoc("XSL_Lots.xsl");
           XSLTransform(xml, xsl, "tablebody");
         }
     }
