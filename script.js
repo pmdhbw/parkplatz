@@ -12,7 +12,7 @@ function updateSelect(){
   //reset table to visible
   var table = document.getElementById("tab");
   for (var i=0, row; row = table.rows[i];i++){
-  row.style.visibility = "visible";
+  row.style.display = "inline";
   }
 
   //declaration of variables for settings
@@ -32,19 +32,19 @@ function updateSelect(){
   for (var i = 0, row; row = table.rows[i]; i++) {
     var cell = row.cells[5];
     if (cell.value = freeval){
-      row.style.visibility = "collapse";
+      row.style.display = "none";
     }
     cell = row.cells[8];
     if ((cell.text.indexOf(val))>-1){
-      row.style.visibility = "collapse";
+      row.style.display = "none";
     }
     cell = row.cells[1];
     if (housechecked && (cell.text.indexOf("Parkhaus")>-1)){
-      row.style.visibility = "collapse";
+      row.style.display = "none";
     }
     cell = row.cells[9];
     if (openchecked && (cell.text.indexOf("24 Stunden, 7 Tage")=-1)){
-      row.style.visibility = "collapse";
+      row.style.display = "none";
     }
     else if (openchecked) {
       var firstsplit = cell.split(",")
@@ -57,7 +57,7 @@ function updateSelect(){
         var open= (jetzt.getFullYear, jetzt.getMonth, start[0], start[1],0 );
         var close= (jetzt.getFullYear, jetzt.getMonth, end[0], end[1],0);
         if (!(jetzt.getTime>open.getTime && jetzt.getTime<close.getTime)){
-          row.style.visibility = "collapse";
+          row.style.display = "none";
         }
       }
       else{
@@ -71,18 +71,18 @@ function updateSelect(){
         var saend = sat[1].split(":");
         var jetzt = new Date();
         if (jetzt.getDay = 0)
-          row.style.visibility = "collapse";
+          row.style.display = "none";
         else if (jetzt.getDay = 6){
           var open= (jetzt.getFullYear, jetzt.getMonth, sastart[0], sastart[1],0 );
           var close= (jetzt.getFullYear, jetzt.getMonth, saend[0], saend[1],0);
           if (!(jetzt.getTime>open.getTime && jetzt.getTime<close.getTime))
-          row.style.visibility = "collapse";
+          row.style.display = "none";
         }
         else {
           var open= (jetzt.getFullYear, jetzt.getMonth, mostart[0], mostart[1],0 );
           var close= (jetzt.getFullYear, jetzt.getMonth, moend[0], moend[1],0);
           if (!(jetzt.getTime>open.getTime && jetzt.getTime<close.getTime))
-          row.style.visibility = "collapse";
+          row.style.display = "none";
         }
       }
     }
