@@ -5,19 +5,43 @@ namespace AppBundle\Model;
 
 class DBStation{
     private $doctrine;
-    private $workingNode;
 
-    public function __construct(){
-        $utils = new Utils();
-        $this->stationXml = $utils->getConnection('http://opendata.dbbahnpark.info/api/beta/stations');
-    }
-
-    public function getStation($id){
+    public function __construct($doc){
+        $this->doctrine = $doc;
         
     }
 
-    public function getStations(){
-        return $this->stationXml->asXML();
+    public function getStation($id){
+		$repo = $this->doctrine->getRepository('AppBundle:Station');
+        $station = $repo->find($id);
+        return $this->objectToXml($station)->asXML();
     }
 
+    public function getStations(){
+       $em = $this->doctrine->getManager();
+        //to get more attributes add column in select statement
+        $repo = $this->doctrine->getRepository('AppBundle:Station');
+        $stations = $repo->findAll();
+        return $this->objectToXml($stations)->asXML();
+    }
+
+	
+	private function objectToXml(&$stations){
+	$xml = new \SimpleXmlElement("<stations></stations>");
+	if(is_array($stations)){
+		foreach ($stations as $station) {
+			$this->addChildXml($station, $xml);
+		}
+	} else {
+		$this->addChildXml($stations, $xml);
+	}
+	return $xml;
+    }
+	
+	private function addChildXml(&$station, &$xml){
+		$child = $xml->addChild("station");
+		foreach ($station as $key => $value) {
+			$child->addChild($key, htmlspecialchars((string) $value));
+		}
+    }
 }
