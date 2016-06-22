@@ -108,7 +108,7 @@ function update(){
   else { //IE
         var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
-  xhttp.open("POST","parkplatz/web/app.php/dbrange", false);
+  xhttp.open("POST","parkplatz/web/app_dev.php/dbrange", false);
   //send data
   xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhttp.send(str);
