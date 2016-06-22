@@ -1,6 +1,5 @@
 <?php
 //Created by Torben Krieger
-//Probleme: sehr langsam durch vielzahl an Schleifen!
 namespace AppBundle\Model;
 
 class DBLot{
@@ -31,13 +30,15 @@ class DBLot{
 
     private function objectToXml(&$lots){
         $xml = new \SimpleXmlElement("<lots></lots>");
-        if(is_array($lots)){
-            foreach ($lots as $lot) {
-                $this->addChildXml($lot, $xml);
+        if(isset($lots)){
+            if(is_array($lots)){
+                foreach ($lots as $lot) {
+                    $this->addChildXml($lot, $xml);
+                }
+            } else {
+                $this->addChildXml($lots, $xml);
             }
-        } else {
-            $this->addChildXml($lots, $xml);
-        }
+        }   
         return $xml;
     }
 

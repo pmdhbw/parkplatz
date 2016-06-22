@@ -10,6 +10,7 @@ use \Exception;
 
 use AppBundle\Model\DBLot;
 use AppBundle\Model\DBStation;
+use AppBundle\Model\DBRange;
 use AppBundle\Model\ContentSupplier;
 use AppBundle\Entity\Lot;
 use AppBundle\Entity\MasterStation;
@@ -72,7 +73,34 @@ class MapController extends Controller
         $csup->refresh();
     }
 
-    private function checkDB() {
+    //url: /dbrange?radius={in km}&long={geoLongitude}&lat={geoLatitude}
+    /**
+    * @Route("/dbrange", name="db_range")
+    */
+    public function getRange(Request $req){
+        $this->init();
+        $geoLong = $req->query->get('long');
+        $geoLat = $req->query->get('lat');
+        $radius = $req->query->get('radius');
+        if(isset($geoLong) && isset($geoLat) && isset($radius)){
+            if(is_numeric($geoLong) && is_numeric($geoLat) && is_numeric($radius)){
+                $dbrange = new DBRange($this->getDoctrine());
+                $xmlString = $dbrange->getInRadius((float) $radius, (float) $geoLong, (float) $geoLat);
+                return new Response(
+                    $xmlString,
+                    200,
+                    array('Content-Type' => 'application/XML')
+                );
+            }
+        }
+        return new Response(
+            "Malformed Parameters - should be: /dbrange?radius={in km}&long={geoLongitude}&lat={geoLatitude}",
+            400
+        );
+    }
+
+
+    private function checkDB() { //achtung veränderungen vom db model werden nicht registriert/reloaded
         try {
             $schemaManager = $this->getDoctrine()->getConnection()->getSchemaManager();
             $tables = $schemaManager->listTables();
