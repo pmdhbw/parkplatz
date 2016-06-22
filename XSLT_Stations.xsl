@@ -2,8 +2,8 @@
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 
 <xsl:template match="/">
-      <xsl:for-each select="lots/lot">      
-      <option><xsl:value-of select="parkraumBahnhofName"/></option>   
+      <xsl:for-each select="stations/station">      
+      <option><xsl:value-of select="station"/></option>   
       </xsl:for-each>
 </xsl:template>
 </xsl:stylesheet>
