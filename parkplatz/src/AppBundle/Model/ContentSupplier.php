@@ -23,15 +23,15 @@ class ContentSupplier {
     }
 
     public function refresh(){
-		//if((time() - $this->checkUpdateTime('masterstation')) > $this->masterLifetime ){
+		if((time() - $this->checkUpdateTime('masterstation')) > $this->masterLifetime ){
 			$this->loadStationList();  
 			//$this->remapStationGeo();
-       //}
-       //if((time() - $this->checkUpdateTime('lot')) > $this->lotLifetime ){
+		}
+       if((time() - $this->checkUpdateTime('lot')) > $this->lotLifetime ){
 			$this->updateDBLots();
 			$this->updateDBStations();
 			$this->remapStationGeo();
-        //}
+		}
 
         
     }
