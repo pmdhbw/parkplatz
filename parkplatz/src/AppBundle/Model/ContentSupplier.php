@@ -23,15 +23,15 @@ class ContentSupplier {
     }
 
     public function refresh(){
-		if((time() - $this->checkUpdateTime('masterstation')) > $this->masterLifetime ){
+		//if((time() - $this->checkUpdateTime('masterstation')) > $this->masterLifetime ){
 			$this->loadStationList();  
 			//$this->remapStationGeo();
-       }
-       if((time() - $this->checkUpdateTime('lot')) > $this->lotLifetime ){
+       //}
+       //if((time() - $this->checkUpdateTime('lot')) > $this->lotLifetime ){
 			$this->updateDBLots();
 			$this->updateDBStations();
 			$this->remapStationGeo();
-        }
+        //}
 
         
     }
@@ -154,8 +154,10 @@ class ContentSupplier {
 					$entity = new MasterStation();
 					$entity->setBahnhofsNummer($cell[0]);
 					$entity->setStation($cell[2]);
-					$entity->setStationGeoLatitude($cell[4]);
-					$entity->setStationGeoLongitude($cell[5]);
+					
+					//FIXED: wrong order of latitude and longitude from bahn csv
+					$entity->setStationGeoLatitude($cell[5]);
+					$entity->setStationGeoLongitude($cell[4]);
 					$entity->setTimeCreated(time());
 					//var_dump($entity);
 					$this->entityMgr->persist($entity);
