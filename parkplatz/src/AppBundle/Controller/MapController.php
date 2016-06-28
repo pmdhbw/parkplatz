@@ -67,20 +67,20 @@ class MapController extends Controller
     /**
      * @Route("/init", name="init_data")
      */
-    private function init(){
+    private function init(){ //kritische perfomance probleme 
         $this->checkDB();
         $csup = new ContentSupplier($this->getDoctrine()->getManager(), $this->get('database_connection'));
         $csup->refresh();
     }
 
-    //url: /dbrange?radius={in km}&long={geoLongitude}&lat={geoLatitude}
+    //url: /dbrange?radius={in km}&lat={geoLatitude}&long={geoLongitude}
     /**
     * @Route("/dbrange", name="db_range")
     */
     public function getRange(Request $req){
         $this->init();
-        $geoLong = $req->query->get('long');
-        $geoLat = $req->query->get('lat');
+        $geoLong = $req->query->get('lat');
+        $geoLat = $req->query->get('long');
         $radius = $req->query->get('radius');
         if(isset($geoLong) && isset($geoLat) && isset($radius)){
             if(is_numeric($geoLong) && is_numeric($geoLat) && is_numeric($radius)){

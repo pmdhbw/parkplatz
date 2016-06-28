@@ -4,45 +4,28 @@ namespace AppBundle\Model;
 
 class DBRange{
     private $doctrine;
-
+    private $geoOrg;
 
 
     public function __construct($doc){
         $this->doctrine = $doc;
     }
 
-    public function getInRadius($radius, $long, $lat){
-        //implemented with a sphere!! - not so exact but good enough for PM
-        //first select all elements in a sqaure from the db
-        //Erdradius im Mittel (SI: Meter)
-        $earthRadius = 6371000.785;
+    public function getInRadius($radius, $lat, $long){
         $radius = $radius * 1000;
-        $vec = new Vector3();
-        $left = new Vector3();
-        $left->buildFromGeo($earthRadius, $long, $lat);
-        $right = new Vector3();
-        $right->buildFromGeo($earthRadius, $long, $lat);
+    
+        $geoRight = new Geo();
+        $geoRight->setLatDeg($lat);
+        $geoRight->setLongDeg($long);
+        $geoRight->move($radius, $radius);
 
-        $vec->build($radius, -$radius, 0);
-        //var_dump($vec);
-        $left->add($vec);
-        $vec->build(-$radius, $radius, 0);
-        //var_dump($vec);
-        $right->add($vec);
+        $geoLeft = new Geo();
+        $geoLeft->setLatDeg($lat);
+        $geoLeft->setLongDeg($long);
+        $geoLeft->move(-$radius, -$radius);
 
-        $geoLeft = $left->buildApproxGeo($earthRadius);
-        $geoRight = $right->buildApproxGeo($earthRadius);
-
-        //jetzt enthält geoLeft und geoRight die Eckdaten eines ungefähren Quadrats
-        //mit der doppelten Kantenlänge des Radius --> dh alle Elemente des Radius 
-        //müssen auch in diesem Quadrat liegen! --> select mit dieser Box
         $em = $this->doctrine->getManager();
-        //to get more attributes add column in select statement
-        //bis jetzt nur parkplätze gesucht
-        //var_dump($geoLeft->getLatDeg());
-        //var_dump($geoLeft->getLongDeg());
-        //var_dump($geoRight->getLatDeg());
-        //var_dump($geoRight->getLongDeg());
+
         $query = $em->createQuery(
             "SELECT l.parkraumId, l.parkraumBahnhofName, l.parkraumGeoLatitude,
                     l.parkraumGeoLongitude, l.parkraumKennung, l.parkraumKennung, l.parkraumParkart,
@@ -53,51 +36,77 @@ class DBRange{
              WHERE l.parkraumGeoLongitude >= ".$geoLeft->getLongDeg()." AND l.parkraumGeoLatitude >= ".$geoLeft->getLatDeg()." AND 
                     l.parkraumGeoLongitude <= ".$geoRight->getLongDeg()." AND l.parkraumGeoLatitude <= ".$geoRight->getLatDeg());
         $lots = $query->getResult();
-        //var_dump($lots);
+        $result = array();
+
+        $this->geoOrg = new Geo();
+        $this->geoOrg->setLatDeg($lat);
+        $this->geoOrg->setLongDeg($long);
+        $xml = new \SimpleXmlElement("<sites></sites>");
+
         $dblot = new DBLot($this->doctrine);
-        return $dblot->objectToXml($lots)->asXML();
+        foreach ($lots as $lot) {
+            if($this->proofRadiusLot($lot, $radius)){
+                $dblot->addChildXml($lot, $xml);
+            }
+        }
+
+        $query = $em->createQuery(
+            "SELECT s 
+             FROM AppBundle:Station s
+             WHERE s.stationGeoLongitude >= ".$geoLeft->getLongDeg()." AND s.stationGeoLatitude >= ".$geoLeft->getLatDeg()." AND 
+                   s.stationGeoLongitude<= ".$geoRight->getLongDeg()." AND s.stationGeoLatitude <= ".$geoRight->getLatDeg());
+        $stations = $query->getResult();
+        $dbstation = new DBStation($this->doctrine);
+        foreach ($stations as $station) {
+            if($this->proofRadiusStation($station, $radius)){
+                $dbstation->addChildXml($station, $xml);
+            }
+        }
+        // var_dump($result);
+        
+        return $xml->asXML();
     }
 
-}
-
-class Vector3{
-        public $x1;
-        public $x2;
-        public $x3;
-
-        public function build($x1, $x2, $x3){
-            $this->x1 = $x1;
-            $this->x2 = $x2;
-            $this->x3 = $x3;
+    private function proofRadiusLot($lot, $rad){
+        $geoSite = new Geo();
+        $geoSite->setLatDeg($lot['parkraumGeoLatitude']);
+        $geoSite->setLongDeg($lot['parkraumGeoLongitude']);
+        if($geoSite->getDistanceTo($this->geoOrg) <= $rad){
+            return true;
         }
+        return false;
+    }
 
-        public function buildFromGeo($rad, $long, $lat){
-            $geo = new Geo();
-            $geo->setLongDeg($long);
-            $geo->setLatDeg($lat);
-
-            $this->x1 = $rad * cos($geo->getLatRad()) * cos($geo->getLongRad());
-            $this->x2 = $rad * cos($geo->getLatRad()) * sin($geo->getLongRad());
-            $this->x3 = $rad * sin($geo->getLatRad());
+    private function proofRadiusStation($station, $rad){
+        $geoSite = new Geo();
+        $geoSite->setLongDeg($station->stationGeoLongitude);
+        $geoSite->setLatDeg($station->stationGeoLatitude);
+        if($geoSite->getDistanceTo($this->geoOrg) <= $rad){
+            return true;
         }
-
-        public function buildApproxGeo($radius){
-            $geo = new Geo();
-            $geo->setLongRad(atan2($this->x2, $this->x1));
-            $geo->setLatRad(acos($this->x2/($radius*sin($geo->getLongRad()))));
-            return $geo;
-        }
-
-        public function add($vec){
-            $this->x1 += $vec->x1;
-            $this->x2 += $vec->x2;
-            $this->x3 += $vec->x3;
-        }
+        return false;
+    }
+   
 }
 
 class Geo{
     private $long;
     private $lat;
+
+    public function move($difLat, $difLong){
+        if(isset($this->lat, $this->long)){
+            $latPm = 1/(111.32 * 1000);
+            $longPm = 1/(111.32*1000*cos($this->lat));
+            $this->setLatDeg($this->getLatDeg() + $difLat * $latPm);
+            $this->setLongDeg($this->getLongDeg() + $difLong * $longPm);
+        }
+    }
+
+    public function getDistanceTo(&$geo){
+        $earthRadius = 6371000.785;
+        $cosg = sin($this->lat) * sin($geo->lat) + cos($this->lat) * cos($geo->lat) * cos($geo->long - $this->long);
+        return $earthRadius*acos($cosg);
+    }
 
     public function getLongRad(){
         return $this->long;

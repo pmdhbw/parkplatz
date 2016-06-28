@@ -38,7 +38,7 @@ class DBStation{
 	return $xml;
     }
 	
-	private function addChildXml(&$station, &$xml){
+	public function addChildXml(&$station, &$xml){
 		$child = $xml->addChild("station");
 		foreach ($station as $key => $value) {
 			$child->addChild($key, htmlspecialchars((string) $value));

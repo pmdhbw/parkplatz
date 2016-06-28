@@ -44,7 +44,7 @@ class DBLot{
         return $xml;
     }
 
-    private function addChildXml(&$lot, &$xml){
+    public function addChildXml(&$lot, &$xml){
             $child = $xml->addChild("lot");
             foreach ($lot as $key => $value) {
                 $child->addChild($key, htmlspecialchars((string) $value));

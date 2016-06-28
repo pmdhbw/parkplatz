@@ -25,15 +25,11 @@ class ContentSupplier {
     public function refresh(){
 		if((time() - $this->checkUpdateTime('masterstation')) > $this->masterLifetime ){
 			$this->loadStationList();  
-			//$this->remapStationGeo();
 		}
        if((time() - $this->checkUpdateTime('lot')) > $this->lotLifetime ){
 			$this->updateDBLots();
 			$this->updateDBStations();
-			$this->remapStationGeo();
-		}
-
-        
+		}     
     }
 
     private function checkUpdateTime($table) {
@@ -68,6 +64,7 @@ class ContentSupplier {
 		}
 		//execute db inserts
 		$this->entityMgr->flush();
+		$this->remapStationGeo();
 	}
 
 	private function updateDBLots(){
@@ -124,7 +121,7 @@ class ContentSupplier {
 		$master = $this->entityMgr->getRepository('AppBundle:MasterStation')->findAll();
 		
 		foreach ($master as $mstation){	
-			$station = $this->entityMgr->getRepository('AppBundle:station')->findOneByEvaNummer($mstation->getBahnhofsNummer());
+			$station = $this->entityMgr->getRepository('AppBundle:Station')->findOneByEvaNummer($mstation->getBahnhofsNummer());
 			if ($station != null){
 				$station->setStationGeoLatitude($mstation->getStationGeoLatitude());
 				$station->setStationGeoLongitude($mstation->getStationGeoLongitude());
