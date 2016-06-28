@@ -118,9 +118,20 @@ class ContentSupplier {
 		$func = str_replace('_e', 'E', $func);
 		return $func;
 	}
-
+	
+	//merge geoloc data from masterstation to station (EK)
 	private function remapStationGeo(){
-		//todo map station geo coordinates from masterdata geo's
+		$master = $this->entityMgr->getRepository('AppBundle:MasterStation')->findAll();
+		
+		foreach ($master as $mstation){	
+			$station = $this->entityMgr->getRepository('AppBundle:station')->findOneByEvaNummer($mstation->getBahnhofsNummer());
+			if ($station != null){
+				$station->setStationGeoLatitude($mstation->getStationGeoLatitude());
+				$station->setStationGeoLongitude($mstation->getStationGeoLongitude());
+				$this->entityMgr->persist($station);	
+			}			
+		}
+		$this->entityMgr->flush();
 	}
 	
 	private function loadStationList(){
