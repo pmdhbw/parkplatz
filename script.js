@@ -11,7 +11,7 @@ function updateSelect(){
 
   //reset table to visible
   var table = document.getElementById("tab");
-  for (var i=0, row; row = table.rows[i];i++){
+  for (var i=1, row; row = table.rows[i];i++){
     row.style.visibility="visible";
   }
 
@@ -29,22 +29,22 @@ function updateSelect(){
   var openchecked = open.checked;
 
   //set collapses
-  for (var i = 0, row; row = table.rows[i]; i++) {
+  for (var i = 1, row; row = table.rows[i]; i++) {
     var cell = row.cells[5];
     if ((freeval != "egal") && (cell.value != freeval)){
-      row.style.display = "none";
+      row.style.visibility="hidden";
     }
     cell = row.cells[8];
     if ((payval != "egal") && (cell.text.indexOf(payval)=-1)){
-      row.style.display = "none";
+      row.style.visibility="hidden";
     }
     cell = row.cells[1];
     if (housechecked && (cell.text.indexOf("Parkhaus")=-1)){
-      row.style.display = "none";
+      row.style.visibility="hidden";
     }
     cell = row.cells[9];
     if (openchecked && (cell.text.indexOf("24 Stunden, 7 Tage")=-1)){
-      row.style.display = "none";
+      row.style.visibility="hidden";
     }
     else if (openchecked) {
       var firstsplit = cell.split(",")
@@ -57,7 +57,7 @@ function updateSelect(){
         var open= (jetzt.getFullYear, jetzt.getMonth, start[0], start[1],0 );
         var close= (jetzt.getFullYear, jetzt.getMonth, end[0], end[1],0);
         if (!(jetzt.getTime>open.getTime && jetzt.getTime<close.getTime)){
-          row.style.display = "none";
+          row.style.visibility="hidden";
         }
       }
       else{
@@ -71,18 +71,18 @@ function updateSelect(){
         var saend = sat[1].split(":");
         var jetzt = new Date();
         if (jetzt.getDay = 0)
-          row.style.display = "none";
+          row.style.visibility="hidden";
         else if (jetzt.getDay = 6){
           var open= (jetzt.getFullYear, jetzt.getMonth, sastart[0], sastart[1],0 );
           var close= (jetzt.getFullYear, jetzt.getMonth, saend[0], saend[1],0);
           if (!(jetzt.getTime>open.getTime && jetzt.getTime<close.getTime))
-          row.style.display = "none";
+          row.style.visibility="hidden";
         }
         else {
           var open= (jetzt.getFullYear, jetzt.getMonth, mostart[0], mostart[1],0 );
           var close= (jetzt.getFullYear, jetzt.getMonth, moend[0], moend[1],0);
           if (!(jetzt.getTime>open.getTime && jetzt.getTime<close.getTime))
-          row.style.display = "none";
+          row.style.visibility="hidden";
         }
       }
     }
@@ -94,8 +94,8 @@ function update(){
 
   //start by collecting the current data for executing the radius search
   var station = document.getElementById("station");
-  var long = station.getAttribute("data-longitude");
-  var lat = station.getAttribute("data-latitude");
+  var long = station.options[station.selectedIndex].dataset.longitude;
+  var lat = station.options[station.selectedIndex].dataset.latitude;
   var radius = document.getElementById("radius").value;
 
   var str = "?radius=" + encodeURIComponent(radius) + "&long="
