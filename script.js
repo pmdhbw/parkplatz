@@ -111,13 +111,13 @@ function update(){
   xhttp.open("POST","parkplatz/web/app.php/dbrange"+str, false);
   //send data
   xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhttp.onreadystatechange=function(httpResponse){
-    if (httpResponse.readyState == "4"){
-        if(httpResponse != 200){
+  xhttp.onreadystatechange=function(){
+    if (this.readyState == 4){
+        if(this.status != 200){
             alert ("Es ist ein Fehler aufgetreten beim Senden der Daten");
         }
-        else if (httpResponse.status == "200"){
-          var xml = httpResponse.responseText;
+        else if (this.status == 200){
+          var xml = this.responseText;
           var xsl = loadXMLDoc("XSL_Lots.xsl");
           XSLTransform(xml, xsl, "tablebody");
         }
