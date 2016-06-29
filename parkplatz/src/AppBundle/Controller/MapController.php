@@ -67,7 +67,7 @@ class MapController extends Controller
     /**
      * @Route("/init", name="init_data")
      */
-    private function init(){ //kritische perfomance probleme 
+    public function init(){ //kritische perfomance probleme 
         $this->checkDB();
         $csup = new ContentSupplier($this->getDoctrine()->getManager(), $this->get('database_connection'));
         $csup->refresh();
