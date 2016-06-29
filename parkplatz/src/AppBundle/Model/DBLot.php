@@ -22,7 +22,7 @@ class DBLot{
         $query = $em->createQuery(
             'SELECT l.parkraumId, l.parkraumBahnhofName, l.parkraumGeoLatitude,
                     l.parkraumGeoLongitude, l.parkraumKennung, l.parkraumKennung, l.parkraumParkart,
-                    l.validData, l.category, l.parkraumStellplaetze, l.parkraumOeffnungszeiten, l.parkraumBetreiber,
+                    l.validData, l.category, l.parkraumStellplaetze, l.parkraumZufahrt, l.parkraumOeffnungszeiten, l.parkraumBetreiber,
                     l.zahlungMedien, l.parkraumBemerkung, l.tarif30Min, l.tarif1Std, l.tarif1Tag, l.tarif1Woche,
                     l.text 
              FROM AppBundle:Lot l');
