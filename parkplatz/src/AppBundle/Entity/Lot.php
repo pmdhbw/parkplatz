@@ -338,7 +338,7 @@ class Lot {
     public $zahlungKundenkarten;
 
     /**
-    * @ORM\Column(type="string", nullable=true, length=50)
+    * @ORM\Column(type="string", nullable=true, length=200)
     */
     public $zahlungMedien;
 
@@ -348,7 +348,7 @@ class Lot {
     public $zahlungMedien_en;
 
     /**
-    * @ORM\Column(type="string", nullable=true, length=200)
+    * @ORM\Column(type="string", nullable=true, length=50)
     */
     public $zahlungMobil;
 

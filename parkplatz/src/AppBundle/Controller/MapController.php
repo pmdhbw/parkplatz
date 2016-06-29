@@ -111,12 +111,12 @@ class MapController extends Controller
                 }
             }
 
-            if($countOfTables < 3){
-                $this->execCommand(array("command" => "doctrine:schema:update","--force" => true));
+            if($countOfTables != 3){
+                $this->execCommand(array("command" => "doctrine:schema:update", "--force" => true));
             }
         } catch ( Exception $ex) {
             $this->execCommand(array("command" => "doctrine:database:create"));
-            $this->execCommand(array("command" => "doctrine:schema:update","--force" => true));
+            $this->execCommand(array("command" => "doctrine:schema:update", "--force" => true));
         }
 
     }
