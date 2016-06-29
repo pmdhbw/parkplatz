@@ -135,16 +135,18 @@ function update(){
 
 function loadXMLDoc(filename){
   //loads XML Document from file
-  if (window.ActiveXObject){ //IE
-    var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  if (window.ActiveXObject)
+  {
+  xhttp = new ActiveXObject("Msxml2.XMLHTTP");
   }
-  else{ //rest
-    var xhttp = new XMLHttpRequest();
+else 
+  {
+  xhttp = new XMLHttpRequest();
   }
-  xhttp.open("GET", filename, false);
-  //try {xhttp.responseType = "msxml-document"} catch(err) {} //throws error on IE11
-  xhttp.send("");
-  return xhttp.responseXML;
+xhttp.open("GET", filename, false);
+try {xhttp.responseType = "msxml-document"} catch(err) {} // Helping IE11
+xhttp.send("");
+return xhttp.responseXML;
 }
 
 function XSLTransform(xml, xsl, id){
