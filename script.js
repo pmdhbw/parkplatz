@@ -1,7 +1,7 @@
 $(document).ready(function() {
   // Load options for stations and initialize map
   new Transformation()
-  .setXml("parkplatz/web/app_dev.php/dbstation")
+  .setXml("parkplatz/web/app.php/dbstation")
   .setXslt("XSLT_Stations.xsl")
   .transform("station");
 });
@@ -108,7 +108,7 @@ function update(){
   else { //IE
         var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
-  xhttp.open("POST","parkplatz/web/app_dev.php/dbrange", false);
+  xhttp.open("POST","parkplatz/web/app.php/dbrange", false);
   //send data
   xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhttp.send(str);
