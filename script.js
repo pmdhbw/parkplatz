@@ -89,6 +89,12 @@ function updateSelect(){
   }
 }
 
+function transform(xml,xsl,counter){
+  if (counter = 2){
+    XSLTransform(xml,xsl,"tablebody");
+  }
+}
+
 function update(){
   //update map after selection of station or radius has changed
 
@@ -106,17 +112,27 @@ function update(){
   //acquire XML and XSL
   var xml;
   var xsl;
-  $.get(url,function(data){
-    xml = data;
-    $.get("XSLT_Stations.xsl",function(data){
-      xsl = data;
-    },xml);
-  },xml);
+  var counter = 0;
+
+  var request = $.ajax({url : url,
+    method : "GET",
+    dataType : "xml"});
+  request.done(function(jqXHR){
+    xml = jqXHR.responseXML;
+    counter++;
+    transform(xml,xsl,counter)
+  });
   
+  var request2 = $.ajax({url : "XSLT_Lots.xsl",
+    method : "GET",
+    dataType : "xml"});
+  request2.done(function(jqXHR){
+    xsl = jqXHR.responseXML;
+    counter++;
+    transform(xml,xsl,counter)
+  });
+
   //transform
-  if (xml != null && xsl != null){
-    XSLTransform(xml,xsl,"tablebody");
-  }
   /*
   //open xhttprequest
   if (window.XMLHttpRequest) {
