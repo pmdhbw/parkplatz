@@ -97,10 +97,27 @@ function update(){
   var long = station.options[station.selectedIndex].dataset.longitude;
   var lat = station.options[station.selectedIndex].dataset.latitude;
   var radius = document.getElementById("radius").value;
-
-  var str = "?radius=" + encodeURIComponent(radius) + "&long="
+  
+  //concatenate URL
+  var url = "?radius=" + encodeURIComponent(radius) + "&long="
   + encodeURIComponent(long) + "&lat=" + encodeURIComponent(lat);
-
+  url = "parkplatz/web/app.php/dbrange"+url;
+  
+  //acquire XML and XSL
+  var xml;
+  var xsl;
+  $.get(url,function(data){
+    xml = data;
+    $.get("XSLT_Stations.xsl",function(data){
+      xsl = data;
+    },xml);
+  },xml);
+  
+  //transform
+  if (xml != null && xsl != null){
+    XSLTransform(xml,xsl,"tablebody");
+  }
+  /*
   //open xhttprequest
   if (window.XMLHttpRequest) {
         var xhttp = new XMLHttpRequest();
@@ -125,6 +142,8 @@ function update(){
   };
   xhttp.send("");
   //listen for answer from php and post data into table
+  */
+
 }
 
 
@@ -132,7 +151,7 @@ function update(){
 
 //XSL Transformation functions for testing with update() function
 //will be deleted if tests fail and framework used instead
-
+/*
 function loadXMLDoc(filename){
   //loads XML Document from file
   if (window.ActiveXObject)
@@ -148,7 +167,7 @@ try {xhttp.responseType = "msxml-document"} catch(err) {} // Helping IE11
 xhttp.send("");
 return xhttp.responseXML;
 }
-
+*/
 function XSLTransform(xml, xsl, id){
 //does xsl transformation on xml and pastes it into the note with id
 //xml and xsl have to be STRINGS
