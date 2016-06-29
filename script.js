@@ -142,7 +142,7 @@ function loadXMLDoc(filename){
     var xhttp = new XMLHttpRequest();
   }
   xhttp.open("GET", filename, false);
-  try {xhttp.responseType = "msxml-document"} catch(err) {} //throws error on IE11
+  //try {xhttp.responseType = "msxml-document"} catch(err) {} //throws error on IE11
   xhttp.send("");
   return xhttp.responseXML;
 }
