@@ -113,13 +113,13 @@ function update(){
   xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhttp.send("");
   //listen for answer from php and post data into table
-  xhttp.onreadystatechange=function(){
-    if (xhttp.readyState == 4){
-        if(xhttp.status != 200){
+  xhttp.onreadystatechange=function(httpResponse){
+    if (httpResponse.readyState == 4){
+        if(httpResponse != 200){
             alert ("Es ist ein Fehler aufgetreten beim Senden der Daten");
         }
-        else if (xhttp.status == 200){
-          var xml = xhttp.responseText;
+        else if (httpResponse.status == 200){
+          var xml = httpResponse.responseText;
           var xsl = loadXMLDoc("XSL_Lots.xsl");
           XSLTransform(xml, xsl, "tablebody");
         }
