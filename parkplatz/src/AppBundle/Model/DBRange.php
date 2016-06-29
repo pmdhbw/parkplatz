@@ -12,7 +12,7 @@ class DBRange{
     }
 
     public function getInRadius($radius, $lat, $long){
-        $radius = $radius * 1000;
+        $radius = $radius;
     
         $geoRight = new Geo();
         $geoRight->setLatDeg($lat);
@@ -29,7 +29,7 @@ class DBRange{
         $query = $em->createQuery(
             "SELECT l.parkraumId, l.parkraumBahnhofName, l.parkraumGeoLatitude,
                     l.parkraumGeoLongitude, l.parkraumKennung, l.parkraumKennung, l.parkraumParkart,
-                    l.validData, l.category, l.parkraumStellplaetze, l.parkraumOeffnungszeiten, l.parkraumBetreiber,
+                    l.validData, l.parkraumEntfernung, l.category, l.parkraumStellplaetze, l.parkraumOeffnungszeiten, l.parkraumBetreiber,
                     l.zahlungMedien, l.parkraumBemerkung, l.tarif30Min, l.tarif1Std, l.tarif1Tag, l.tarif1Woche,
                     l.text 
              FROM AppBundle:Lot l
@@ -67,11 +67,13 @@ class DBRange{
         return $xml->asXML();
     }
 
-    private function proofRadiusLot($lot, $rad){
+    private function proofRadiusLot(&$lot, $rad){
         $geoSite = new Geo();
         $geoSite->setLatDeg($lot['parkraumGeoLatitude']);
         $geoSite->setLongDeg($lot['parkraumGeoLongitude']);
-        if($geoSite->getDistanceTo($this->geoOrg) <= $rad){
+        $distance = $geoSite->getDistanceTo($this->geoOrg);
+        if($distance <= $rad){
+            $lot['parkraumEntfernung'] = (Integer) $distance;
             return true;
         }
         return false;
