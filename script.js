@@ -23,10 +23,10 @@ function updateSelect(){
   var payval = pay.options[pay.selectedIndex].value;
 
   var house = document.getElementById("house");
-  var housechecked = house.options[house.selectedIndex].checked;
+  var housechecked = house.checked;
 
   var open = document.getElementById("open");
-  var openchecked = open.options[open.selectedIndex].checked;
+  var openchecked = open.checked;
 
   //set collapses
   for (var i = 0, row; row = table.rows[i]; i++) {
