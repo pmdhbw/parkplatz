@@ -33,7 +33,7 @@
 			
             <div id="selectionright">
 				<label>freie Parkplätze</label><br>
-				<select id="free" style="width:50px;" onchange="updateSelect">
+				<select id="free" style="width:50px;" onchange="updateSelect()">
 					<option value="0">egal</option>
 					<option value="1">0-10</option>
 					<option value="2">10-30</option>
@@ -41,16 +41,16 @@
 					<option value="4">>50</option>
 				</select><br>
 				<label>Zahlungsart</label><br>
-				<select id="pay" style="width:50px;" onchange="updateSelect">
+				<select id="pay" style="width:50px;" onchange="updateSelect()">
 					<option value="0">egal</option>
 					<option value="1">EC-Karte</option>
 					<option value="2">Kreditkarte</option>
 					<option value="3">Bar</option>
 				</select><br>
 				<label>zeige nur Parkhäuser</label>
-				<input type="checkbox" name="house" value="Parkhaus" onchange="updateSelect"><br>
+				<input type="checkbox" name="house" value="Parkhaus" onchange="updateSelect()"><br>
 				<label>zeige nur offene</label>
-				<input type="checkbox" name="open" value="open" onchange="updateSelect"><br>
+				<input type="checkbox" name="open" value="open" onchange="updateSelect()"><br>
             </div>
 			
 			<div id="clear">
