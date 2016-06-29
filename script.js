@@ -111,8 +111,6 @@ function update(){
   xhttp.open("POST","parkplatz/web/app.php/dbrange"+str, false);
   //send data
   xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhttp.send("");
-  //listen for answer from php and post data into table
   xhttp.onreadystatechange=function(httpResponse){
     if (httpResponse.readyState == 4){
         if(httpResponse != 200){
@@ -125,6 +123,8 @@ function update(){
         }
     }
   };
+  xhttp.send("");
+  //listen for answer from php and post data into table
 }
 
 
