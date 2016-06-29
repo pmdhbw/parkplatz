@@ -23,23 +23,23 @@ function updateSelect(){
   var payval = pay.options[pay.selectedIndex].value;
 
   var house = document.getElementById("house");
-  var housechecked = house.options[house.selectedIndex].checked;
+  var housechecked = house.checked;
 
   var open = document.getElementById("open");
-  var openchecked = open.options[open.selectedIndex].checked;
+  var openchecked = open.checked;
 
   //set collapses
   for (var i = 0, row; row = table.rows[i]; i++) {
     var cell = row.cells[5];
-    if (cell.value = freeval){
+    if ((freeval != "egal") && (cell.value != freeval)){
       row.style.display = "none";
     }
     cell = row.cells[8];
-    if ((cell.text.indexOf(val))>-1){
+    if ((payval != "egal") && (cell.text.indexOf(payval)=-1)){
       row.style.display = "none";
     }
     cell = row.cells[1];
-    if (housechecked && (cell.text.indexOf("Parkhaus")>-1)){
+    if (housechecked && (cell.text.indexOf("Parkhaus")=-1)){
       row.style.display = "none";
     }
     cell = row.cells[9];
