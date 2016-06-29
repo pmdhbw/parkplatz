@@ -31,15 +31,15 @@ function updateSelect(){
   //set collapses
   for (var i = 0, row; row = table.rows[i]; i++) {
     var cell = row.cells[5];
-    if (cell.value = freeval){
+    if ((freeval != "egal") && (cell.value != freeval)){
       row.style.display = "none";
     }
     cell = row.cells[8];
-    if ((cell.text.indexOf(val))>-1){
+    if ((payval != "egal") && (cell.text.indexOf(payval)=-1)){
       row.style.display = "none";
     }
     cell = row.cells[1];
-    if (housechecked && (cell.text.indexOf("Parkhaus")>-1)){
+    if (housechecked && (cell.text.indexOf("Parkhaus")=-1)){
       row.style.display = "none";
     }
     cell = row.cells[9];
