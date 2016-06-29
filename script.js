@@ -112,11 +112,11 @@ function update(){
   //send data
   xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
   xhttp.onreadystatechange=function(httpResponse){
-    if (httpResponse.readyState == 4){
+    if (httpResponse.readyState == "4"){
         if(httpResponse != 200){
             alert ("Es ist ein Fehler aufgetreten beim Senden der Daten");
         }
-        else if (httpResponse.status == 200){
+        else if (httpResponse.status == "200"){
           var xml = httpResponse.responseText;
           var xsl = loadXMLDoc("XSL_Lots.xsl");
           XSLTransform(xml, xsl, "tablebody");
