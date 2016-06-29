@@ -118,7 +118,7 @@ function update(){
         }
         else if (this.status == 200){
           var xml = this.responseText;
-          var xsl = loadXMLDoc("XSL_Lots.xsl");
+          var xsl = loadXMLDoc("XSLT_Lots.xsl");
           XSLTransform(xml, xsl, "tablebody");
         }
     }
