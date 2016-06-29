@@ -94,8 +94,8 @@ function update(){
 
   //start by collecting the current data for executing the radius search
   var station = document.getElementById("station");
-  var long = station.options[station.selectedIndex].data-longitude;
-  var lat = station.options[station.selectedIndex].data-latitude;
+  var long = station.options[station.selectedIndex].dataset.longitude;
+  var lat = station.options[station.selectedIndex].dataset.latitude;
   var radius = document.getElementById("radius").value;
 
   var str = "?radius=" + encodeURIComponent(radius) + "&long="
