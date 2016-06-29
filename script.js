@@ -108,23 +108,23 @@ function update(){
   else { //IE
         var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
     }
-  xhttp.open("POST","parkplatz/web/app.php/dbrange", false);
+  xhttp.open("POST","parkplatz/web/app.php/dbrange"+str, false);
   //send data
   xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhttp.send(str);
-  //listen for answer from php and post data into table
   xhttp.onreadystatechange=function(){
-    if (xhttp.readyState == 4){
-        if(xhttp.status != 200){
+    if (this.readyState == 4){
+        if(this.status != 200){
             alert ("Es ist ein Fehler aufgetreten beim Senden der Daten");
         }
-        else if (xhttp.status == 200){
-          var xml = xhttp.responseText;
-          var xsl = loadXMLDoc("XSL_Lots.xsl");
+        else if (this.status == 200){
+          var xml = this.responseText;
+          var xsl = loadXMLDoc("XSLT_Lots.xsl");
           XSLTransform(xml, xsl, "tablebody");
         }
     }
   };
+  xhttp.send("");
+  //listen for answer from php and post data into table
 }
 
 
@@ -135,16 +135,18 @@ function update(){
 
 function loadXMLDoc(filename){
   //loads XML Document from file
-  if (window.ActiveXObject){ //IE
-    var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  if (window.ActiveXObject)
+  {
+  xhttp = new ActiveXObject("Msxml2.XMLHTTP");
   }
-  else{ //rest
-    var xhttp = new XMLHttpRequest();
+else 
+  {
+  xhttp = new XMLHttpRequest();
   }
-  xhttp.open("GET", filename, false);
-  try {xhttp.responseType = "msxml-document"} catch(err) {} //throws error on IE11
-  xhttp.send("");
-  return xhttp.responseXML;
+xhttp.open("GET", filename, false);
+try {xhttp.responseType = "msxml-document"} catch(err) {} // Helping IE11
+xhttp.send("");
+return xhttp.responseXML;
 }
 
 function XSLTransform(xml, xsl, id){
