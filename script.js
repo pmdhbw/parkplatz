@@ -12,7 +12,7 @@ function updateSelect(){
   //reset table to visible
   var table = document.getElementById("tab");
   for (var i=0, row; row = table.rows[i];i++){
-  row.style.display = "inline";
+    row.style.visibility="visible";
   }
 
   //declaration of variables for settings
