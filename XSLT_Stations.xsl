@@ -3,7 +3,7 @@
 
 <xsl:template match="/">
       <xsl:for-each select="stations/station">      
-      <option><xsl:value-of select="station"/></option>   
+      <option data-longitude="{stationGeoLongitude}" data-latitude="{stationGeoLatitude}"><xsl:value-of select="station"/></option>   
       </xsl:for-each>
 </xsl:template>
 </xsl:stylesheet>
