@@ -115,7 +115,30 @@ function update(){
   var xml;
   var xsl;
   var counter = 0;
+  
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (xhttp.readyState === 4 && xhttp.status === 200) {
+        xml = xhttp.responseXML;
+        counter++;
+        transform(xml,xsl,counter);
+    }
+  };
+  xhttp.open("GET", url, true);
+  xhttp.send();
+  
+  var xhttp2 = new XMLHttpRequest();
+  xhttp2.onreadystatechange = function () {
+      if (xhttp2.readyState === 4 && xhttp2.status === 200) {
+          xsl = xhttp2.responseXML;
+          counter++;
+            transform(xml,xsl,counter);
+      }
+  };
+  xhttp2.open("GET", "XSLT_Lots.xsl",true);
+  xhttp2.send();
 
+/*
   var request = $.ajax({url : url,
     method : "GET",
     dataType : "xml"});
@@ -132,7 +155,7 @@ function update(){
       xsl = $.parseXML(jqXHR.responseXML);
       counter++;
       transform(xml,xsl,counter);
-  });
+  }); */
 
   //transform
   /*
