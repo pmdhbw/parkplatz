@@ -130,7 +130,7 @@ function update(){
   var xhttp2 = new XMLHttpRequest();
   xhttp2.onreadystatechange = function () {
       if (xhttp2.readyState === 4 && xhttp2.status === 200) {
-          xsl = xhttp2.responseText;
+          xsl = xhttp2.responseXML;
           counter++;
             transform(xml,xsl,counter);
       }
