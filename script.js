@@ -106,60 +106,45 @@ function update() {
     var xml;
     var xsl;
     var counter = 0;
-    var temp = retrieveXML(url, counter);
-    counter = temp.counter;
-    xml = temp.xml;
-    temp = loadXSL("XSLT_Lots.xsl", counter);
-    counter = temp.counter;
-    xsl = temp.xsl;
-
-    XSLTransform(xml, xsl, counter, "tablebody");
-}
-
-function retrieveXML(url, counter) {
-    var xml = {counter:0,xml:null};
-    var xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState === 4 && xhttp.status === 200) {
-            counter++;
-            xml.counter = counter;
-            xml.xml = xhttp.responseXML;
-            return xml;
-        }
-    };
-    xhttp.open("GET", url, false);
-    xhttp.send();
-}
-
-function loadXSL(path, counter) {
+    
     var d = new Date();
-    var xsl = {counter:0,xsl:null};
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState === 4 && xhttp.status === 200) {
             counter++;
-            xsl.counter = counter;
-            xsl.xsl = xhttp.responseXML;
-            return xsl;
+            xsl = xhttp.responseXML;
+            XSLTransform(xml, xsl, counter, "tablebody");
         }
     };
-    xhttp.open("GET", path + d.valueOf(), false);
+    xhttp.open("GET","XSLT_Lots.xsl?_="+ d.valueOf(), true);
+    xhttp.send();
+    
+    xhttp = new XMLHttpRequest();
+    xhttp.onreadystatechange = function () {
+        if (xhttp.readyState === 4 && xhttp.status === 200) {
+            counter++;
+            xml = xhttp.responseXML;
+            XSLTransform(xml, xsl, counter, "tablebody");
+        }
+    };
+    xhttp.open("GET", url, true);
     xhttp.send();
 }
 
 function XSLTransform(xml, xsl, counter, id) {
 //code for IE
     if (counter === 2) {
+        var myNode = document.getElementById(id);
+        while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+        }
+        //code for IE
         if (window.ActiveXObject) {
             ex = xml.transformNode(xsl);
             document.getElementById(id).innerHTML = ex;
         }
         //code for Chrome, Firefox, Opera, etc.
         else if (document.implementation && document.implementation.createDocument) {
-            var myNode = document.getElementById(id);
-            while (myNode.firstChild) {
-                myNode.removeChild(myNode.firstChild);
-            }
             xsltProcessor = new XSLTProcessor();
             xsltProcessor.importStylesheet(xsl);
             resultDocument = xsltProcessor.transformToFragment(xml, document);
