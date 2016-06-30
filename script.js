@@ -107,28 +107,28 @@ function update() {
     var xsl;
     var counter = 0;
     
-    var d = new Date();
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState === 4 && xhttp.status === 200) {
-            counter++;
-            xsl = xhttp.responseXML;
-            XSLTransform(xml, xsl, counter, "tablebody");
-        }
-    };
-    xhttp.open("GET","XSLT_Lots.xsl?_="+ d.valueOf(), true);
-    xhttp.send();
-    
-    xhttp = new XMLHttpRequest();
-    xhttp.onreadystatechange = function () {
-        if (xhttp.readyState === 4 && xhttp.status === 200) {
-            counter++;
             xml = xhttp.responseXML;
-            XSLTransform(xml, xsl, counter, "tablebody");
+            counter++;
+            transform(xml, xsl, counter, "tablebody");
         }
     };
     xhttp.open("GET", url, true);
     xhttp.send();
+
+    d = new Date();
+    var xhttp2 = new XMLHttpRequest();
+    xhttp2.onreadystatechange = function () {
+        if (xhttp2.readyState === 4 && xhttp2.status === 200) {
+            xsl = xhttp2.responseXML;
+            counter++;
+            transform(xml, xsl, counter, "tablebody");
+        }
+    };
+    xhttp2.open("GET", "XSLT_Lots.xsl?_=" + d.valueOf(), true);
+    xhttp2.send();
 }
 
 function XSLTransform(xml, xsl, counter, id) {
