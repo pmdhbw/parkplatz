@@ -19,38 +19,81 @@
 <div id="main">
     <div id="top">
         <div id="heading">
-            <img src="/logo.png" width="10%"></img>
+            <img src="logo.png" width="10%"></img>
             <h1>DB-Parkplatzsuche</h1>
         </div>
 		
         <div id="selectionbox">
             <div id="selectionleft">
-                <label>Bahnhof</label><br>
-                <select id="station" onchange="update()" style="width:200px;"></select><br>
-                <label>Suchradius in m</label><br>
-                <input type="text" id="radius" value="500" onchange="update()" style="text-align:right; width:35px;" >
+				<table>
+					<tr>
+						<td class="selectionLabel">
+						<label>Bahnhof</label><br>
+						</td>
+						<td class="selectionField">
+						<select id="station" onchange="update()" style="width:200px;"></select>
+						</td>
+					</tr>
+					<tr>
+						<td class="selectionLabel">
+						<label>Suchradius in m</label>
+						</td>
+						<td class="selectionField">
+						<input type="text" id="radius" value="500" onchange="update()" style="text-align:right; width:35px;" >
+						</td>
+					</tr>
+                </table>
+                
             </div>
 			
             <div id="selectionright">
-				<label>freie Parkplätze</label><br>
-				<select id="free" style="width:50px;" onchanged="updateSelect">
-					<option value="0">egal</option>
-					<option value="1">0-10</option>
-					<option value="2">10-30</option>
-					<option value="3">30-50</option>
-					<option value="4">>50</option>
-				</select><br>
-				<label>Zahlungsart</label><br>
-				<select id="pay" style="width:50px;" onchanged="updateSelect">
-					<option value="0">egal</option>
-					<option value="1">EC-Karte</option>
-					<option value="2">Kreditkarte</option>
-					<option value="3">Bar</option>
-				</select><br>
-				<label>zeige nur Parkhäuser</label>
-				<input type="checkbox" name="house" value="Parkhaus" onchanged="updateSelect"><br>
-				<label>zeige nur offene</label>
-				<input type="checkbox" name="open" value="open" onchanged="updateSelect"><br>
+				<table>
+					<tr>
+						<td class="selectionLabel">
+						<label>freie Parkplätze</label>
+						</td>
+						<td class="selectionField">
+							<select id="free" style="width:50px;" onchanged="updateSelect">
+							<option value="0">egal</option>
+							<option value="1">0-10</option>
+							<option value="2">10-30</option>
+							<option value="3">30-50</option>
+							<option value="4">>50</option>
+							</select>
+						</td>
+					</tr>
+						<td class="selectionLabel">
+						<label>Zahlungsart</label>
+						</td>
+						<td class="selectionField">
+							<select id="pay" style="width:50px;" onchanged="updateSelect">
+							<option value="0">egal</option>
+							<option value="1">EC-Karte</option>
+							<option value="2">Kreditkarte</option>
+							<option value="3">Bar</option>
+							</select>
+						</td>
+					<tr>
+						<td class="selectionLabel">
+						<label>zeige nur Parkhäuser</label>
+						</td>
+						<td class="selectionField">
+							<input type="checkbox" name="house" value="Parkhaus" onchanged="updateSelect"><br>
+						</td>
+					</tr>
+					<tr>
+						<td class="selectionLabel">
+						<label>zeige nur offene</label>
+						</td>
+						<td class="selectionField">
+							<input type="checkbox" name="open" value="open" onchanged="updateSelect"><br>
+						</td>
+					</tr>
+				</table>
+				
+				
+				
+				
             </div>
 			
 			<div id="clear">
