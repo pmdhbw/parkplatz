@@ -11,8 +11,9 @@ function updateSelect(){
 
   //reset table to visible
   var table = document.getElementById("tab");
-  for (var i=1, row; row = table.rows[i];i++){
+  for (var i=1, row; i<table.rows.length; i++){
     row.style.visibility="visible";
+    row = table.rows[i];
   }
 
   //declaration of variables for settings
@@ -29,26 +30,27 @@ function updateSelect(){
   var openchecked = open.checked;
 
   //set collapses
-  for (var i = 1, row; row = table.rows[i]; i++) {
+  for (var i = 1, row; i<table.rows.length ; i++) {
+    row = table.rows[i];
     var cell = row.cells[5];
-    if ((freeval != "egal") && (cell.value != freeval)){
+    if ((freeval !== "egal") && (cell.value !== freeval)){
       row.style.visibility="hidden";
     }
     cell = row.cells[8];
-    if ((payval != "egal") && (cell.text.indexOf(payval)=-1)){
+    if ((payval !== "egal") && (cell.text.indexOf(payval)===-1)){
       row.style.visibility="hidden";
     }
     cell = row.cells[1];
-    if (housechecked && (cell.text.indexOf("Parkhaus")=-1)){
+    if ((housechecked) && ( cell.text.indexOf("Parkhaus")===-1)){
       row.style.visibility="hidden";
     }
     cell = row.cells[9];
-    if (openchecked && (cell.text.indexOf("24 Stunden, 7 Tage")=-1)){
+    if (openchecked && (cell.text.indexOf("24 Stunden, 7 Tage")===-1)){
       row.style.visibility="hidden";
     }
     else if (openchecked) {
-      var firstsplit = cell.split(",")
-      if (firstsplit.length = 1){
+      var firstsplit = cell.split(",");
+      if (firstsplit.length === 1){
         var times = firstsplit[0].split(".");
         var time = times[0].split(" - ");
         var start = time[0].split(":");
@@ -65,14 +67,14 @@ function updateSelect(){
         var mot = mo[1].split(" - ");
         var mostart = mot[0].split(":");
         var moend = mot[1].split(":");
-        var sa = firstplit[1].split(": ");
+        var sa = firstsplit[1].split(": ");
         var sat = sa[1].split(" - ");
         var sastart = sat[0].split(":");
         var saend = sat[1].split(":");
         var jetzt = new Date();
-        if (jetzt.getDay = 0)
+        if (jetzt.getDay === 0)
           row.style.visibility="hidden";
-        else if (jetzt.getDay = 6){
+        else if (jetzt.getDay === 6){
           var open= (jetzt.getFullYear, jetzt.getMonth, sastart[0], sastart[1],0 );
           var close= (jetzt.getFullYear, jetzt.getMonth, saend[0], saend[1],0);
           if (!(jetzt.getTime>open.getTime && jetzt.getTime<close.getTime))
@@ -90,7 +92,7 @@ function updateSelect(){
 }
 
 function transform(xml,xsl,counter){
-  if (counter = 2){
+  if (counter === 2){
     XSLTransform(xml,xsl,"tablebody");
   }
 }
@@ -118,18 +120,18 @@ function update(){
     method : "GET",
     dataType : "xml"});
   request.done(function(jqXHR){
-    xml = jqXHR.responseXML;
+    xml = $.parseXML(jqXHR.responseXML);
     counter++;
-    transform(xml,xsl,counter)
+    transform(xml,xsl,counter);
   });
   
   var request2 = $.ajax({url : "XSLT_Lots.xsl",
     method : "GET",
     dataType : "xml"});
   request2.done(function(jqXHR){
-    xsl = jqXHR.responseXML;
-    counter++;
-    transform(xml,xsl,counter)
+      xsl = $.parseXML(jqXHR.responseXML);
+      counter++;
+      transform(xml,xsl,counter);
   });
 
   //transform
