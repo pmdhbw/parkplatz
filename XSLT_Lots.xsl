@@ -19,7 +19,7 @@
 			<tbody id="tablebody">	
       <xsl:for-each select="sites/lot">   
 		<tr>
-			<td><xsl:value-of select="parkraumBahnhofName"/></td>
+			<td><xsl:value-of select="parkraumKennung"/></td>
 			<td><xsl:value-of select="parkraumParkart"/></td>
 			<td><xsl:value-of select="parkraumBahnhofName"/></td>
 			<td><xsl:value-of select="parkraumEntfernung"/></td>

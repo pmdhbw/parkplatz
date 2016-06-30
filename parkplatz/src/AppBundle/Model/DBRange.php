@@ -27,7 +27,7 @@ class DBRange{
         $em = $this->doctrine->getManager();
 
         $query = $em->createQuery(
-            "SELECT l.parkraumId, l.parkraumBahnhofName, l.parkraumGeoLatitude,
+            "SELECT l.parkraumId, l.parkraumKennung, l.parkraumGeoLatitude,
                     l.parkraumGeoLongitude, l.parkraumKennung, l.parkraumKennung, l.parkraumParkart,
                     l.validData, l.parkraumEntfernung, l.category, l.parkraumZufahrt, l.parkraumStellplaetze, l.parkraumOeffnungszeiten, l.parkraumBetreiber,
                     l.zahlungMedien, l.parkraumBemerkung, l.tarif30Min, l.tarif1Std, l.tarif1Tag, l.tarif1Woche,

@@ -23,7 +23,6 @@ class MapController extends Controller
      */
     public function getParkingLot($lot){
 
-        $this->init(); //can be removed as far as frontend uses /init route
         $csup = new ContentSupplier($this->getDoctrine()->getManager(), $this->get('database_connection'));
         $dbLot= new DBLot($this->getDoctrine());
         $rspString = '';
@@ -47,7 +46,6 @@ class MapController extends Controller
      */
     public function getStations($station){
 
-        $this->init(); //can be removed as far as frontend uses /init route
         $dbStation = new DBStation($this->getDoctrine());
                 $rspString = '';
         if($station == -1) // return all
@@ -79,7 +77,6 @@ class MapController extends Controller
     * @Route("/dbrange", name="db_range")
     */
     public function getRange(Request $req){
-        $this->init();
         $geoLong = $req->query->get('lat');
         $geoLat = $req->query->get('long');
         $radius = $req->query->get('radius');
