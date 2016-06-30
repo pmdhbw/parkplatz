@@ -100,7 +100,7 @@ function update() {
     url = "parkplatz/web/app.php/dbrange" + url;
 
     //Transformation
-    startTransform("XSLT_Lots.xsl",url,"tablebody");
+    startTransform("XSLT_Lots.xsl",url,"table");
 }
 
 function startTransform(xslpath,xmlurl,id){
