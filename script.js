@@ -117,7 +117,7 @@ function update() {
 }
 
 function retrieveXML(url, counter) {
-    var xml;
+    var xml = {counter:0,xml:null};
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState === 4 && xhttp.status === 200) {
@@ -133,7 +133,7 @@ function retrieveXML(url, counter) {
 
 function loadXSL(path, counter) {
     var d = new Date();
-    var xsl;
+    var xsl = {counter:0,xsl:null};
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState === 4 && xhttp.status === 200) {
