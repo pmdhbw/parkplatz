@@ -112,7 +112,7 @@ function update() {
         if (xhttp.readyState === 4 && xhttp.status === 200) {
             xml = xhttp.responseXML;
             counter++;
-            transform(xml, xsl, counter, "tablebody");
+            XSLTransform(xml, xsl, counter, "tablebody");
         }
     };
     xhttp.open("GET", url, true);
@@ -124,7 +124,7 @@ function update() {
         if (xhttp2.readyState === 4 && xhttp2.status === 200) {
             xsl = xhttp2.responseXML;
             counter++;
-            transform(xml, xsl, counter, "tablebody");
+            XSLTransform(xml, xsl, counter, "tablebody");
         }
     };
     xhttp2.open("GET", "XSLT_Lots.xsl?_=" + d.valueOf(), true);
