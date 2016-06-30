@@ -102,7 +102,11 @@ function update() {
             + encodeURIComponent(long) + "&lat=" + encodeURIComponent(lat);
     url = "parkplatz/web/app.php/dbrange" + url;
 
-    //acquire XML and XSL
+    //Transformation
+    startTransform("XSLT_Lots.xsl",url,"tablebody");
+}
+
+function startTransform(xslpath,xmlurl,id){
     var xml;
     var xsl;
     var counter = 0;
@@ -112,10 +116,10 @@ function update() {
         if (xhttp.readyState === 4 && xhttp.status === 200) {
             xml = xhttp.responseXML;
             counter++;
-            XSLTransform(xml, xsl, counter, "tablebody");
+            XSLTransform(xml, xsl, counter, id);
         }
     };
-    xhttp.open("GET", url, true);
+    xhttp.open("GET", xmlurl, true);
     xhttp.send();
 
     d = new Date();
@@ -124,10 +128,10 @@ function update() {
         if (xhttp2.readyState === 4 && xhttp2.status === 200) {
             xsl = xhttp2.responseXML;
             counter++;
-            XSLTransform(xml, xsl, counter, "tablebody");
+            XSLTransform(xml, xsl, counter, id);
         }
     };
-    xhttp2.open("GET", "XSLT_Lots.xsl?_=" + d.valueOf(), true);
+    xhttp2.open("GET", xslpath + "?_=" + d.valueOf(), true);
     xhttp2.send();
 }
 
