@@ -129,6 +129,9 @@ function retrieveXML(url, counter) {
     };
     xhttp.open("GET", url, true);
     xhttp.send();
+    while (xhttp.readyState !== 4 || xhttp.status !== 200){
+        
+    };
 }
 
 function loadXSL(path, counter) {
@@ -145,6 +148,9 @@ function loadXSL(path, counter) {
     };
     xhttp.open("GET", path + d.valueOf(), true);
     xhttp.send();
+    while (xhttp.readyState !== 4 || xhttp.status !== 200){
+        
+    };
 }
 
 function XSLTransform(xml, xsl, counter, id) {
