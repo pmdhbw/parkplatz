@@ -4,8 +4,9 @@ $(document).ready(function () {
 });
 
 function init(){
+    d = new Date();
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "parkplatz/web/app.php/init", false);
+    xhttp.open("GET", "parkplatz/web/app.php/init?_="+d.valueOf(), true);
     xhttp.send();
 }
 
