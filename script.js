@@ -9,6 +9,7 @@ function init(){
     xhttp.send();
 }
 
+
 function updateSelect() {
     //set visibility of table rows according to current selection
 
