@@ -3,7 +3,6 @@
 
 <xsl:template match="/">
       <xsl:for-each select="sites/lot">   
-	  <table> 
 		<tr data-tarif30Min="{tarif30Min}" data-tarif1Std="{tarif1Std}" data-tarif1Tag="{tarif1Tag}" data-tarif1Woche="{tarif1Woche}">
 			<td><xsl:value-of select="parkraumBahnhofName"/></td>
 			<td><xsl:value-of select="parkraumParkart"/></td>
@@ -16,7 +15,6 @@
 			<td><xsl:value-of select="zahlungMedien"/></td>
 			<td><xsl:value-of select="parkraumBemerkung"/></td>	
 		</tr>
-		</table>
       </xsl:for-each>
 </xsl:template>
 </xsl:stylesheet>
