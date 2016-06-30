@@ -25,15 +25,11 @@ class ContentSupplier {
     public function refresh(){
 		if((time() - $this->checkUpdateTime('masterstation')) > $this->masterLifetime ){
 			$this->loadStationList();  
-			//$this->remapStationGeo();
-       }
+		}
        if((time() - $this->checkUpdateTime('lot')) > $this->lotLifetime ){
 			$this->updateDBLots();
 			$this->updateDBStations();
-			$this->remapStationGeo();
-        }
-
-        
+		}     
     }
 
     private function checkUpdateTime($table) {
@@ -68,6 +64,7 @@ class ContentSupplier {
 		}
 		//execute db inserts
 		$this->entityMgr->flush();
+		$this->remapStationGeo();
 	}
 
 	private function updateDBLots(){
@@ -118,9 +115,20 @@ class ContentSupplier {
 		$func = str_replace('_e', 'E', $func);
 		return $func;
 	}
-
+	
+	//merge geoloc data from masterstation to station (EK)
 	private function remapStationGeo(){
-		//todo map station geo coordinates from masterdata geo's
+		$master = $this->entityMgr->getRepository('AppBundle:MasterStation')->findAll();
+		
+		foreach ($master as $mstation){	
+			$station = $this->entityMgr->getRepository('AppBundle:Station')->findOneByEvaNummer($mstation->getBahnhofsNummer());
+			if ($station != null){
+				$station->setStationGeoLatitude($mstation->getStationGeoLatitude());
+				$station->setStationGeoLongitude($mstation->getStationGeoLongitude());
+				$this->entityMgr->persist($station);	
+			}			
+		}
+		$this->entityMgr->flush();
 	}
 	
 	private function loadStationList(){
@@ -143,8 +151,10 @@ class ContentSupplier {
 					$entity = new MasterStation();
 					$entity->setBahnhofsNummer($cell[0]);
 					$entity->setStation($cell[2]);
-					$entity->setStationGeoLatitude($cell[4]);
-					$entity->setStationGeoLongitude($cell[5]);
+					
+					//FIXED: wrong order of latitude and longitude from bahn csv
+					$entity->setStationGeoLatitude($cell[5]);
+					$entity->setStationGeoLongitude($cell[4]);
 					$entity->setTimeCreated(time());
 					//var_dump($entity);
 					$this->entityMgr->persist($entity);

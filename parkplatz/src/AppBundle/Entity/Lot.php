@@ -338,12 +338,12 @@ class Lot {
     public $zahlungKundenkarten;
 
     /**
-    * @ORM\Column(type="string", nullable=true, length=50)
+    * @ORM\Column(type="string", nullable=true, length=200)
     */
     public $zahlungMedien;
 
     /**
-    * @ORM\Column(type="string", nullable=true, length=50)
+    * @ORM\Column(type="string", nullable=true, length=200)
     */
     public $zahlungMedien_en;
 

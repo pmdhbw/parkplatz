@@ -67,20 +67,21 @@ class MapController extends Controller
     /**
      * @Route("/init", name="init_data")
      */
-    private function init(){
+    public function init(){ //kritische perfomance probleme 
         $this->checkDB();
         $csup = new ContentSupplier($this->getDoctrine()->getManager(), $this->get('database_connection'));
         $csup->refresh();
+        return new Response("", 200);
     }
 
-    //url: /dbrange?radius={in km}&long={geoLongitude}&lat={geoLatitude}
+    //url: /dbrange?radius={in km}&lat={geoLatitude}&long={geoLongitude}
     /**
     * @Route("/dbrange", name="db_range")
     */
     public function getRange(Request $req){
         $this->init();
-        $geoLong = $req->query->get('long');
-        $geoLat = $req->query->get('lat');
+        $geoLong = $req->query->get('lat');
+        $geoLat = $req->query->get('long');
         $radius = $req->query->get('radius');
         if(isset($geoLong) && isset($geoLat) && isset($radius)){
             if(is_numeric($geoLong) && is_numeric($geoLat) && is_numeric($radius)){
@@ -111,12 +112,12 @@ class MapController extends Controller
                 }
             }
 
-            if($countOfTables < 3){
-                $this->execCommand(array("command" => "doctrine:schema:update","--force" => true));
+            if($countOfTables != 3){
+                $this->execCommand(array("command" => "doctrine:schema:update", "--force" => true));
             }
         } catch ( Exception $ex) {
             $this->execCommand(array("command" => "doctrine:database:create"));
-            $this->execCommand(array("command" => "doctrine:schema:update","--force" => true));
+            $this->execCommand(array("command" => "doctrine:schema:update", "--force" => true));
         }
 
     }

@@ -1,7 +1,7 @@
 $(document).ready(function() {
   // Load options for stations and initialize map
   new Transformation()
-  .setXml("parkplatz/web/app_dev.php/dbstation")
+  .setXml("parkplatz/web/app.php/dbstation")
   .setXslt("XSLT_Stations.xsl")
   .transform("station");
 });
@@ -11,8 +11,9 @@ function updateSelect(){
 
   //reset table to visible
   var table = document.getElementById("tab");
-  for (var i=0, row; row = table.rows[i];i++){
-  row.style.display = "inline";
+  for (var i=1, row; i<table.rows.length; i++){
+    row.style.visibility="visible";
+    row = table.rows[i];
   }
 
   //declaration of variables for settings
@@ -23,32 +24,33 @@ function updateSelect(){
   var payval = pay.options[pay.selectedIndex].value;
 
   var house = document.getElementById("house");
-  var housechecked = house.options[house.selectedIndex].checked;
+  var housechecked = house.checked;
 
   var open = document.getElementById("open");
-  var openchecked = open.options[open.selectedIndex].checked;
+  var openchecked = open.checked;
 
   //set collapses
-  for (var i = 0, row; row = table.rows[i]; i++) {
+  for (var i = 1, row; i<table.rows.length ; i++) {
+    row = table.rows[i];
     var cell = row.cells[5];
-    if (cell.value = freeval){
-      row.style.display = "none";
+    if ((freeval !== "egal") && (cell.value !== freeval)){
+      row.style.visibility="hidden";
     }
     cell = row.cells[8];
-    if ((cell.text.indexOf(val))>-1){
-      row.style.display = "none";
+    if ((payval !== "egal") && (cell.text.indexOf(payval)===-1)){
+      row.style.visibility="hidden";
     }
     cell = row.cells[1];
-    if (housechecked && (cell.text.indexOf("Parkhaus")>-1)){
-      row.style.display = "none";
+    if ((housechecked) && ( cell.text.indexOf("Parkhaus")===-1)){
+      row.style.visibility="hidden";
     }
     cell = row.cells[9];
-    if (openchecked && (cell.text.indexOf("24 Stunden, 7 Tage")=-1)){
-      row.style.display = "none";
+    if (openchecked && (cell.text.indexOf("24 Stunden, 7 Tage")===-1)){
+      row.style.visibility="hidden";
     }
     else if (openchecked) {
-      var firstsplit = cell.split(",")
-      if (firstsplit.length = 1){
+      var firstsplit = cell.split(",");
+      if (firstsplit.length === 1){
         var times = firstsplit[0].split(".");
         var time = times[0].split(" - ");
         var start = time[0].split(":");
@@ -57,7 +59,7 @@ function updateSelect(){
         var open= (jetzt.getFullYear, jetzt.getMonth, start[0], start[1],0 );
         var close= (jetzt.getFullYear, jetzt.getMonth, end[0], end[1],0);
         if (!(jetzt.getTime>open.getTime && jetzt.getTime<close.getTime)){
-          row.style.display = "none";
+          row.style.visibility="hidden";
         }
       }
       else{
@@ -65,27 +67,33 @@ function updateSelect(){
         var mot = mo[1].split(" - ");
         var mostart = mot[0].split(":");
         var moend = mot[1].split(":");
-        var sa = firstplit[1].split(": ");
+        var sa = firstsplit[1].split(": ");
         var sat = sa[1].split(" - ");
         var sastart = sat[0].split(":");
         var saend = sat[1].split(":");
         var jetzt = new Date();
-        if (jetzt.getDay = 0)
-          row.style.display = "none";
-        else if (jetzt.getDay = 6){
+        if (jetzt.getDay === 0)
+          row.style.visibility="hidden";
+        else if (jetzt.getDay === 6){
           var open= (jetzt.getFullYear, jetzt.getMonth, sastart[0], sastart[1],0 );
           var close= (jetzt.getFullYear, jetzt.getMonth, saend[0], saend[1],0);
           if (!(jetzt.getTime>open.getTime && jetzt.getTime<close.getTime))
-          row.style.display = "none";
+          row.style.visibility="hidden";
         }
         else {
           var open= (jetzt.getFullYear, jetzt.getMonth, mostart[0], mostart[1],0 );
           var close= (jetzt.getFullYear, jetzt.getMonth, moend[0], moend[1],0);
           if (!(jetzt.getTime>open.getTime && jetzt.getTime<close.getTime))
-          row.style.display = "none";
+          row.style.visibility="hidden";
         }
       }
     }
+  }
+}
+
+function transform(xml,xsl,counter){
+  if (counter === 2){
+    XSLTransform(xml,xsl,"tablebody");
   }
 }
 
@@ -94,37 +102,42 @@ function update(){
 
   //start by collecting the current data for executing the radius search
   var station = document.getElementById("station");
-  var long = station.getAttribute("data-longitude");
-  var lat = station.getAttribute("data-latitude");
+  var long = station.options[station.selectedIndex].dataset.longitude;
+  var lat = station.options[station.selectedIndex].dataset.latitude;
   var radius = document.getElementById("radius").value;
-
-  var str = "?radius=" + encodeURIComponent(radius) + "&long="
+  
+  //concatenate URL
+  var url = "?radius=" + encodeURIComponent(radius) + "&long="
   + encodeURIComponent(long) + "&lat=" + encodeURIComponent(lat);
-
-  //open xhttprequest
-  if (window.XMLHttpRequest) {
-        var xhttp = new XMLHttpRequest();
-    }
-  else { //IE
-        var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-  xhttp.open("POST","parkplatz/web/app_dev.php/dbrange", false);
-  //send data
-  xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhttp.send(str);
-  //listen for answer from php and post data into table
-  xhttp.onreadystatechange=function(){
-    if (xhttp.readyState == 4){
-        if(xhttp.status != 200){
-            alert ("Es ist ein Fehler aufgetreten beim Senden der Daten");
-        }
-        else if (xhttp.status == 200){
-          var xml = xhttp.responseText;
-          var xsl = loadXMLDoc("XSL_Lots.xsl");
-          XSLTransform(xml, xsl, "tablebody");
-        }
+  url = "parkplatz/web/app.php/dbrange"+url;
+  
+  //acquire XML and XSL
+  var xml;
+  var xsl;
+  var counter = 0;
+  
+  var xhttp = new XMLHttpRequest();
+  xhttp.onreadystatechange = function() {
+    if (xhttp.readyState === 4 && xhttp.status === 200) {
+        xml = xhttp.responseXML;
+        counter++;
+        transform(xml,xsl,counter);
     }
   };
+  xhttp.open("GET", url, true);
+  xhttp.send();
+  
+  d = new Date();
+  var xhttp2 = new XMLHttpRequest();
+  xhttp2.onreadystatechange = function () {
+      if (xhttp2.readyState === 4 && xhttp2.status === 200) {
+          xsl = xhttp2.responseXML;
+          counter++;
+            transform(xml,xsl,counter);
+      }
+  };
+  xhttp2.open("GET", "XSLT_Lots.xsl?_="+d.valueOf(),true);
+  xhttp2.send();
 }
 
 
@@ -132,21 +145,23 @@ function update(){
 
 //XSL Transformation functions for testing with update() function
 //will be deleted if tests fail and framework used instead
-
+/*
 function loadXMLDoc(filename){
   //loads XML Document from file
-  if (window.ActiveXObject){ //IE
-    var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
+  if (window.ActiveXObject)
+  {
+  xhttp = new ActiveXObject("Msxml2.XMLHTTP");
   }
-  else{ //rest
-    var xhttp = new XMLHttpRequest();
+else 
+  {
+  xhttp = new XMLHttpRequest();
   }
-  xhttp.open("GET", filename, false);
-  try {xhttp.responseType = "msxml-document"} catch(err) {} //throws error on IE11
-  xhttp.send("");
-  return xhttp.responseXML;
+xhttp.open("GET", filename, false);
+try {xhttp.responseType = "msxml-document"} catch(err) {} // Helping IE11
+xhttp.send("");
+return xhttp.responseXML;
 }
-
+*/
 function XSLTransform(xml, xsl, id){
 //does xsl transformation on xml and pastes it into the note with id
 //xml and xsl have to be STRINGS
@@ -157,6 +172,11 @@ function XSLTransform(xml, xsl, id){
   }
 //code for Chrome, Firefox, Opera, etc.
   else if (document.implementation && document.implementation.createDocument){
+    var myNode = document.getElementById(id);
+    while (myNode.firstChild) {
+        myNode.removeChild(myNode.firstChild);
+    }
+    
     xsltProcessor = new XSLTProcessor();
     xsltProcessor.importStylesheet(xsl);
     resultDocument = xsltProcessor.transformToFragment(xml, document);

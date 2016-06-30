@@ -22,7 +22,7 @@ class DBLot{
         $query = $em->createQuery(
             'SELECT l.parkraumId, l.parkraumBahnhofName, l.parkraumGeoLatitude,
                     l.parkraumGeoLongitude, l.parkraumKennung, l.parkraumKennung, l.parkraumParkart,
-                    l.validData, l.category, l.parkraumStellplaetze, l.parkraumOeffnungszeiten, l.parkraumBetreiber,
+                    l.validData, l.category, l.parkraumStellplaetze, l.parkraumZufahrt, l.parkraumOeffnungszeiten, l.parkraumBetreiber,
                     l.zahlungMedien, l.parkraumBemerkung, l.tarif30Min, l.tarif1Std, l.tarif1Tag, l.tarif1Woche,
                     l.text 
              FROM AppBundle:Lot l');
@@ -44,7 +44,7 @@ class DBLot{
         return $xml;
     }
 
-    private function addChildXml(&$lot, &$xml){
+    public function addChildXml(&$lot, &$xml){
             $child = $xml->addChild("lot");
             foreach ($lot as $key => $value) {
                 $child->addChild($key, htmlspecialchars((string) $value));
