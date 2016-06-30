@@ -172,6 +172,11 @@ function XSLTransform(xml, xsl, id){
   }
 //code for Chrome, Firefox, Opera, etc.
   else if (document.implementation && document.implementation.createDocument){
+    var myNode = document.getElementById(id);
+    while (myNode.firstChild) {
+        myNode.removeChild(myNode.firstChild);
+    }
+    
     xsltProcessor = new XSLTProcessor();
     xsltProcessor.importStylesheet(xsl);
     resultDocument = xsltProcessor.transformToFragment(xml, document);
