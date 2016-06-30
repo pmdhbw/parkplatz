@@ -130,7 +130,7 @@ function retrieveXML(url, counter) {
     xhttp.open("GET", url, true);
     xhttp.send();
     while (xhttp.readyState !== 4 || xhttp.status !== 200){
-        
+        sleep(50);
     };
 }
 
@@ -149,7 +149,7 @@ function loadXSL(path, counter) {
     xhttp.open("GET", path + d.valueOf(), true);
     xhttp.send();
     while (xhttp.readyState !== 4 || xhttp.status !== 200){
-        
+        sleep(50);
     };
 }
 
@@ -172,4 +172,13 @@ function XSLTransform(xml, xsl, counter, id) {
             document.getElementById(id).appendChild(resultDocument);
         }
     }
+}
+
+function sleep(milliseconds) {
+  var start = new Date().getTime();
+  for (var i = 0; i < 1e7; i++) {
+    if ((new Date().getTime() - start) > milliseconds){
+      break;
+    }
+  }
 }
