@@ -44,10 +44,16 @@ class DBRange{
         $xml = new \SimpleXmlElement("<sites></sites>");
 
         $dblot = new DBLot($this->doctrine);
+        $lotsWithDist = array();
         foreach ($lots as $lot) {
             if($this->proofRadiusLot($lot, $radius)){
-                $dblot->addChildXml($lot, $xml);
+                array_push($lotsWithDist, $lot);
             }
+        }
+        usort($lotsWithDist, array("AppBundle\Model\DBRange", "compareDistance"));
+
+        foreach ($lotsWithDist as $lot) {
+            $dblot->addChildXml($lot, $xml);
         }
 
         $query = $em->createQuery(
@@ -61,9 +67,7 @@ class DBRange{
             if($this->proofRadiusStation($station, $radius)){
                 $dbstation->addChildXml($station, $xml);
             }
-        }
-        // var_dump($result);
-        
+        } 
         return $xml->asXML();
     }
 
@@ -88,7 +92,10 @@ class DBRange{
         }
         return false;
     }
-   
+
+    public static function compareDistance($a , $b){
+        return $a['parkraumEntfernung'] - $b['parkraumEntfernung'];
+    }
 }
 
 class Geo{
