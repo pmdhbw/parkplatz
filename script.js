@@ -9,8 +9,8 @@ function updateSelect() {
     //reset table to visible
     var table = document.getElementById("tab");
     for (var i = 1, row; i < table.rows.length; i++) {
-        row.style.visibility = "visible";
         row = table.rows[i];
+        row.style.visibility = "visible";
     }
 
     //declaration of variables for settings
