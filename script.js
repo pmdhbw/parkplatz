@@ -130,61 +130,13 @@ function update(){
   var xhttp2 = new XMLHttpRequest();
   xhttp2.onreadystatechange = function () {
       if (xhttp2.readyState === 4 && xhttp2.status === 200) {
-          xsl = xhttp2.responseXML;
+          xsl = xhttp2.responseText;
           counter++;
             transform(xml,xsl,counter);
       }
   };
   xhttp2.open("GET", "XSLT_Lots.xsl",true);
   xhttp2.send();
-
-/*
-  var request = $.ajax({url : url,
-    method : "GET",
-    dataType : "xml"});
-  request.done(function(jqXHR){
-    xml = $.parseXML(jqXHR.responseXML);
-    counter++;
-    transform(xml,xsl,counter);
-  });
-  
-  var request2 = $.ajax({url : "XSLT_Lots.xsl",
-    method : "GET",
-    dataType : "xml"});
-  request2.done(function(jqXHR){
-      xsl = $.parseXML(jqXHR.responseXML);
-      counter++;
-      transform(xml,xsl,counter);
-  }); */
-
-  //transform
-  /*
-  //open xhttprequest
-  if (window.XMLHttpRequest) {
-        var xhttp = new XMLHttpRequest();
-    }
-  else { //IE
-        var xhttp = new ActiveXObject("Microsoft.XMLHTTP");
-    }
-  xhttp.open("POST","parkplatz/web/app.php/dbrange"+str, false);
-  //send data
-  xhttp.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-  xhttp.onreadystatechange=function(){
-    if (this.readyState == 4){
-        if(this.status != 200){
-            alert ("Es ist ein Fehler aufgetreten beim Senden der Daten");
-        }
-        else if (this.status == 200){
-          var xml = this.responseText;
-          var xsl = loadXMLDoc("XSLT_Lots.xsl");
-          XSLTransform(xml, xsl, "tablebody");
-        }
-    }
-  };
-  xhttp.send("");
-  //listen for answer from php and post data into table
-  */
-
 }
 
 
