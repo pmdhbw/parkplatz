@@ -127,6 +127,7 @@ function update(){
   xhttp.open("GET", url, true);
   xhttp.send();
   
+  d = new Date();
   var xhttp2 = new XMLHttpRequest();
   xhttp2.onreadystatechange = function () {
       if (xhttp2.readyState === 4 && xhttp2.status === 200) {
@@ -135,7 +136,7 @@ function update(){
             transform(xml,xsl,counter);
       }
   };
-  xhttp2.open("GET", "XSLT_Lots.xsl",true);
+  xhttp2.open("GET", "XSLT_Lots.xsl?_="+d.valueOf(),true);
   xhttp2.send();
 }
 
