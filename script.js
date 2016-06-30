@@ -3,6 +3,12 @@ $(document).ready(function () {
     startTransform("XSLT_Stations.xsl","parkplatz/web/app.php/dbstation","station");
 });
 
+function init(){
+    var xhttp = new XMLHttpRequest();
+    xhttp.open("GET", "parkplatz/web/app.php/init", false);
+    xhttp.send();
+}
+
 function updateSelect() {
     //set visibility of table rows according to current selection
 
