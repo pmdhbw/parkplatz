@@ -52,17 +52,17 @@ class Lot {
     public $parkraumBahnhofNummer;
 
     /**
-    * @ORM\Column(type="string", nullable=true, length=50)
+    * @ORM\Column(type="string", nullable=true, length=200)
     */
     public $parkraumBemerkung;
 
     /**
-    * @ORM\Column(type="string", nullable=true, length=50)
+    * @ORM\Column(type="string", nullable=true, length=200)
     */
     public $parkraumBemerkung_en;
 
     /**
-    * @ORM\Column(type="string", nullable=true, length=50)
+    * @ORM\Column(type="string", nullable=true, length=200)
     */
     public $parkraumBetreiber;
 
@@ -128,7 +128,7 @@ class Lot {
     public $parkraumName;
 
     /**
-    * @ORM\Column(type="string", nullable=true, length=25)
+    * @ORM\Column(type="string", nullable=true, length=100)
     */
     public $parkraumOeffnungszeiten;
 
@@ -243,12 +243,12 @@ class Lot {
     public $tarif30Min;
 
     /**
-    * @ORM\Column(type="string", nullable=true, length=30)
+    * @ORM\Column(type="string", nullable=true, length=200)
     */
     public $tarifBemerkung;
 
     /**
-    * @ORM\Column(type="string", nullable=true, length=30)
+    * @ORM\Column(type="string", nullable=true, length=200)
     */
     public $tarifBemerkung_en;
 
@@ -278,12 +278,12 @@ class Lot {
     public $tarifMonatIsParkscheinautomat;
 
      /**
-    * @ORM\Column(type="string", nullable=true, length=50)
+    * @ORM\Column(type="string", nullable=true, length=200)
     */
     public $tarifParkdauer;
 
     /**
-    * @ORM\Column(type="string", nullable=true, length=50)
+    * @ORM\Column(type="string", nullable=true, length=200)
     */
     public $tarifParkdauer_en;
 
@@ -373,7 +373,7 @@ class Lot {
     public $category;
 
     /**
-    * @ORM\Column(type="string", nullable=true, length=5)
+    * @ORM\Column(type="string", nullable=true, length=100)
     */
     public $text;
 

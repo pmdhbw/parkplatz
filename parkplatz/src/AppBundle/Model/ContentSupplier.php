@@ -29,7 +29,7 @@ class ContentSupplier {
        if((time() - $this->checkUpdateTime('lot')) > $this->lotLifetime ){
 			$this->updateDBLots();
 			$this->updateDBStations();
-		}     
+		}
     }
 
     private function checkUpdateTime($table) {

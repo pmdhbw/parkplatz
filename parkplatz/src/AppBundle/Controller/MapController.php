@@ -69,7 +69,7 @@ class MapController extends Controller
         $this->checkDB();
         $csup = new ContentSupplier($this->getDoctrine()->getManager(), $this->get('database_connection'));
         $csup->refresh();
-        return new Response("", 200);
+        return new Response(null, 200);
     }
 
     //url: /dbrange?radius={in km}&lat={geoLatitude}&long={geoLongitude}
