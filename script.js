@@ -63,11 +63,9 @@ function updateSelect() {
             row.style.display="none";
         }
         //open or not
-        cell = row.cells[9];
-        if (openchecked && (cell.textContent.indexOf("24 Stunden, 7 Tage") === -1)) {
-            row.style.display="none";
-        } else if (openchecked) {
-            var firstsplit = cell.split(",");
+        cell = row.cells[6];
+        if (openchecked) {
+            var firstsplit = cell.textContent.split(",");
             if (firstsplit.length === 1) {
                 var times = firstsplit[0].split(".");
                 var time = times[0].split(" - ");
@@ -79,26 +77,28 @@ function updateSelect() {
                 if (!(jetzt.getTime > open.getTime && jetzt.getTime < close.getTime)) {
                      row.style.display="none";
                 }
-            } else {
+            } else if (firstsplit.length === 3){
                 var mo = firstsplit[0].split(": ");
                 var mot = mo[1].split(" - ");
                 var mostart = mot[0].split(":");
                 var moend = mot[1].split(":");
+                moend[1] = moend[1].split(" ")[0];
                 var sa = firstsplit[1].split(": ");
                 var sat = sa[1].split(" - ");
                 var sastart = sat[0].split(":");
                 var saend = sat[1].split(":");
+                saend[1] = saend[1].split(" ")[0];
                 var jetzt = new Date();
                 if (jetzt.getDay === 0)
                      row.style.display="none";
                 else if (jetzt.getDay === 6) {
-                    var open = (jetzt.getFullYear, jetzt.getMonth, sastart[0], sastart[1], 0);
-                    var close = (jetzt.getFullYear, jetzt.getMonth, saend[0], saend[1], 0);
+                    var open = new Date(jetzt.getFullYear, jetzt.getMonth, sastart[0], sastart[1], 0);
+                    var close = new Date(jetzt.getFullYear, jetzt.getMonth, saend[0], saend[1], 0);
                     if (!(jetzt.getTime > open.getTime && jetzt.getTime < close.getTime))
                          row.style.display="none";
                 } else {
-                    var open = (jetzt.getFullYear, jetzt.getMonth, mostart[0], mostart[1], 0);
-                    var close = (jetzt.getFullYear, jetzt.getMonth, moend[0], moend[1], 0);
+                    var open = new Date(jetzt.getFullYear, jetzt.getMonth, mostart[0], mostart[1], 0);
+                    var close = new Date(jetzt.getFullYear, jetzt.getMonth, moend[0], moend[1], 0);
                     if (!(jetzt.getTime > open.getTime && jetzt.getTime < close.getTime))
                          row.style.display="none";
                 }
@@ -136,7 +136,9 @@ function startTransform(xslpath,xmlurl,id){
             xml = xhttp.responseXML;
             counter++;
             XSLTransform(xml, xsl, counter, id);
-            updateSelect();
+            if (counter === 2){
+                updateSelect();
+            }
         }
     };
     xhttp.open("GET", xmlurl, true);
@@ -149,7 +151,9 @@ function startTransform(xslpath,xmlurl,id){
             xsl = xhttp2.responseXML;
             counter++;
             XSLTransform(xml, xsl, counter, id);
-            updateSelect();
+            if (counter === 2){
+                updateSelect();
+            }
         }
     };
     xhttp2.open("GET", xslpath + "?_=" + d.valueOf(), true);
