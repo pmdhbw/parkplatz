@@ -52,7 +52,7 @@ function updateSelect() {
             if ((payval === "2") && (cell.textContent.indexOf("Kreditkarte") === -1)){
                 row.style.display="none";
             }
-            if ((payval === "3") && (cell.textContent.indexOf("M%FCnzen") === -1)){
+            if ((payval === "3") && (cell.textContent.indexOf("M\u00e4nzen") === -1)){
                 row.style.display="none";
             }
         }
