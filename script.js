@@ -58,8 +58,8 @@ function updateSelect() {
         }
         //parking house/ underground parking
         cell = row.cells[1];
-        if (((housechecked) && (cell.text.Content !== "") && (cell.textContent.indexOf("Parkhaus") === -1))
-            && ((housechecked) && (cell.text.Content !== "") && (cell.textContent.indexOf("Tiefgarage") === -1))){
+        if (((housechecked) && (cell.textContent !== "") && (cell.textContent.indexOf("Parkhaus") === -1))
+            && ((housechecked) && (cell.textContent !== "") && (cell.textContent.indexOf("Tiefgarage") === -1))){
             row.style.display="none";
         }
         //open or not
@@ -136,6 +136,7 @@ function startTransform(xslpath,xmlurl,id){
             xml = xhttp.responseXML;
             counter++;
             XSLTransform(xml, xsl, counter, id);
+            updateSelect();
         }
     };
     xhttp.open("GET", xmlurl, true);
@@ -148,6 +149,7 @@ function startTransform(xslpath,xmlurl,id){
             xsl = xhttp2.responseXML;
             counter++;
             XSLTransform(xml, xsl, counter, id);
+            updateSelect();
         }
     };
     xhttp2.open("GET", xslpath + "?_=" + d.valueOf(), true);
