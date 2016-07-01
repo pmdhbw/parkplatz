@@ -72,8 +72,8 @@ function updateSelect() {
                 var start = time[0].split(":");
                 var end = time[1].split(":");
                 var jetzt = new Date();
-                var open = (jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDay(),start[0], start[1], "0");
-                var close = (jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDay(), end[0], end[1], "0");
+                var open = (jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(),start[0], start[1], "0");
+                var close = (jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(), end[0], end[1], "0");
                 if (!(jetzt.getTime() > open.getTime() && jetzt.getTime() < close.getTime())) {
                      row.style.display="none";
                 }
@@ -92,14 +92,14 @@ function updateSelect() {
                 if (jetzt.getDay === 0)
                      row.style.display="none";
                 else if (jetzt.getDay === 6) {
-                    var open = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDay(), sastart[0], sastart[1], "0");
-                    var close = new Date(jetzt.getFullYear(), jetzt.getMonth(),jetzt.getDay(), saend[0], saend[1], "0");
+                    var open = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(), sastart[0], sastart[1], "0");
+                    var close = new Date(jetzt.getFullYear(), jetzt.getMonth(),jetzt.getDate(), saend[0], saend[1], "0");
                     if (!(jetzt.getTime > open.getTime() && jetzt.getTime() < close.getTime())){
                          row.style.display="none";
                     }
                 } else {
-                    var open = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDay(), mostart[0], mostart[1], "0");
-                    var close = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDay(), moend[0], moend[1], "0");
+                    var open = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(), mostart[0], mostart[1], "0");
+                    var close = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(), moend[0], moend[1], "0");
                     if ((jetzt < open) || (jetzt > close)){
                          row.style.display="none";
                     }
