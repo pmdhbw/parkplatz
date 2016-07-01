@@ -26,7 +26,21 @@
 			<td><xsl:value-of select="parkraumStellplaetze"/></td>
 			<td data-value="{category}"><xsl:value-of select="text"/></td>
 			<td><xsl:value-of select="parkraumOeffnungszeiten"/></td>
-			<td><xsl:value-of select="parkraumBetreiber"/></td>
+			<td>
+				<xsl:variable name="betreiber" select="parkraumBetreiber"/>
+					<xsl:if test="contains($betreiber, 'www.')">
+						<xsl:variable name="betreiberName" select="substring-before($betreiber, '(www.')"/>
+							<xsl:value-of select="$betreiberName"/>
+							(<a>
+								<xsl:attribute name="href">
+									<xsl:value-of select="concat('http://', substring-before(substring-after($betreiber, '('),')'))"/>
+								</xsl:attribute>Link
+							</a>)
+						</xsl:if>
+						<xsl:if test="not(contains($betreiber, 'www.'))">
+							<xsl:value-of select="$betreiber"/>
+						</xsl:if>
+			</td>
 			<td><xsl:value-of select="zahlungMedien"/></td>
 		</tr>
       </xsl:for-each>
