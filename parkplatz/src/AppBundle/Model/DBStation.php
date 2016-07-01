@@ -18,11 +18,16 @@ class DBStation{
     }
 
     public function getStations(){
-       $em = $this->doctrine->getManager();
+        $em = $this->doctrine->getManager();
         //to get more attributes add column in select statement
         $repo = $this->doctrine->getRepository('AppBundle:Station');
         $stations = $repo->findAll();
+        usort($stations, array("AppBundle\Model\DBStation", "compareStation"));
         return $this->objectToXml($stations)->asXML();
+    }
+
+    public static function compareStation($s1, $s2){
+        return strcasecmp($s1->station, $s2->station);
     }
 
 	
