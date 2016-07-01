@@ -41,7 +41,7 @@ function updateSelect() {
             row.style.display="none";
         }
         cell = row.cells[8];
-        if ((payval !== "egal") && (cell.textContent.indexOf(payval) === -1)) {
+        if ((payval !== 0) && (cell.textContent.indexOf(payval) === -1)) {
             row.style.display="none";
         }
         cell = row.cells[1];
