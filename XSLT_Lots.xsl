@@ -18,7 +18,7 @@
 			</thead>
 			<tbody id="tablebody">	
       <xsl:for-each select="sites/lot">   
-		<tr>
+		<tr data-tarif30Min="{tarif30Min}" data-tarif1Std="{tarif1Std}" data-tarif1Tag="{tarif1Tag}" data-tarif1Woche="{tarif1Woche}">
 			<td><xsl:value-of select="parkraumKennung"/></td>
 			<td><xsl:value-of select="parkraumParkart"/></td>
 			<td><xsl:value-of select="parkraumBahnhofName"/></td>
