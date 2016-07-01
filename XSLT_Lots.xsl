@@ -34,8 +34,7 @@
 							(<a>
 								<xsl:attribute name="href">
 									<xsl:value-of select="concat('http://', substring-before(substring-after($betreiber, '('),')'))"/>
-								</xsl:attribute>Link
-							</a>)
+								</xsl:attribute>Link</a>)
 						</xsl:if>
 						<xsl:if test="not(contains($betreiber, 'www.'))">
 							<xsl:value-of select="$betreiber"/>

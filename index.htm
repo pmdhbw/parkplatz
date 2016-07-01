@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="defaultstyle.css">
 	<script language="javascript" type="text/javascript" src="jquery-3.0.0.min.js"></script>
     <script language="javascript" type="text/javascript" src="script.js"></script>
+
 </head>
 <body onload="init()">
 <div id="main">
@@ -50,15 +51,15 @@
 				<table>
 					<tr>
 						<td class="selectionLabel">
-						<label>freie Parkplätze</label>
+							<label>freie Parkplätze (falls Daten vorhanden)</label>
 						</td>
 						<td class="selectionField">
 							<select id="free" style="width:50px;" onchange="updateSelect()">
 							<option value="0">egal</option>
-							<option value="1">0-10</option>
-							<option value="2">10-30</option>
-							<option value="3">30-50</option>
-							<option value="4">>50</option>
+							<option value="1">&gt;0</option>
+							<option value="2">&gt;10</option>
+							<option value="3">&gt;30</option>
+							<option value="4">&gt;50</option>
 							</select>
 						</td>
 					</tr>
@@ -75,7 +76,7 @@
 						</td>
 					<tr>
 						<td class="selectionLabel">
-						<label>zeige nur Parkhäuser</label>
+						<label>zeige nur Parkhäuser/ Tiefgaragen</label>
 						</td>
 						<td class="selectionField">
 							<input type="checkbox" id="house" value="Parkhaus" onchange="updateSelect()"><br>
@@ -83,7 +84,7 @@
 					</tr>
 					<tr>
 						<td class="selectionLabel">
-						<label>zeige nur offene</label>
+						<label>zeige nur aktuell offene</label>
 						</td>
 						<td class="selectionField">
 							<input type="checkbox" id="open" value="open" onchange="updateSelect()"><br>

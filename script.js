@@ -36,18 +36,25 @@ function updateSelect() {
     //set collapses
     for (var i = 1, row; i < table.rows.length; i++) {
         row = table.rows[i];
+        //free parking spaces
         var cell = row.cells[5];
-        if ((freeval !== 0) && (cell.dataset.value !== freeval)) {
+        if ((freeval !== "0")
+                //this checks whether no data is available, then the row is hidden too
+                && ((cell.dataset.value<freeval)) || (cell.dataset.value === true)) {
             row.style.display="none";
         }
+        //payment options
         cell = row.cells[8];
-        if ((payval !== 0) && (cell.textContent.indexOf(payval) === -1)) {
+        if ((payval !== "0") && (cell.textContent !== "") && (cell.textContent.indexOf(payval) === -1)) {
             row.style.display="none";
         }
+        //parking house/ underground parking
         cell = row.cells[1];
-        if ((housechecked) && (cell.textContent.indexOf("Parkhaus") === -1)) {
+        if (((housechecked) && (cell.text.Content !== "") && (cell.textContent.indexOf("Parkhaus") === -1))
+            && ((housechecked) && (cell.text.Content !== "") && (cell.textContent.indexOf("Tiefgarage") === -1))){
             row.style.display="none";
         }
+        //open or not
         cell = row.cells[9];
         if (openchecked && (cell.textContent.indexOf("24 Stunden, 7 Tage") === -1)) {
             row.style.display="none";
