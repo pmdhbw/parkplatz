@@ -32,6 +32,9 @@ function updateSelect() {
 
     var open = document.getElementById("open");
     var openchecked = open.checked;
+    
+    var freeofcharge = document.getElementById("freeofcharge");
+    var freechecked = freeofcharge.checked;
 
     //set collapses
     for (var i = 1, row; i < table.rows.length; i++) {
@@ -62,6 +65,13 @@ function updateSelect() {
             && ((housechecked) && (cell.textContent !== "") && (cell.textContent.indexOf("Tiefgarage") === -1))){
             row.style.display="none";
         }
+        //only free of charge
+        /*
+        cell = row.cells[9];
+        if ((freechecked) && (cell.textContent !== "ja")){
+            row.style.display="none";
+        }
+        */
         //open or not
         cell = row.cells[6];
         if (openchecked) {
@@ -73,8 +83,8 @@ function updateSelect() {
                 var end = time[1].split(":");
                 end[1] = end[1].split(" ")[0];
                 var jetzt = new Date();
-                var open = (jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(),start[0], start[1], "0");
-                var close = (jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(), end[0], end[1], "0");
+                var open = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(),start[0], start[1], "0");
+                var close = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(), end[0], end[1], "0");
                 if (!(jetzt.getTime() > open.getTime() && jetzt.getTime() < close.getTime())) {
                      row.style.display="none";
                 }

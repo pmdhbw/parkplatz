@@ -63,8 +63,9 @@
 							</select>
 						</td>
 					</tr>
+					<tr>	
 						<td class="selectionLabel">
-						<label>Zahlungsart</label>
+							<label>Zahlungsart</label>
 						</td>
 						<td class="selectionField">
 							<select id="pay" style="width:50px;" onchange="updateSelect()">
@@ -74,20 +75,29 @@
 							<option value="3">Bar</option>
 							</select>
 						</td>
+					</tr>
 					<tr>
 						<td class="selectionLabel">
-						<label>zeige nur Parkhäuser/ Tiefgaragen</label>
+							<label>zeige nur Parkhäuser/ Tiefgaragen</label>
 						</td>
 						<td class="selectionField">
-							<input type="checkbox" id="house" value="Parkhaus" onchange="updateSelect()"><br>
+							<input type="checkbox" id="house" onchange="updateSelect()"><br>
 						</td>
 					</tr>
 					<tr>
 						<td class="selectionLabel">
-						<label>zeige nur aktuell offene</label>
+							<label>zeige nur aktuell offene</label>
 						</td>
 						<td class="selectionField">
-							<input type="checkbox" id="open" value="open" onchange="updateSelect()"><br>
+							<input type="checkbox" id="open" onchange="updateSelect()"><br>
+						</td>
+					</tr>
+					<tr>
+						<td class="selectionLabel">
+							<label>zeige nur kostenlose</label>
+						</td>
+						<td class="selectionField">
+							<input type="checkbox" id="freeofcharge" onchange="updateSelect()"><br>
 						</td>
 					</tr>
 				</table>
@@ -114,6 +124,7 @@
 					<th>Öffnungszeiten</th>
 					<th>Betreiber</th>
 					<th>Zahlung</th>
+					<th>kostenlos</th>
 				</tr>
 			</thead>
 			<tbody id="tablebody">														<!-- tablebody gets filled with update() after selection of radius or station -->
