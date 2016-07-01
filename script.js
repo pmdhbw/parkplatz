@@ -5,7 +5,7 @@ $(document).ready(function () {
 
 function init(){
     var xhttp = new XMLHttpRequest();
-    xhttp.open("GET", "parkplatz/web/app.php/init?_=", true);
+    xhttp.open("GET", "parkplatz/web/app.php/init", true);
     xhttp.send();
 }
 
@@ -17,7 +17,7 @@ function updateSelect() {
     var table = document.getElementById("tab");
     for (var i = 1, row; i < table.rows.length; i++) {
         row = table.rows[i];
-        row.style.visibility = "visible";
+         row.style.display="";
     }
 
     //declaration of variables for settings
@@ -37,20 +37,20 @@ function updateSelect() {
     for (var i = 1, row; i < table.rows.length; i++) {
         row = table.rows[i];
         var cell = row.cells[5];
-        if ((freeval !== "egal") && (cell.value !== freeval)) {
-            row.style.visibility = "hidden";
+        if ((freeval !== 0) && (cell.dataset.value < freeval)) {
+            row.style.display="none";
         }
         cell = row.cells[8];
-        if ((payval !== "egal") && (cell.text.indexOf(payval) === -1)) {
-            row.style.visibility = "hidden";
+        if ((payval !== "egal") && (cell.textContent.indexOf(payval) === -1)) {
+            row.style.display="none";
         }
         cell = row.cells[1];
-        if ((housechecked) && (cell.text.indexOf("Parkhaus") === -1)) {
-            row.style.visibility = "hidden";
+        if ((housechecked) && (cell.textContent.indexOf("Parkhaus") === -1)) {
+            row.style.display="none";
         }
         cell = row.cells[9];
-        if (openchecked && (cell.text.indexOf("24 Stunden, 7 Tage") === -1)) {
-            row.style.visibility = "hidden";
+        if (openchecked && (cell.textContent.indexOf("24 Stunden, 7 Tage") === -1)) {
+            row.style.display="none";
         } else if (openchecked) {
             var firstsplit = cell.split(",");
             if (firstsplit.length === 1) {
@@ -62,7 +62,7 @@ function updateSelect() {
                 var open = (jetzt.getFullYear, jetzt.getMonth, start[0], start[1], 0);
                 var close = (jetzt.getFullYear, jetzt.getMonth, end[0], end[1], 0);
                 if (!(jetzt.getTime > open.getTime && jetzt.getTime < close.getTime)) {
-                    row.style.visibility = "hidden";
+                     row.style.display="none";
                 }
             } else {
                 var mo = firstsplit[0].split(": ");
@@ -75,17 +75,17 @@ function updateSelect() {
                 var saend = sat[1].split(":");
                 var jetzt = new Date();
                 if (jetzt.getDay === 0)
-                    row.style.visibility = "hidden";
+                     row.style.display="none";
                 else if (jetzt.getDay === 6) {
                     var open = (jetzt.getFullYear, jetzt.getMonth, sastart[0], sastart[1], 0);
                     var close = (jetzt.getFullYear, jetzt.getMonth, saend[0], saend[1], 0);
                     if (!(jetzt.getTime > open.getTime && jetzt.getTime < close.getTime))
-                        row.style.visibility = "hidden";
+                         row.style.display="none";
                 } else {
                     var open = (jetzt.getFullYear, jetzt.getMonth, mostart[0], mostart[1], 0);
                     var close = (jetzt.getFullYear, jetzt.getMonth, moend[0], moend[1], 0);
                     if (!(jetzt.getTime > open.getTime && jetzt.getTime < close.getTime))
-                        row.style.visibility = "hidden";
+                         row.style.display="none";
                 }
             }
         }
