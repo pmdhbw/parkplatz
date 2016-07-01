@@ -37,7 +37,7 @@ function updateSelect() {
     for (var i = 1, row; i < table.rows.length; i++) {
         row = table.rows[i];
         var cell = row.cells[5];
-        if ((freeval !== 0) && (cell.dataset.value < freeval)) {
+        if ((freeval !== 0) && (cell.dataset.value !== freeval)) {
             row.style.display="none";
         }
         cell = row.cells[8];
