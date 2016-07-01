@@ -45,8 +45,16 @@ function updateSelect() {
         }
         //payment options
         cell = row.cells[8];
-        if ((payval !== "0") && (cell.textContent !== "") && (cell.textContent.indexOf(payval) === -1)) {
-            row.style.display="none";
+        if ((payval !== "0") && (cell.textContent !== "")) {
+            if ((payval === "1") && (cell.textContent.indexOf("EC-Karte") === -1)){
+                row.style.display="none";
+            }
+            if ((payval === "2") && (cell.textContent.indexOf("Kreditkarte") === -1)){
+                row.style.display="none";
+            }
+            if ((payval === "3") && (cell.textContent.indexOf("Münzen") === -1)){
+                row.style.display="none";
+            }
         }
         //parking house/ underground parking
         cell = row.cells[1];
