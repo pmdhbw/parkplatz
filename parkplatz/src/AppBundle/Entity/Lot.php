@@ -128,12 +128,12 @@ class Lot {
     public $parkraumName;
 
     /**
-    * @ORM\Column(type="string", nullable=true, length=100)
+    * @ORM\Column(type="string", nullable=true, length=200)
     */
     public $parkraumOeffnungszeiten;
 
     /**
-    * @ORM\Column(type="string", nullable=true, length=25)
+    * @ORM\Column(type="string", nullable=true, length=200)
     */
     public $parkraumOeffnungszeiten_en;
 
