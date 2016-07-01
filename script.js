@@ -71,6 +71,7 @@ function updateSelect() {
                 var time = times[0].split(" - ");
                 var start = time[0].split(":");
                 var end = time[1].split(":");
+                end[1] = end[1].split(" ")[0];
                 var jetzt = new Date();
                 var open = (jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(),start[0], start[1], "0");
                 var close = (jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(), end[0], end[1], "0");
