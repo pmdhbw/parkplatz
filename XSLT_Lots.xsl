@@ -44,11 +44,11 @@
 			<td><xsl:value-of select="zahlungMedien"/></td>
 			<td>
 				<xsl:choose>
-				  <xsl:when test="tarif30Min != '' and tarif1Std != '' and tarif1Tag != '' and tarif1Woche != ''">
-					Nein
+				  <xsl:when test="tarif30Min = '' and tarif1Std = '' and tarif1Tag = '' and tarif1Woche = ''">
+					Ja
 				  </xsl:when>
 				  <xsl:otherwise>
-					Ja
+					Nein
 				  </xsl:otherwise>
 				</xsl:choose>
 			</td>
