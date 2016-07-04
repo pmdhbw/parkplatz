@@ -112,7 +112,7 @@ td{
 
 @media only screen and (max-width: 1250px) {
 	#main{
-		min-width: 98%;
+		width: 98%;
 	}
 
 	#selectionleft{
@@ -136,7 +136,8 @@ td{
 @media only screen and (max-width: 750px) {
 	
 	#main{
-		width: 98%;
+		width: 100%;
+		min-width: 540px;
 		margin: 0;
 	}
 	
