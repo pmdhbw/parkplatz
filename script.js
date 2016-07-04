@@ -66,12 +66,10 @@ function updateSelect() {
             row.style.display="none";
         }
         //only free of charge
-        /*
         cell = row.cells[9];
         if ((freechecked) && (cell.textContent !== "ja")){
             row.style.display="none";
         }
-        */
         //open or not
         cell = row.cells[6];
         if (openchecked) {
