@@ -67,7 +67,7 @@ function updateSelect() {
         }
         //only free of charge
         cell = row.cells[9];
-        if ((freechecked) && (cell.textContent !== "ja")){
+        if ((freechecked) && (cell.textContent.indexOf("ja")===-1)){
             row.style.display="none";
         }
         //open or not
