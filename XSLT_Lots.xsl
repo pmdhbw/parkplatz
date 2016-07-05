@@ -22,7 +22,7 @@
 		<tr data-tarif30Min="{tarif30Min}" data-tarif1Std="{tarif1Std}" data-tarif1Tag="{tarif1Tag}" data-tarif1Woche="{tarif1Woche}" data-comment="{parkraumBemerkung}">
 			<td><xsl:value-of select="parkraumKennung"/></td>
 			<td><xsl:value-of select="parkraumParkart"/></td>
-			<td><xsl:value-of select="parkraumBahnhofName"/></td>
+			<td><xsl:value-of select="parkraumZufahrt"/></td>
 			<td><xsl:value-of select="parkraumEntfernung"/></td>
 			<td><xsl:value-of select="parkraumStellplaetze"/></td>
 			<td data-value="{category}"><xsl:value-of select="text"/></td>
