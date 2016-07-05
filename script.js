@@ -4,6 +4,9 @@ $(document).ready(function () {
 });
 
 function init(){
+    //asynchronus request to start app.php/init
+    //if database is old it will be refreshed here, hopefully before document ready is called
+    //otherwise we rely on database integrity
     var xhttp = new XMLHttpRequest();
     xhttp.open("GET", "parkplatz/web/app.php/init", true);
     xhttp.send();
@@ -74,7 +77,7 @@ function updateSelect() {
         cell = row.cells[6];
         if (openchecked) {
             var firstsplit = cell.textContent.split(",");
-            if (firstsplit.length === 1) {
+            if (firstsplit.length === 1) { //only times are provided, every day the same
                 var times = firstsplit[0].split(".");
                 var time = times[0].split(" - ");
                 var start = time[0].split(":");
@@ -86,7 +89,7 @@ function updateSelect() {
                 if (!(jetzt.getTime() > open.getTime() && jetzt.getTime() < close.getTime())) {
                      row.style.display="none";
                 }
-            } else if (firstsplit.length === 3){
+            } else if (firstsplit.length === 3){ //different times for weekdays, saturdays, sundays are closed
                 var mo = firstsplit[0].split(": ");
                 var mot = mo[1].split(" - ");
                 var mostart = mot[0].split(":");
@@ -119,7 +122,7 @@ function updateSelect() {
 }
 
 function update() {
-    //update map after selection of station or radius has changed
+    //update table after selection of station or radius has changed
 
     //start by collecting the current data for executing the radius search
     var station = document.getElementById("station");
@@ -132,7 +135,7 @@ function update() {
             + encodeURIComponent(long) + "&lat=" + encodeURIComponent(lat);
     url = "parkplatz/web/app.php/dbrange" + url;
 
-    //Transformation
+    //load XML from php and transformation
     startTransform("XSLT_Lots.xsl",url,"table");
 }
 
@@ -140,7 +143,7 @@ function startTransform(xslpath,xmlurl,id){
     var xml;
     var xsl;
     var counter = 0;
-    
+    //request for loading the XML from php
     var xhttp = new XMLHttpRequest();
     xhttp.onreadystatechange = function () {
         if (xhttp.readyState === 4 && xhttp.status === 200) {
@@ -154,7 +157,7 @@ function startTransform(xslpath,xmlurl,id){
     };
     xhttp.open("GET", xmlurl, true);
     xhttp.send();
-
+    //request for loading the XSL as a file
     d = new Date();
     var xhttp2 = new XMLHttpRequest();
     xhttp2.onreadystatechange = function () {
@@ -172,18 +175,19 @@ function startTransform(xslpath,xmlurl,id){
 }
 
 function XSLTransform(xml, xsl, counter, id) {
-//code for IE
+    //makes shure that both XSL and XML are loaded
     if (counter === 2) {
+        //delete the current table data
         var myNode = document.getElementById(id);
         while (myNode.firstChild) {
                 myNode.removeChild(myNode.firstChild);
         }
-        //code for IE
+        //code for IE for filling
         if (window.ActiveXObject) {
             ex = xml.transformNode(xsl);
             document.getElementById(id).innerHTML = ex;
         }
-        //code for Chrome, Firefox, Opera, etc.
+        //code for Chrome, Firefox, Opera, etc. for filling 
         else if (document.implementation && document.implementation.createDocument) {
             xsltProcessor = new XSLTProcessor();
             xsltProcessor.importStylesheet(xsl);
