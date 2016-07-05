@@ -32,60 +32,86 @@ function updateSelect() {
 
     var open = document.getElementById("open");
     var openchecked = open.checked;
+    
+    var freeofcharge = document.getElementById("freeofcharge");
+    var freechecked = freeofcharge.checked;
 
     //set collapses
     for (var i = 1, row; i < table.rows.length; i++) {
         row = table.rows[i];
+        //free parking spaces
         var cell = row.cells[5];
-        if ((freeval !== 0) && (cell.dataset.value !== freeval)) {
+        if ((freeval !== "0")
+                //this checks whether no data is available, then the row is hidden too
+                && ((cell.dataset.value<freeval)) || (cell.dataset.value === true)) {
             row.style.display="none";
         }
+        //payment options
         cell = row.cells[8];
-        if ((payval !== 0) && (cell.textContent.indexOf(payval) === -1)) {
-            row.style.display="none";
+        if ((payval !== "0") && (cell.textContent !== "")) {
+            if ((payval === "1") && (cell.textContent.indexOf("EC-Karte") === -1)){
+                row.style.display="none";
+            }
+            if ((payval === "2") && (cell.textContent.indexOf("Kreditkarte") === -1)){
+                row.style.display="none";
+            }
+            if ((payval === "3") && (cell.textContent.indexOf(unescape("M%FCnzen")) === -1)){
+                row.style.display="none";
+            }
         }
+        //parking house/ underground parking
         cell = row.cells[1];
-        if ((housechecked) && (cell.textContent.indexOf("Parkhaus") === -1)) {
+        if (((housechecked) && (cell.textContent !== "") && (cell.textContent.indexOf("Parkhaus") === -1))
+            && ((housechecked) && (cell.textContent !== "") && (cell.textContent.indexOf("Tiefgarage") === -1))){
             row.style.display="none";
         }
+        //only free of charge
         cell = row.cells[9];
-        if (openchecked && (cell.textContent.indexOf("24 Stunden, 7 Tage") === -1)) {
+        if ((freechecked) && !(cell.textContent.trim().includes("Ja"))){
             row.style.display="none";
-        } else if (openchecked) {
-            var firstsplit = cell.split(",");
+        }
+        //open or not
+        cell = row.cells[6];
+        if (openchecked) {
+            var firstsplit = cell.textContent.split(",");
             if (firstsplit.length === 1) {
                 var times = firstsplit[0].split(".");
                 var time = times[0].split(" - ");
                 var start = time[0].split(":");
                 var end = time[1].split(":");
+                end[1] = end[1].split(" ")[0];
                 var jetzt = new Date();
-                var open = (jetzt.getFullYear, jetzt.getMonth, start[0], start[1], 0);
-                var close = (jetzt.getFullYear, jetzt.getMonth, end[0], end[1], 0);
-                if (!(jetzt.getTime > open.getTime && jetzt.getTime < close.getTime)) {
+                var open = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(),start[0], start[1], "0");
+                var close = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(), end[0], end[1], "0");
+                if (!(jetzt.getTime() > open.getTime() && jetzt.getTime() < close.getTime())) {
                      row.style.display="none";
                 }
-            } else {
+            } else if (firstsplit.length === 3){
                 var mo = firstsplit[0].split(": ");
                 var mot = mo[1].split(" - ");
                 var mostart = mot[0].split(":");
                 var moend = mot[1].split(":");
+                moend[1] = moend[1].split(" ")[0];
                 var sa = firstsplit[1].split(": ");
                 var sat = sa[1].split(" - ");
                 var sastart = sat[0].split(":");
                 var saend = sat[1].split(":");
+                saend[1] = saend[1].split(" ")[0];
                 var jetzt = new Date();
                 if (jetzt.getDay === 0)
                      row.style.display="none";
                 else if (jetzt.getDay === 6) {
-                    var open = (jetzt.getFullYear, jetzt.getMonth, sastart[0], sastart[1], 0);
-                    var close = (jetzt.getFullYear, jetzt.getMonth, saend[0], saend[1], 0);
-                    if (!(jetzt.getTime > open.getTime && jetzt.getTime < close.getTime))
+                    var open = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(), sastart[0], sastart[1], "0");
+                    var close = new Date(jetzt.getFullYear(), jetzt.getMonth(),jetzt.getDate(), saend[0], saend[1], "0");
+                    if (!(jetzt.getTime > open.getTime() && jetzt.getTime() < close.getTime())){
                          row.style.display="none";
+                    }
                 } else {
-                    var open = (jetzt.getFullYear, jetzt.getMonth, mostart[0], mostart[1], 0);
-                    var close = (jetzt.getFullYear, jetzt.getMonth, moend[0], moend[1], 0);
-                    if (!(jetzt.getTime > open.getTime && jetzt.getTime < close.getTime))
+                    var open = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(), mostart[0], mostart[1], "0");
+                    var close = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(), moend[0], moend[1], "0");
+                    if ((jetzt < open) || (jetzt > close)){
                          row.style.display="none";
+                    }
                 }
             }
         }
@@ -121,6 +147,9 @@ function startTransform(xslpath,xmlurl,id){
             xml = xhttp.responseXML;
             counter++;
             XSLTransform(xml, xsl, counter, id);
+            if (counter === 2){
+                updateSelect();
+            }
         }
     };
     xhttp.open("GET", xmlurl, true);
@@ -133,6 +162,9 @@ function startTransform(xslpath,xmlurl,id){
             xsl = xhttp2.responseXML;
             counter++;
             XSLTransform(xml, xsl, counter, id);
+            if (counter === 2){
+                updateSelect();
+            }
         }
     };
     xhttp2.open("GET", xslpath + "?_=" + d.valueOf(), true);

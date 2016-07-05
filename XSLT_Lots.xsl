@@ -13,6 +13,7 @@
 					<th>Öffnungszeiten</th>
 					<th>Betreiber</th>
 					<th>Zahlung</th>
+					<th>kostenlos</th>
 					
 				</tr>
 			</thead>
@@ -34,14 +35,19 @@
 							(<a>
 								<xsl:attribute name="href">
 									<xsl:value-of select="concat('http://', substring-before(substring-after($betreiber, '('),')'))"/>
-								</xsl:attribute>Link
-							</a>)
+								</xsl:attribute>Link</a>)
 						</xsl:if>
 						<xsl:if test="not(contains($betreiber, 'www.'))">
 							<xsl:value-of select="$betreiber"/>
 						</xsl:if>
 			</td>
 			<td><xsl:value-of select="zahlungMedien"/></td>
+			<td>
+				<xsl:choose>
+				  <xsl:when test="tarif30Min = '' and tarif1Std = '' and tarif1Tag = '' and tarif1Woche = ''">Ja</xsl:when>
+				  <xsl:otherwise>Nein</xsl:otherwise>
+				</xsl:choose>
+			</td>
 		</tr>
       </xsl:for-each>
 	  	</tbody>
