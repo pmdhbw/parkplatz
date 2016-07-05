@@ -23,7 +23,7 @@ class DBLot{
             'SELECT l.parkraumId, l.parkraumKennung, l.parkraumGeoLatitude,
                     l.parkraumGeoLongitude, l.parkraumKennung, l.parkraumKennung, l.parkraumParkart,
                     l.validData, l.category, l.parkraumStellplaetze, l.parkraumZufahrt, l.parkraumOeffnungszeiten, l.parkraumBetreiber,
-                    l.zahlungMedien, l.parkraumBemerkung, l.tarif30Min, l.tarif1Std, l.tarif1Tag, l.tarif1Woche,
+                    l.zahlungMedien, l.parkraumBemerkung, l.parkraumZufahrt, l.tarif30Min, l.tarif1Std, l.tarif1Tag, l.tarif1Woche,
                     l.text 
              FROM AppBundle:Lot l');
         $lots = $query->getResult();

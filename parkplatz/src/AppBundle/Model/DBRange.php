@@ -30,7 +30,7 @@ class DBRange{
             "SELECT l.parkraumId, l.parkraumKennung, l.parkraumGeoLatitude,
                     l.parkraumGeoLongitude, l.parkraumKennung, l.parkraumKennung, l.parkraumParkart,
                     l.validData, l.parkraumEntfernung, l.category, l.parkraumZufahrt, l.parkraumStellplaetze, l.parkraumOeffnungszeiten, l.parkraumBetreiber,
-                    l.zahlungMedien, l.parkraumBemerkung, l.tarif30Min, l.tarif1Std, l.tarif1Tag, l.tarif1Woche,
+                    l.zahlungMedien, l.parkraumBemerkung, l.parkraumZufahrt, l.tarif30Min, l.tarif1Std, l.tarif1Tag, l.tarif1Woche,
                     l.text 
              FROM AppBundle:Lot l
              WHERE l.parkraumGeoLongitude >= ".$geoLeft->getLongDeg()." AND l.parkraumGeoLatitude >= ".$geoLeft->getLatDeg()." AND 
