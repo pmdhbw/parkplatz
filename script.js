@@ -172,6 +172,7 @@ function startTransform(xslpath,xmlurl,id){
         }
     };
     xhttp2.open("GET", xslpath + "?_=" + d.valueOf(), true);
+    try { xhttp2.responseType = "msxml-document"; } catch (e) { }; //required in IE11
     xhttp2.send();
 }
 
