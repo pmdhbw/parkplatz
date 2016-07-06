@@ -1,0 +1,14 @@
+<!ELEMENT stations (station)*>
+<!ELEMENT station (type|bahnhofsNummer|cityTitle|street|plz|evaNummer|isDbBahnpark|isPublished|mainPicId|mainPicId_en|station|stationGeoLatitude|stationGeoLongitude)*>
+<!ELEMENT type (#PCDATA)>
+<!ELEMENT bahnhofsNummer (#PCDATA)>
+<!ELEMENT cityTitle (#PCDATA)>
+<!ELEMENT street (#PCDATA)>
+<!ELEMENT plz (#PCDATA)>
+<!ELEMENT evaNummer (#PCDATA)>
+<!ELEMENT isDbBahnpark (#PCDATA)>
+<!ELEMENT isPublished (#PCDATA)>
+<!ELEMENT mainPicId (#PCDATA)>
+<!ELEMENT mainPicId_en (#PCDATA)>
+<!ELEMENT stationGeoLatitude (#PCDATA)>
+<!ELEMENT stationGeoLongitude (#PCDATA)>
