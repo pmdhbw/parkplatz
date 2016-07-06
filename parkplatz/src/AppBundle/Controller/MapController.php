@@ -53,7 +53,7 @@ class MapController extends Controller
             $rspString = $dbStation->getStations();
             
         } else { // return only the wished lot
-            $rspString = $dbLot->getStation($station);
+            $rspString = $dbStation->getStation($station);
         }
         return new Response(
             $rspString,
