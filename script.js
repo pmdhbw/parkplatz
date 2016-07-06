@@ -183,7 +183,7 @@ function XSLTransform(xml, xsl, counter, id) {
                 myNode.removeChild(myNode.firstChild);
         }
         //code for IE for filling
-        if (window.ActiveXObject) {
+        if (window.ActiveXObject || "ActiveXObject" in window) {
             ex = xml.transformNode(xsl);
             document.getElementById(id).innerHTML = ex;
         }
