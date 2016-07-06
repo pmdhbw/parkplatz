@@ -156,6 +156,7 @@ function startTransform(xslpath,xmlurl,id){
         }
     };
     xhttp.open("GET", xmlurl, true);
+    try { xhttp.responseType = "msxml-document"; } catch (e) { }; //required in IE11
     xhttp.send();
     //request for loading the XSL as a file
     d = new Date();
