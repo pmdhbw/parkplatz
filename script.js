@@ -156,6 +156,7 @@ function startTransform(xslpath,xmlurl,id){
         }
     };
     xhttp.open("GET", xmlurl, true);
+    try { xhttp.responseType = "msxml-document"; } catch (e) { }; //required in IE11
     xhttp.send();
     //request for loading the XSL as a file
     d = new Date();
@@ -183,7 +184,7 @@ function XSLTransform(xml, xsl, counter, id) {
                 myNode.removeChild(myNode.firstChild);
         }
         //code for IE for filling
-        if (window.ActiveXObject) {
+        if (window.ActiveXObject || "ActiveXObject" in window) {
             ex = xml.transformNode(xsl);
             document.getElementById(id).innerHTML = ex;
         }
