@@ -1,4 +1,4 @@
-<!ELEMENT sites (lot|station)*>
+<!ELEMENT sites (lot|dbstation)*>
 <!ELEMENT lot (parkraumId|parkraumKennung|parkraumGeoLatitude|parkraumGeoLongitude|parkraumParkart|validData|parkraumEntfernung|category|parkraumZufahrt|parkraumStellplaetze|parkraumOeffnungszeiten|parkraumBetreiber|zahlungMedien|parkraumBemerkung|tarif30Min|tarif1Std|tarif1Tag|tarif1Woche|text)*>
 <!ELEMENT parkraumId (#PCDATA)>
 <!ELEMENT parkraumKennung (#PCDATA)>
@@ -19,7 +19,7 @@
 <!ELEMENT tarif1Tag (#PCDATA)>
 <!ELEMENT tarif1Woche (#PCDATA)>
 <!ELEMENT text (#PCDATA)>
-<!ELEMENT station (type|bahnhofsNummer|cityTitle|street|plz|evaNummer|isDbBahnpark|isPublished|mainPicId|mainPicId_en|station|stationGeoLatitude|stationGeoLongitude)*>
+<!ELEMENT dbstation (type|bahnhofsNummer|cityTitle|street|plz|evaNummer|isDbBahnpark|isPublished|mainPicId|mainPicId_en|station|stationGeoLatitude|stationGeoLongitude)*>
 <!ELEMENT type (#PCDATA)>
 <!ELEMENT bahnhofsNummer (#PCDATA)>
 <!ELEMENT cityTitle (#PCDATA)>
@@ -30,5 +30,6 @@
 <!ELEMENT isPublished (#PCDATA)>
 <!ELEMENT mainPicId (#PCDATA)>
 <!ELEMENT mainPicId_en (#PCDATA)>
+<!ELEMENT station (#PCDATA)>
 <!ELEMENT stationGeoLatitude (#PCDATA)>
 <!ELEMENT stationGeoLongitude (#PCDATA)>
