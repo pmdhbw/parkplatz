@@ -13,7 +13,7 @@
 					<th>Öffnungszeiten</th>
 					<th>Betreiber</th>
 					<th>Zahlung</th>
-					<th>gebüh-<br>renfrei</th>
+					<th>gebüh-<br/>renfrei</th>
 					
 				</tr>
 			</thead>
