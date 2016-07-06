@@ -64,7 +64,6 @@ class MapController extends Controller
         );
         $resp->setCharset("UTF-8");
         return $resp;
-        );
     }
 
     /**
