@@ -24,7 +24,8 @@ class ContentSupplier {
 
     public function refresh(){
 		if((time() - $this->checkUpdateTime('masterstation')) > $this->masterLifetime ){
-			$this->loadStationList();  
+			$this->loadStationList();
+			$this->updateDBStations(); 
 		}
        if((time() - $this->checkUpdateTime('lot')) > $this->lotLifetime ){
 			$this->updateDBLots();
