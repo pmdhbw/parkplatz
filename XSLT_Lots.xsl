@@ -32,7 +32,7 @@
 					<xsl:if test="contains($betreiber, 'www.')">
 						<xsl:variable name="betreiberName" select="substring-before($betreiber, '(www.')"/>
 							<xsl:value-of select="$betreiberName"/>
-							(<a>
+							(<a target="_blank">
 								<xsl:attribute name="href">
 									<xsl:value-of select="concat('http://', substring-before(substring-after($betreiber, '('),')'))"/>
 								</xsl:attribute>Link</a>)
