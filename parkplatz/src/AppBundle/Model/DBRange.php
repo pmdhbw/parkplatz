@@ -42,7 +42,7 @@ class DBRange{
         $this->geoOrg->setLatDeg($lat);
         $this->geoOrg->setLongDeg($long);
         $xml = new \SimpleXmlElement('<?xml version="1.0" encoding="UTF-8"?>'
-                                  .'<!DOCTYPE sites SYSTEM "http://parkplaetze.wo-zu-finden.de/dtd/dblots.dtd">'.
+                                  .'<!DOCTYPE sites SYSTEM "http://parkplaetze.wo-zu-finden.de/dtd/dbrange.dtd">'.
                                   '<sites></sites>');
 
         $dblot = new DBLot($this->doctrine);
