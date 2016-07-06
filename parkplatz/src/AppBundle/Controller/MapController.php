@@ -33,11 +33,13 @@ class MapController extends Controller
         } else { // return only the wished lot
             $rspString = $dbLot->getDBLot($lot);
         }
-        return new Response(
+        $resp = new Response(
             $rspString,
             200,
             array('Content-Type' => 'application/XML')
         );
+        $resp->setCharset("UTF-8");
+        return $resp;
     }
 
     //ACHTUNG!!!: DBStation für spezielle ID noch nicht implementiert!
@@ -55,10 +57,13 @@ class MapController extends Controller
         } else { // return only the wished lot
             $rspString = $dbStation->getStation($station);
         }
-        return new Response(
+        $resp = new Response(
             $rspString,
             200,
             array('Content-Type' => 'application/XML')
+        );
+        $resp->setCharset("UTF-8");
+        return $resp;
         );
     }
 
@@ -84,11 +89,13 @@ class MapController extends Controller
             if(is_numeric($geoLong) && is_numeric($geoLat) && is_numeric($radius)){
                 $dbrange = new DBRange($this->getDoctrine());
                 $xmlString = $dbrange->getInRadius((float) $radius, (float) $geoLong, (float) $geoLat);
-                return new Response(
+                $resp = new Response(
                     $xmlString,
                     200,
                     array('Content-Type' => 'application/XML')
                 );
+            $resp->setCharset("UTF-8");
+            return $resp;
             }
         }
         return new Response(
