@@ -32,7 +32,7 @@ class DBStation{
 
 	
 	private function objectToXml(&$stations){
-	$xml = new \SimpleXmlElement("<stations></stations>");
+	$xml = new \SimpleXmlElement("<dbstations></dbstations>");
 	if(is_array($stations)){
 		foreach ($stations as $station) {
 			$this->addChildXml($station, $xml);
@@ -44,7 +44,7 @@ class DBStation{
     }
 	
 	public function addChildXml(&$station, &$xml){
-		$child = $xml->addChild("station");
+		$child = $xml->addChild("dbstation");
 		foreach ($station as $key => $value) {
 			$child->addChild($key, htmlspecialchars((string) $value));
 		}
