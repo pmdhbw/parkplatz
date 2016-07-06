@@ -32,7 +32,9 @@ class DBStation{
 
 	
 	private function objectToXml(&$stations){
-	$xml = new \SimpleXmlElement("<dbstations></dbstations>");
+	$xml = new \SimpleXmlElement('<?xml version="1.0" encoding="UTF-8"?>'
+                                  .'<!DOCTYPE dbstations SYSTEM "http://parkplaetze.wo-zu-finden.de/dtd/dbstation.dtd">'
+                                  .'<dbstations></dbstations>');
 	if(is_array($stations)){
 		foreach ($stations as $station) {
 			$this->addChildXml($station, $xml);

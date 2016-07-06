@@ -31,7 +31,9 @@ class DBLot{
     }
 
     public function objectToXml(&$lots){
-        $xml = new \SimpleXmlElement("<lots></lots>");
+        $xml = new \SimpleXmlElement('<?xml version="1.0" encoding="UTF-8"?>'
+                                  .'<!DOCTYPE lots SYSTEM "http://parkplaetze.wo-zu-finden.de/dtd/dblots.dtd">'
+                                  .'<lots></lots>');
         if(isset($lots)){
             if(is_array($lots)){
                 foreach ($lots as $lot) {
