@@ -23,11 +23,10 @@ class ContentSupplier {
     }
 
     public function refresh(){
-		if((time() - $this->checkUpdateTime('masterstation')) > $this->masterLifetime ){
-			$this->loadStationList();
-			$this->updateDBStations(); 
-		}
        if((time() - $this->checkUpdateTime('lot')) > $this->lotLifetime ){
+		   	if((time() - $this->checkUpdateTime('masterstation')) > $this->masterLifetime ){
+				$this->loadStationList();
+			}
 			$this->updateDBLots();
 			$this->updateDBStations();
 		}
