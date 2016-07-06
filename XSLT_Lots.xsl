@@ -4,7 +4,7 @@
 		<table id="tab">
 			<thead>
 				<tr>
-					<th>Name</th>
+					<th>Nr</th>
 					<th>Parkart</th>
 					<th>Zufahrt</th>
 					<th>Entfernung</th>
@@ -13,7 +13,7 @@
 					<th>Öffnungszeiten</th>
 					<th>Betreiber</th>
 					<th>Zahlung</th>
-					<th>kostenlos</th>
+					<th>gebüh-<br>renfrei</th>
 					
 				</tr>
 			</thead>
