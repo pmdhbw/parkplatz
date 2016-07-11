@@ -33,11 +33,11 @@ $(document).ready(function () {
        window.Config = config;
     
        var map = new Map("map");
-       map.addMarker('Test', 13.19225, 52.52361, 'https://www.haltestellen-suche.de/img/db/2725');
-
+       map.addMarker('Test', 13.392009735107, 52.498199462891, 'https://www.haltestellen-suche.de/img/db/2725');
+       var poi_layer = map.addPois('POI', "demo.geo.json", -1, "parkinggarage.png", "#003399", 1);
        map.setCenter(
-           13.19225,
-           52.52361,
+           13.392009735107,
+           52.498199462891,
            15
        );
     });
