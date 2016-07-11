@@ -1,0 +1,150 @@
+<!DOCTYPE HTML>
+<html lang="de">
+<head>																				<!--metadata -->
+	<meta name="author" content="PMDHBW" />
+	<meta name="description" content="Website zur Suche von Parkplätzen bei Bahnhöfen">
+	<meta name="keywords" content="DHBW, DB, Deutsche Bahn, Parkplatz, Suche, Parkplatzsuche">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<meta charset="utf-8"/>
+    <title>DB-Parkplatzsuche</title>
+	<link rel="icon" type="image/vnd.microsoft.icon" href="/favicon.ico">
+																						<!--own css and js -->
+    <link rel="stylesheet" href="Flat-UI-2.3.0/dist/css/vendor/bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="Flat-UI-2.3.0/dist/css/flat-ui.min.css">
+    <link rel="stylesheet" href="map.css">
+    <link rel="stylesheet" href="defaultstyle.css">
+    <script type="text/javascript" src="jquery-3.0.0.min.js"></script>
+    <script type="text/javascript" src="Flat-UI-2.3.0/dist/js/flat-ui.min.js"></script>
+    <script type="text/javascript" src="map.js"></script>
+    <script type="text/javascript" src="openlayers/OpenLayers.js"></script>
+    <script type="text/javascript" src="script.js"></script>
+</head>
+<body>
+  <div id="main" class="container">
+
+    <div class="row main-row">
+      <div class="col-lg-12 text-center">
+        <label class="h3" style="width:100%;" for="station">Bahnhof</label>
+        <select
+          id="station"
+          class="form-control select select-primary select2-offscreen update"
+          data-toggle="select"
+        ></select>
+      </div>
+    </div>
+
+    <div class="row main-row">
+      <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-lg-push-3 col-md-push-3">
+        <div class="container-fluid filter">
+          <div class="row">
+            <div class="col-lg-12">
+              <span class="filter-header">Filter</span>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-8"><label for="radius">Suchradius</label></div>
+            <div class="col-lg-4">
+              <input
+                class="form-control updateSelect"
+                type="text"
+                id="radius"
+                value="500"
+              >
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-8"><label>freie Parkplätze (falls Daten vorhanden)</label></div>
+            <div class="col-lg-4">
+              <select
+                id="free"
+                class="form-control select select-primary select2-offscreen updateSelect"
+                data-toggle="select"
+              >
+                <option selected="selected" value="0">egal</option>
+                <option value="1">&gt;0</option>
+                <option value="2">&gt;10</option>
+                <option value="3">&gt;30</option>
+                <option value="4">&gt;50</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-8"><label for="pay">Zahlungsart</label></div>
+            <div class="col-lg-4">
+              <select
+                id="pay"
+                class="form-control select select-primary select2-offscreen updateSelect"
+                data-toggle="select"
+              >
+                <option selected="selected" value="0">egal</option>
+                <option value="1">EC-Karte</option>
+                <option value="2">Kreditkarte</option>
+                <option value="3">Bar</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-8"><label for="house">zeige nur Parkhäuser/ Tiefgaragen</label></div>
+            <div class="col-lg-4">
+              <input
+                id="house"
+                class="form-control updateSelect"
+                type="checkbox"
+                data-toggle="switch"
+                data-off-text="<span class='fui-cross'></span>"
+                data-on-text="<span class='fui-check'></span>"
+              >
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-8"><label for="open">zeige nur aktuell offene</label></div>
+            <div class="col-lg-4">
+              <input
+                id="open"
+                class="form-control updateSelect"
+                type="checkbox"
+                data-toggle="switch"
+                data-off-text="<span class='fui-cross'></span>"
+                data-on-text="<span class='fui-check'></span>"
+              >
+            </div>
+          </div>
+
+          <div class="row">
+            <div class="col-lg-8"><label for="freeofcharge">zeige nur kostenlose</label></div>
+            <div class="col-lg-4">
+              <input
+                id="freeofcharge"
+                class="form-control updateSelect"
+                type="checkbox"
+                data-toggle="switch"
+                data-off-text="<span class='fui-cross'></span>"
+                data-on-text="<span class='fui-check'></span>"
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="largemap-wrapper main-row">
+    <div class="largemap" id="map"></div>
+  </div>
+
+  <div class="container">
+    <div class="row main-row">
+      <div class="col-lg-12">
+        <div id="table">
+          Bitte wählen Sie einen Bahnhof aus, damit hier Daten angezeigt werden.
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
+</html>
