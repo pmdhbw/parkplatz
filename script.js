@@ -33,13 +33,10 @@ $(document).ready(function () {
        window.Config = config;
     
        var map = new Map("map");
-       map.addMarker('Test', 13.392009735107, 52.498199462891, 'https://www.haltestellen-suche.de/img/db/2725');
-       var poi_layer = map.addPois('POI', "demo.geo.json", -1, "parkinggarage.png", "#003399", 1);
-       map.setCenter(
-           13.392009735107,
-           52.498199462891,
-           15
-       );
+       var lot_layer = map.addPois('Parkpätze', "parkplatz/web/dbrange?radius=500&long=10.578239&lat=49.298032", -1, "parkinggarage.png", "#003399", 1, new CustomXMLLotFormat());
+       var station_layer = map.addPois('Bahnhöfe', "parkplatz/web/dbrange?radius=500&long=10.578239&lat=49.298032", -2, "dbstation.png", "#003399", 1, new CustomXMLDBStationFormat());
+       // var poi_layer = map.addPois('POI', "demo.geo.json", -1, "parkinggarage.png", "#003399", 1);
+       map.setCenter(10.578239, 49.298032, 15)
     });
 });
 

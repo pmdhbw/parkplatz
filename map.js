@@ -207,10 +207,13 @@
       return layer;
     };
 
-    Map.prototype.addPois = function(title, pois_url, poi_type_id, icon_url, cluster_color, display) {
+    Map.prototype.addPois = function(title, pois_url, poi_type_id, icon_url, cluster_color, display, format) {
       var cluster_rule, icon_rule, is_cluster, layer, options;
       if (display == null) {
         display = true;
+      }
+      if (format == null) {
+        format = new OpenLayers.Format.GeoJSON();
       }
       is_cluster = new OpenLayers.Filter.Comparison({
         type: OpenLayers.Filter.Comparison.GREATER_THAN,
@@ -258,7 +261,7 @@
         ],
         protocol: new OpenLayers.Protocol.HTTP({
           url: pois_url,
-          format: new OpenLayers.Format.GeoJSON()
+          "format": format
         }),
         styleMap: new OpenLayers.StyleMap(new OpenLayers.Style(null, {
           rules: [cluster_rule, icon_rule]
@@ -325,8 +328,8 @@
             tr = jQuery('<tr>');
             td = jQuery('<td>');
             collapse.append(poi_table);
-            td.append(btn).append();
-            td.append(collapse).append();
+            td.append(btn);
+            td.append(collapse);
             tr.append(td);
             table.append(tr);
           };

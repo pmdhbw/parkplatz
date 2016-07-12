@@ -395,7 +395,7 @@ class window.Map
     #  A title for the layer.
     #
     # @param string pois_url
-    #  URL from where to fetch the GeoJson.
+    #  URL from where to fetch the Data.
     #
     # @param int poi_type_id
     #  The id of the type of pois.
@@ -411,6 +411,9 @@ class window.Map
     #  If set to false the pois will be lazy loaded
     #  when needed.
     #
+    # @param OpenLayers.Format format
+    #  The format in which the pois are supplied.
+    #
     # @return OpenLayers.Layer.Vector
     #  The layer with the POIs.
     ##
@@ -421,6 +424,7 @@ class window.Map
         icon_url
         cluster_color
         display = true
+        format = new OpenLayers.Format.GeoJSON() 
     ) ->
         # Filter to distinguish between pois and clusters.
         is_cluster =  new OpenLayers.Filter.Comparison(
@@ -473,7 +477,7 @@ class window.Map
             ]
             protocol: new OpenLayers.Protocol.HTTP(
                 url: pois_url
-                format: new OpenLayers.Format.GeoJSON()
+                "format": format
             )
             styleMap: new OpenLayers.StyleMap(new OpenLayers.Style(
                 null
@@ -582,8 +586,8 @@ class window.Map
                     td = jQuery('<td>')
 
                     collapse.append(poi_table)
-                    td.append(btn).append()
-                    td.append(collapse).append()
+                    td.append(btn)
+                    td.append(collapse)
                     tr.append(td)
                     table.append(tr)
 
@@ -622,6 +626,7 @@ class window.Map
                 </tr>"
             else
                 html += "<tr><td colspan=\"2\">#{key}</td></tr>"
+
         html += '</tbody>'
         table.html(html)
 
