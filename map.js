@@ -62,7 +62,7 @@
         value = style[key];
         OpenLayers.Feature.Vector.style["default"][key] = value;
       }
-      jQuery("#" + this.map_div).before("<div class=\"mapDialog modal modal-centered\" id=\"" + this.map_div + "_marker_info\">\n    <div class=\"modal-dialog\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button\n                    type=\"button\"\n                    class=\"close\"\n                    data-dismiss=\"modal\"\n                    aria-label=\"Close\"\n                >\n                    <span aria-hidden=\"true\">&times;</span>\n                </button>\n                <h4 class=\"modal-title\">POI</h4>\n            </div>\n            <div class=\"modal-body\">\n                <table class=\"markerTable\"></table>\n            </div>\n            <div class=\"modal-footer\">\n                <button\n                    type=\"button\"\n                    class=\"btn btn-inverse\"\n                    data-dismiss=\"modal\"\n                >\n                    Schließen\n                </button>\n            </div>\n        </div>\n    </div>\n</div>\n\n<div class=\"MapButtons\">\n    <button\n        class=\"btn btn-info\"\n        type=\"button\"\n        data-toggle=\"popover\"\n        data-animation=\"false\"\n        data-placement=\"bottom\"\n        data-content=\"<div id='" + this.map_div + "_map_settings_list'></div>\"\n        data-html=\"true\"\n        id=\"" + this.map_div + "_settings\"\n    >\n        <i class=\"fui-gear\"></i>\n        Einstellungen\n    </button>\n    <button\n        class=\"pois-settings btn btn-primary\"\n        type=\"button\"\n        data-toggle=\"popover\"\n        data-animation=\"false\"\n        data-placement=\"bottom\"\n        data-html=\"true\"\n        data-content=\"<div id='" + this.map_div + "_pois_settings_list'></div>\"\n        id=\"" + this.map_div + "_pois_settings\"\n    >\n        <i class=\"fui-location\"></i>\n        Punkte\n    </button>\n\n    <br>\n\n    <div class=\"ZoomButtons\">\n            <button\n                id=\"" + this.map_div + "_zoom_in\"\n                class=\"ZoomInButton btn btn-inverse\"\n            >\n                <i class=\"glyphicon glyphicon-plus\"></i>\n            </button>\n            <button\n                id=\"" + this.map_div + "_zoom_out\"\n                class=\"ZoomOutButton btn btn-inverse\"\n            >\n                <i class=\"glyphicon glyphicon-minus\"></i>\n            </button>\n    </div>\n    <div id =\"" + this.map_div + "_map_move\" class=\"MapMove\">\n        <button class=\"north\" title=\"nach Norden\"></button>\n        <button class=\"east\" title=\"nach Osten\"></button>\n        <button class=\"south\" title=\"nach Süden\"></button>\n        <button class=\"west\" title=\"nach Westen\"></button>\n    </div>\n</div>");
+      jQuery("#" + this.map_div).before("<div class=\"mapDialog modal modal-centered\" id=\"" + this.map_div + "_marker_info\">\n    <div class=\"modal-dialog\">\n        <div class=\"modal-content\">\n            <div class=\"modal-header\">\n                <button\n                    type=\"button\"\n                    class=\"close\"\n                    data-dismiss=\"modal\"\n                    aria-label=\"Close\"\n                >\n                    <span aria-hidden=\"true\">&times;</span>\n                </button>\n                <h4 class=\"modal-title\">POI</h4>\n            </div>\n            <div class=\"modal-body\">\n                <div class=\"markerTable\"></div>\n            </div>\n            <div class=\"modal-footer\">\n                <button\n                    type=\"button\"\n                    class=\"btn btn-inverse\"\n                    data-dismiss=\"modal\"\n                >\n                    Schließen\n                </button>\n            </div>\n        </div>\n    </div>\n</div>\n\n<div class=\"MapButtons\">\n    <button\n        class=\"btn btn-info\"\n        type=\"button\"\n        data-toggle=\"popover\"\n        data-animation=\"false\"\n        data-placement=\"bottom\"\n        data-content=\"<div id='" + this.map_div + "_map_settings_list'></div>\"\n        data-html=\"true\"\n        id=\"" + this.map_div + "_settings\"\n    >\n        <i class=\"fui-gear\"></i>\n        Einstellungen\n    </button>\n    <button\n        class=\"pois-settings btn btn-primary\"\n        type=\"button\"\n        data-toggle=\"popover\"\n        data-animation=\"false\"\n        data-placement=\"bottom\"\n        data-html=\"true\"\n        data-content=\"<div id='" + this.map_div + "_pois_settings_list'></div>\"\n        id=\"" + this.map_div + "_pois_settings\"\n    >\n        <i class=\"fui-location\"></i>\n        Punkte\n    </button>\n\n    <br>\n\n    <div class=\"ZoomButtons\">\n            <button\n                id=\"" + this.map_div + "_zoom_in\"\n                class=\"ZoomInButton btn btn-inverse\"\n            >\n                <i class=\"glyphicon glyphicon-plus\"></i>\n            </button>\n            <button\n                id=\"" + this.map_div + "_zoom_out\"\n                class=\"ZoomOutButton btn btn-inverse\"\n            >\n                <i class=\"glyphicon glyphicon-minus\"></i>\n            </button>\n    </div>\n    <div id =\"" + this.map_div + "_map_move\" class=\"MapMove\">\n        <button class=\"north\" title=\"nach Norden\"></button>\n        <button class=\"east\" title=\"nach Osten\"></button>\n        <button class=\"south\" title=\"nach Süden\"></button>\n        <button class=\"west\" title=\"nach Westen\"></button>\n    </div>\n</div>");
       settings = jQuery("#" + this.map_div + "_settings");
       pois_settings = jQuery("#" + this.map_div + "_pois_settings");
       settings.popover();
@@ -130,12 +130,12 @@
     }
 
     Map.prototype.addShapes = function(title, shapes) {
-      var feature, i, len, shape, vector, wkt;
+      var feature, j, len, shape, vector, wkt;
       jQuery.extend(this._wkt_shapes, shapes);
       vector = new OpenLayers.Layer.Vector(title);
       this._ol_map.addLayer(vector);
-      for (i = 0, len = shapes.length; i < len; i++) {
-        shape = shapes[i];
+      for (j = 0, len = shapes.length; j < len; j++) {
+        shape = shapes[j];
         wkt = new OpenLayers.Format.WKT();
         feature = wkt.read(shape);
         feature.geometry.transform(this._ol_map.displayProjection, this._ol_map.getProjectionObject());
@@ -159,6 +159,26 @@
       return this._ol_map.updateSize();
     };
 
+    Map.prototype.removeLayer = function(layer) {
+      var i, j, l, len, ref, ref1;
+      ref = this._poi_layers;
+      for (i in ref) {
+        l = ref[i];
+        if (l === layer) {
+          delete this._poi_layers[i];
+        }
+      }
+      ref1 = this._overlay_layers;
+      for (i = j = 0, len = ref1.length; j < len; i = ++j) {
+        l = ref1[i];
+        if (l === layer) {
+          this._overlay_layers.splice(i, 1);
+        }
+      }
+      this._poi_select_feature.setLayer(obj_to_arr(this._poi_layers));
+      return this._ol_map.removeLayer(layer);
+    };
+
     Map.prototype.dragVector = function(layer, callback) {
       var drag, options;
       options = {
@@ -176,11 +196,11 @@
     };
 
     Map.prototype.moveFeatureInVector = function(layer, lon, lat) {
-      var feature, i, len, lonlat, ref, results;
+      var feature, j, len, lonlat, ref, results;
       ref = layer.features;
       results = [];
-      for (i = 0, len = ref.length; i < len; i++) {
-        feature = ref[i];
+      for (j = 0, len = ref.length; j < len; j++) {
+        feature = ref[j];
         lonlat = new OpenLayers.LonLat(lon, lat).transform(this._ol_map.displayProjection, this._ol_map.projection);
         results.push(feature.move(lonlat));
       }
@@ -296,22 +316,23 @@
     };
 
     Map.prototype._markerClick = function(feature, modal, posX, posY) {
-      var fn, i, len, poi, ref, table;
-      table = modal.find('.markerTable');
-      table.empty();
+      var fn, j, len, poi, ref, table_div;
+      table_div = modal.find('.markerTable');
+      table_div.empty();
       if ((feature.attributes.count != null) && feature.attributes.count > 1) {
         modal.find('.modal-title').text('Sammlung');
         ref = feature.cluster;
         fn = (function(_this) {
           return function(poi) {
-            var btn, collapse, id, poi_table, td, tr;
+            var btn, collapse, id;
             id = "cluster-" + (Math.floor(Math.random() * 10000)) + "-" + (new Date().getTime() % 1000);
             btn = jQuery('<button>', {
               'html': "" + poi.attributes.Name,
               'class': 'btn btn-info btn-block',
               'type': 'button',
               'data-target': "#" + id,
-              'data-toggle': 'collapse'
+              'data-toggle': 'collapse',
+              'style': 'margin-bottom: 10px; margin-top: 10px;'
             });
             collapse = jQuery('<div>', {
               'class': 'collapse no-transition',
@@ -323,31 +344,30 @@
             collapse.on('hidden.bs.collapse', function() {
               modal.trigger('dialog-resize');
             });
-            poi_table = jQuery('<table>');
-            _this._createFeatureTable(poi_table, poi);
-            tr = jQuery('<tr>');
-            td = jQuery('<td>');
-            collapse.append(poi_table);
-            td.append(btn);
-            td.append(collapse);
-            tr.append(td);
-            table.append(tr);
+            _this._createFeatureTable(collapse, poi);
+            table_div.append(btn);
+            table_div.append(collapse);
           };
         })(this);
-        for (i = 0, len = ref.length; i < len; i++) {
-          poi = ref[i];
+        for (j = 0, len = ref.length; j < len; j++) {
+          poi = ref[j];
           fn(poi);
         }
       } else {
         modal.find('.modal-title').html(feature.attributes.Name);
-        this._createFeatureTable(table, feature);
+        this._createFeatureTable(table_div, feature);
       }
-      return modal.modal('show');
+      modal.modal('show');
+      return jQuery.event.trigger({
+        type: 'markerClicked',
+        "feature": feature,
+        "modal": modal
+      });
     };
 
-    Map.prototype._createFeatureTable = function(table, feature) {
+    Map.prototype._createFeatureTable = function(table_div, feature) {
       var html, key, ref, value;
-      html = '<tbody>';
+      html = '<table>';
       ref = feature.attributes;
       for (key in ref) {
         value = ref[key];
@@ -357,8 +377,8 @@
           html += "<tr><td colspan=\"2\">" + key + "</td></tr>";
         }
       }
-      html += '</tbody>';
-      table.html(html);
+      html += '</table>';
+      table_div.append(html);
     };
 
     Map.prototype._addLayerToList = function(layer, list, change_callback) {
@@ -397,7 +417,7 @@
     };
 
     Map.prototype._showMapSettings = function() {
-      var i, j, layer, len, len1, list, ref, ref1;
+      var j, k, layer, len, len1, list, ref, ref1;
       list = jQuery("#" + this.map_div + "_map_settings_list");
       list.empty();
       jQuery('<strong>', {
@@ -405,8 +425,8 @@
       }).appendTo(list);
       jQuery('<br>').appendTo(list);
       ref = this._ol_map.getLayersBy('isBaseLayer', true);
-      for (i = 0, len = ref.length; i < len; i++) {
-        layer = ref[i];
+      for (j = 0, len = ref.length; j < len; j++) {
+        layer = ref[j];
         this._addLayerToList(layer, list);
       }
       jQuery('<strong>', {
@@ -414,8 +434,8 @@
       }).appendTo(list);
       jQuery('<br>').appendTo(list);
       ref1 = this._overlay_layers;
-      for (j = 0, len1 = ref1.length; j < len1; j++) {
-        layer = ref1[j];
+      for (k = 0, len1 = ref1.length; k < len1; k++) {
+        layer = ref1[k];
         this._addLayerToList(layer, list);
       }
     };

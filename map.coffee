@@ -99,7 +99,7 @@ class window.Map
                             <h4 class="modal-title">POI</h4>
                         </div>
                         <div class="modal-body">
-                            <table class="markerTable"></table>
+                            <div class="markerTable"></div>
                         </div>
                         <div class="modal-footer">
                             <button
@@ -287,6 +287,22 @@ class window.Map
     ##
     updateSize: ()->
         @_ol_map.updateSize()
+
+    ##
+    # Wrapper around OpenLayers.Map.removeLayer.
+    # @see http://dev.openlayers.org/docs/files/OpenLayers/Map-js.html#OpenLayers.Map.removeLayer
+    ##
+    removeLayer: (layer)->
+        for i,l of @_poi_layers
+          if l is layer
+            delete @_poi_layers[i]
+
+        for l,i in @_overlay_layers
+          if l is layer
+            @_overlay_layers.splice(i, 1)
+
+        @_poi_select_feature.setLayer(obj_to_arr(@_poi_layers))
+        @_ol_map.removeLayer(layer)
 
     ##
     # Make elements in given layer draggable call given callback with lat/lon when feature is moved.
@@ -543,10 +559,10 @@ class window.Map
     ##
     _markerClick: (feature, modal, posX, posY) ->
         # Find marker table in given dialog.
-        table = modal.find('.markerTable')
+        table_div = modal.find('.markerTable')
 
         # Empty table
-        table.empty()
+        table_div.empty()
 
         # Cluster.
         if feature.attributes.count? and feature.attributes.count > 1
@@ -564,6 +580,7 @@ class window.Map
                         'type': 'button'
                         'data-target': "##{id}",
                         'data-toggle': 'collapse'
+                        'style': 'margin-bottom: 10px; margin-top: 10px;'
                     )
 
                     collapse = jQuery('<div>'
@@ -579,42 +596,39 @@ class window.Map
                         modal.trigger('dialog-resize')
                         return
 
-                    poi_table = jQuery('<table>')
-                    @_createFeatureTable(poi_table, poi)
-
-                    tr = jQuery('<tr>')
-                    td = jQuery('<td>')
-
-                    collapse.append(poi_table)
-                    td.append(btn)
-                    td.append(collapse)
-                    tr.append(td)
-                    table.append(tr)
+                    @_createFeatureTable(collapse, poi)
+                    table_div.append(btn)
+                    table_div.append(collapse)
 
                     return
 
         # Poi.
         else
             modal.find('.modal-title').html(feature.attributes.Name)
-            @_createFeatureTable(table, feature)
+            @_createFeatureTable(table_div, feature)
 
 
         # Show modal with information.
         modal.modal('show')
 
+        jQuery.event.trigger
+            type: 'markerClicked'
+            "feature": feature
+            "modal": modal
+
     ##
     # Create a table displaying information about a feature.
     #
-    # @param object table
-    #  The table into which to write the information.
+    # @param object table_div
+    #  The object to append the table to.
     #
     # @param OpenLayers.Feature feature
     #  The feature containg the info to display.
     ##
-    _createFeatureTable: (table, feature)->
+    _createFeatureTable: (table_div, feature)->
         # Output all attributes of given feature
         # as table.
-        html = '<tbody>'
+        html = '<table>'
         for key, value of feature.attributes
             # Output attributes with key and value into two cells
             # and attributes with one key into a single row.
@@ -627,8 +641,8 @@ class window.Map
             else
                 html += "<tr><td colspan=\"2\">#{key}</td></tr>"
 
-        html += '</tbody>'
-        table.html(html)
+        html += '</table>'
+        table_div.append(html)
 
         return
 

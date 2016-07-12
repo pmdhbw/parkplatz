@@ -2,7 +2,7 @@
 (function() {
   window.CustomXMLLotFormat = OpenLayers.Class(OpenLayers.Format.XML, {
     read: function(doc) {
-      var attributes, child, features, geom, i, label, lat, len, lon, lot, map, marker, ref, xml_key;
+      var attributes, child, features, geom, i, label, lat, len, lon, lot, map, marker, nr, ref, xml_key;
       if (typeof doc === "string") {
         doc = OpenLayers.Format.XML.prototype.read.apply(this, [data]);
       }
@@ -29,6 +29,8 @@
           "Preis für 1 Tag": "tarif1Tag",
           "Preis für 1 Woche": "tarif1Woche"
         };
+        nr = $(lot).children('parkraumKennung').text();
+        attributes["Name"] = "Parkplatz Nr. " + nr;
         for (label in map) {
           xml_key = map[label];
           child = $(lot).children(xml_key);
@@ -36,7 +38,6 @@
             attributes[label] = $(child).text();
           }
         }
-        attributes["Name"] = "Parkplatz Nr. " + ($(lot).children('parkraumKennung').text());
         marker = new OpenLayers.Feature.Vector(geom, attributes);
         features.push(marker);
       }
@@ -46,7 +47,7 @@
 
   window.CustomXMLDBStationFormat = OpenLayers.Class(OpenLayers.Format.XML, {
     read: function(doc) {
-      var attributes, child, features, geom, i, label, lat, len, lon, map, marker, ref, station, xml_key;
+      var attributes, child, features, geom, i, label, lat, len, lon, map, marker, name, ref, station, xml_key;
       if (typeof doc === "string") {
         doc = OpenLayers.Format.XML.prototype.read.apply(this, [data]);
       }
@@ -59,11 +60,13 @@
         geom = new OpenLayers.Geometry.Point(lon, lat);
         attributes = {};
         map = {
-          "Name": "station",
           "Straße": "street",
           "PLZ": "plz",
-          "Stadt": "cityTitle"
+          "Stadt": "cityTitle",
+          "&nbsp;": ""
         };
+        name = $(station).children('station').text();
+        attributes["Name"] = "Bahnhof " + name;
         for (label in map) {
           xml_key = map[label];
           child = $(station).children(xml_key);
@@ -71,6 +74,7 @@
             attributes[label] = $(child).text();
           }
         }
+        attributes["<button\n    data-longitude=\"" + lon + "\"\n    data-latitude=\"" + lat + "\"\n    class=\"station-btn btn btn-danger btn-block btn-lg\"\n>\n    <i class=\"fui-info-circle\"></i>\n    &nbsp;Parkplätze in der Nähe\n</button>"] = '';
         marker = new OpenLayers.Feature.Vector(geom, attributes);
         features.push(marker);
       }

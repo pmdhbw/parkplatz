@@ -27,12 +27,13 @@ window.CustomXMLLotFormat = OpenLayers.Class OpenLayers.Format.XML,
                 "Preis für 1 Tag" : "tarif1Tag"
                 "Preis für 1 Woche" : "tarif1Woche"
 
+            nr = $(lot).children('parkraumKennung').text() 
+            attributes["Name"] = "Parkplatz Nr. #{nr}"
+
             for label,xml_key of map
                 child = $(lot).children(xml_key)
                 if child.length > 0 && !$(child).is(':empty') 
                     attributes[label] = $(child).text()
-
-            attributes["Name"] = "Parkplatz Nr. #{$(lot).children('parkraumKennung').text()}"
 
             marker = new OpenLayers.Feature.Vector(geom, attributes)
             features.push(marker)
@@ -54,15 +55,29 @@ window.CustomXMLDBStationFormat = OpenLayers.Class OpenLayers.Format.XML,
             
             attributes = {}
             map =
-                "Name": "station"
                 "Straße" : "street"
                 "PLZ" : "plz"
                 "Stadt"  : "cityTitle"
+                "&nbsp;" : ""
+
+            name = $(station).children('station').text() 
+            attributes["Name"] = "Bahnhof #{name}"
             
             for label,xml_key of map
                 child = $(station).children(xml_key)
                 if child.length > 0 && !$(child).is(':empty')
                     attributes[label] = $(child).text()
+
+            attributes["""
+                <button
+                    data-longitude="#{lon}"
+                    data-latitude="#{lat}"
+                    class="station-btn btn btn-danger btn-block btn-lg"
+                >
+                    <i class="fui-info-circle"></i>
+                    &nbsp;Parkplätze in der Nähe
+                </button>
+            """] = ''
 
             marker = new OpenLayers.Feature.Vector(geom, attributes)
             features.push(marker)

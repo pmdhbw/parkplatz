@@ -21,8 +21,20 @@ $(document).ready(function () {
     // Load options for stations and initialize map
     startTransform("XSLT_Stations.xsl","parkplatz/web/app.php/dbstation","station");
 
-    jQuery('.update').change(function () {
-      update();
+    jQuery('#station').change(function () {
+        var option = jQuery(this).children('option:selected');
+        if (jQuery(option).text() == 'Bitte auswählen') {
+            resetMap();
+        } else {
+            update(option);
+        }
+    });
+
+    jQuery(document).on('markerClicked', function(e) {
+        e.modal.on('click', '.station-btn', function() {
+            update(this);
+            e.modal.modal('hide');
+        });
     });
 
     jQuery('.updateSelect').change(function () {
@@ -30,15 +42,48 @@ $(document).ready(function () {
     });
 
     jQuery.getJSON('config.json').done(function (config) {
-       window.Config = config;
+        window.Config = config;
+        window.Map = new Map("map");
     
-       var map = new Map("map");
-       var lot_layer = map.addPois('Parkpätze', "parkplatz/web/dbrange?radius=500&long=10.578239&lat=49.298032", -1, "parkinggarage.png", "#003399", 1, new CustomXMLLotFormat());
-       var station_layer = map.addPois('Bahnhöfe', "parkplatz/web/dbrange?radius=500&long=10.578239&lat=49.298032", -2, "dbstation.png", "#003399", 1, new CustomXMLDBStationFormat());
-       // var poi_layer = map.addPois('POI', "demo.geo.json", -1, "parkinggarage.png", "#003399", 1);
-       map.setCenter(10.578239, 49.298032, 15)
+        resetMap();
     });
 });
+
+function resetMap() {
+    if (window.StationLayer) {
+        window.Map.removeLayer(window.StationLayer);
+    }
+
+    if (window.LotLayer) {
+        window.Map.removeLayer(window.LotLayer);
+    }
+
+    if (window.SuchbereichLayer) {
+        window.Map.removeLayer(window.SuchbereichLayer);
+    }
+
+    window.LotLayer = window.Map.addPois(
+        'Parkpätze',
+        "parkplatz/web/app.php/dbstation",
+        2,
+        "parkinggarage.png",
+        "#003399",
+        1,
+        new CustomXMLLotFormat()
+    );
+
+    window.StationLayer = window.Map.addPois(
+     'Bahnhöfe',
+     "parkplatz/web/app.php/dbstation",
+     1,
+     "dbstation.png",
+     "#C20C0C",
+     1,
+     new CustomXMLDBStationFormat()
+   );
+
+   window.Map.setCenter(10.20, 51, 6);
+}
 
 function init(){
     //asynchronus request to start app.php/init
@@ -162,13 +207,12 @@ function updateSelect() {
     jQuery('#station').select2();
 }
 
-function update() {
+function update(elem) {
     //update table after selection of station or radius has changed
 
     //start by collecting the current data for executing the radius search
-    var station = document.getElementById("station");
-    var long = station.options[station.selectedIndex].dataset.longitude;
-    var lat = station.options[station.selectedIndex].dataset.latitude;
+    var long = jQuery(elem).attr('data-longitude');
+    var lat = jQuery(elem).attr('data-latitude'); 
     var radius = document.getElementById("radius").value;
 
     //concatenate URL
@@ -178,6 +222,45 @@ function update() {
 
     //load XML from php and transformation
     startTransform("XSLT_Lots.xsl",url,"table");
+
+    if (window.StationLayer) {
+        window.Map.removeLayer(window.StationLayer);
+    }
+
+    if (window.LotLayer) {
+        window.Map.removeLayer(window.LotLayer);
+    }
+
+    if (window.SuchbereichLayer) {
+        window.Map.removeLayer(window.SuchbereichLayer);
+    }
+
+    window.SuchbereichLayer = window.Map.addShapes(
+        'Suchbereich',
+        ['CIRCLE (' + long + ' ' + lat + ' ' + radius + ')']
+    );
+
+    window.LotLayer = window.Map.addPois(
+        'Parkpätze',
+        url,
+        2,
+        "parkinggarage.png",
+        "#003399",
+        1,
+        new CustomXMLLotFormat()
+    );
+
+    window.StationLayer = window.Map.addPois(
+        'Bahnhöfe',
+        url,
+        1,
+        "dbstation.png",
+        "#C20C0C",
+        1,
+        new CustomXMLDBStationFormat()
+    );
+
+    window.Map.zoomToExtent(window.SuchbereichLayer);
 }
 
 function startTransform(xslpath,xmlurl,id){
