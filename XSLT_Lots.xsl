@@ -1,44 +1,62 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <xsl:stylesheet version="1.0" xmlns:xsl="http://www.w3.org/1999/XSL/Transform">
 <xsl:template match="/">
-  <div class="list-group" data-tarif30Min="{tarif30Min}" data-tarif1Std="{tarif1Std}" data-tarif1Tag="{tarif1Tag}" data-tarif1Woche="{tarif1Woche}" data-comment="{parkraumBemerkung}">
-	<xsl:for-each select="sites/lot">   
-
-		 <div class="list-group-item"><xsl:value-of select="parkraumKennung"/></div>
-            <div class="list-group-item"><xsl:value-of select="parkraumParkart"/></div>
-            <div class="list-group-item"><xsl:value-of select="parkraumZufahrt"/></div>
-            <div class="list-group-item"><xsl:value-of select="parkraumEntfernung"/></div>
-            <div class="list-group-item"><xsl:value-of select="parkraumStellplaetze"/></div>
-            <div class="list-group-item" data-value="{category}"><xsl:value-of select="text"/></div>
-            <div class="list-group-item"><xsl:value-of select="parkraumOeffnungszeiten"/></div>
-            <div class="list-group-item">
-              <xsl:variable name="betreiber" select="parkraumBetreiber"/>
-              <xsl:if test="contains($betreiber, 'www.')">
-                <xsl:variable name="betreiberName" select="substring-before($betreiber, '(www.')"/>
-                <xsl:value-of select="$betreiberName"/>
-                (<a target="_blank">
-                <xsl:attribute name="href">
-                <xsl:value-of select="concat('http://', substring-before(substring-after($betreiber, '('),')'))"/>
-                </xsl:attribute>Link</a>)
-              </xsl:if>
-              <xsl:if test="not(contains($betreiber, 'www.'))">
-                <xsl:value-of select="$betreiber"/>
-              </xsl:if>
+  <div
+    class="list-group lots-list"
+    data-tarif30Min="{tarif30Min}"
+    data-tarif1Std="{tarif1Std}"
+    data-tarif1Tag="{tarif1Tag}"
+    data-tarif1Woche="{tarif1Woche}"
+    data-comment="{parkraumBemerkung}"
+  >
+    <xsl:for-each select="sites/lot">   
+      <xsl:variable name="id" select="generate-id()"/>
+      <div id="{$id}" class="modal mapDialog" role="dialog">
+        <div class="modal-dialog">
+          <div class="modal-content">
+            <div class="modal-header">
+              <button aria-label="Close" data-dismiss="modal" class="close" type="button">
+                <span aria-hidden="true">×</span>
+              </button>
+              <h4 class="modal-title">Parkplatz Nr. P3</h4>
             </div>
-            <div class="list-group-item"><xsl:value-of select="zahlungMedien"/></div>
-            <div class="list-group-item">
-              <xsl:choose>
-                <xsl:when test="tarif30Min = '' and tarif1Std = '' and tarif1Tag = '' and tarif1Woche = ''">Ja</xsl:when>
-                <xsl:otherwise>Nein</xsl:otherwise>
-              </xsl:choose>
+            <div class="modal-body">
+              <div class="markerTable">
+                <table>
+                  <tbody>
+                    <xsl:if test="parkraumKennung[text()]"><tr><th>Name</th><td>Parkplatz Nr. <xsl:value-of select="parkraumKennung"/></td></tr></xsl:if>
+                    <xsl:if test="parkraumKennung[text()]"><tr><th>Nr</th><td><xsl:value-of select="parkraumKennung"/></td></tr></xsl:if>
+                    <xsl:if test="parkraumParkart[text()]"><tr><th>Parkart</th><td><xsl:value-of select="parkraumParkart"/></td></tr></xsl:if>
+                    <xsl:if test="parkraumZufahrt[text()]"><tr><th>Zufahrt</th><td><xsl:value-of select="parkraumZufahrt"/></td></tr></xsl:if>
+                    <xsl:if test="parkraumEntfernung[text()]"><tr><th>Entfernung</th><td><xsl:value-of select="parkraumEntfernung"/></td></tr></xsl:if>
+                    <xsl:if test="parkraumStellplaetze[text()]"><tr><th>Stellplätze</th><td><xsl:value-of select="parkraumStellplaetze"/></td></tr></xsl:if>
+                    <xsl:if test="parkraumOeffnungszeiten[text()]"><tr><th>Öffnungszeiten</th><td><xsl:value-of select="parkraumOeffnungszeiten"/></td></tr></xsl:if>
+                    <xsl:if test="parkraumBetreiber[text()]"><tr><th>Betreiber</th><td><xsl:value-of select="parkraumBetreiber"/></td></tr></xsl:if>
+                    <xsl:if test="zahlungMedien[text()]"><tr><th>Zahlung</th><td><xsl:value-of select="zahlungMedien"/></td></tr></xsl:if>
+                    <xsl:if test="tarif30Min[text()]"><tr><th>Preis für 30 Minuten</th><td><xsl:value-of select="tarif30Min"/></td></tr></xsl:if>
+                    <xsl:if test="tarif1Std[text()]"><tr><th>Preis für 1 Stunde</th><td><xsl:value-of select="tarif1Std"/></td></tr></xsl:if>
+                    <xsl:if test="tarif1Tag[text()]"><tr><th>Preis für 1 Tag</th><td><xsl:value-of select="tarif1Tag"/></td></tr></xsl:if>
+                    <xsl:if test="tarif1Woche[text()]"><tr><th>Preis für 1 Woche</th><td><xsl:value-of select="tarif1Woche"/></td></tr></xsl:if>
+                  </tbody>
+                </table>
+              </div>
             </div>
-
-	</xsl:for-each>
-	
-
-
-</div>
-	  
-
+            <div class="modal-footer">
+              <button data-dismiss="modal" class="btn btn-inverse" type="button">
+                Schließen
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <a class="list-group-item" data-target="#{$id}" data-toggle="modal">
+        <span class="badge pull-right"><xsl:value-of select="parkraumEntfernung"/> m</span>
+        <img width="32" height="37" src="img/parkinggarage.png"/>
+        <strong><xsl:value-of select="parkraumZufahrt"/></strong><br/>
+        <xsl:if test="parkraumStellplaetze[text()]">Stellplätze: <strong><xsl:value-of select="parkraumStellplaetze"/></strong><br/></xsl:if>
+        <xsl:if test="parkraumOeffnungszeiten[text()]">Öffnungszeiten: <strong><xsl:value-of select="parkraumOeffnungszeiten"/></strong><br/></xsl:if>
+      </a>
+    </xsl:for-each>
+  </div>
 </xsl:template>
 </xsl:stylesheet>

@@ -125,7 +125,6 @@
         url = "parkplatz/web/app.php/dbrange?radius=" + radius + "&long=" + lon + "&lat=" + lat;
         wkt = "CIRCLE (" + lon + " " + lat + " " + radius + ")";
         this.loadLotLayer(url);
-        this.loadStationLayer(url);
         this.setSearchAreaLayer(wkt);
         this._map.zoomToExtent(this._search_area_layer);
         return this.loadXML("XSLT_Lots.xsl", url, "table");

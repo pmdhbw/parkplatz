@@ -25,7 +25,10 @@
 }
 
 .filter .bootstrap-switch {
-  position: absolute;
-  left: 50%;
-  margin-left: -40px;
+  float: right;
+}
+
+.lots-list .list-group-item {
+  border-left: none;
+  border-right: none;
 }

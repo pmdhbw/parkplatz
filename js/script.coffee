@@ -166,7 +166,6 @@ class window.Main
             # Update map.
             wkt = "CIRCLE (#{lon} #{lat} #{radius})"
             @loadLotLayer(url)
-            @loadStationLayer(url)
             @setSearchAreaLayer(wkt)
             @_map.zoomToExtent(@_search_area_layer)
 
