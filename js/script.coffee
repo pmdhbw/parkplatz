@@ -83,7 +83,7 @@ class window.Main
             'Parkplätze',
             url,
             2,
-            'parkinggarage.png',
+            'img/parkinggarage.png',
             '#003399',
             1,
             new CustomXMLLotFormat()
@@ -100,7 +100,7 @@ class window.Main
             'Bahnhöfe',
             url,
             1,
-            'dbstation.png',
+            'img/dbstation.png',
             '#C20C0C',
             1,
             new CustomXMLDBStationFormat()

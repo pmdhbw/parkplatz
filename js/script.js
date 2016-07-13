@@ -66,14 +66,14 @@
       if (this._map_lot_layer != null) {
         this._map.removeLayer(this._map_lot_layer);
       }
-      return this._map_lot_layer = this._map.addPois('Parkplätze', url, 2, 'parkinggarage.png', '#003399', 1, new CustomXMLLotFormat());
+      return this._map_lot_layer = this._map.addPois('Parkplätze', url, 2, 'img/parkinggarage.png', '#003399', 1, new CustomXMLLotFormat());
     };
 
     Main.prototype.loadStationLayer = function(url) {
       if (this._map_station_layer != null) {
         this._map.removeLayer(this._map_station_layer);
       }
-      return this._station_lot_layer = this._map.addPois('Bahnhöfe', url, 1, 'dbstation.png', '#C20C0C', 1, new CustomXMLDBStationFormat());
+      return this._station_lot_layer = this._map.addPois('Bahnhöfe', url, 1, 'img/dbstation.png', '#C20C0C', 1, new CustomXMLDBStationFormat());
     };
 
     Main.prototype.setSearchAreaLayer = function(wkt) {

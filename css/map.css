@@ -57,7 +57,7 @@
     display: inline-block;
     margin-left: 10px;
     margin-top: 5px;
-    background: url('four_way.png');
+    background: url('../img/four_way.png');
     position: relative;
 }
 
