@@ -48,12 +48,16 @@
           <div class="row">
             <div class="col-lg-8"><label for="radius">Suchradius</label></div>
             <div class="col-lg-4">
-              <input
-                class="form-control updateSelect"
-                type="text"
+              <select
                 id="radius"
-                value="500"
+                class="form-control select select-primary select2-offscreen filter"
+                data-toggle="select"
               >
+                <option value="500">500 m</option>
+                <option selected="selected" value="1000">1 km</option>
+                <option value="5000">5 km</option>
+                <option value="10000">10 km</option>
+              </select>
             </div>
           </div>
 
@@ -62,7 +66,7 @@
             <div class="col-lg-4">
               <select
                 id="free"
-                class="form-control select select-primary select2-offscreen updateSelect"
+                class="form-control select select-primary select2-offscreen filter"
                 data-toggle="select"
               >
                 <option selected="selected" value="0">egal</option>
@@ -79,7 +83,7 @@
             <div class="col-lg-4">
               <select
                 id="pay"
-                class="form-control select select-primary select2-offscreen updateSelect"
+                class="form-control select select-primary select2-offscreen filter"
                 data-toggle="select"
               >
                 <option selected="selected" value="0">egal</option>
@@ -95,9 +99,9 @@
             <div class="col-lg-4">
               <input
                 id="house"
-                class="form-control updateSelect"
+                class="form-control filter"
                 type="checkbox"
-                data-toggle="switch"
+                data-toggle="checkbox"
                 data-off-text="<span class='fui-cross'></span>"
                 data-on-text="<span class='fui-check'></span>"
               >
@@ -109,23 +113,9 @@
             <div class="col-lg-4">
               <input
                 id="open"
-                class="form-control updateSelect"
+                class="form-control filter"
                 type="checkbox"
-                data-toggle="switch"
-                data-off-text="<span class='fui-cross'></span>"
-                data-on-text="<span class='fui-check'></span>"
-              >
-            </div>
-          </div>
-
-          <div class="row">
-            <div class="col-lg-8"><label for="freeofcharge">zeige nur kostenlose</label></div>
-            <div class="col-lg-4">
-              <input
-                id="freeofcharge"
-                class="form-control updateSelect"
-                type="checkbox"
-                data-toggle="switch"
+                data-toggle="checkbox"
                 data-off-text="<span class='fui-cross'></span>"
                 data-on-text="<span class='fui-check'></span>"
               >

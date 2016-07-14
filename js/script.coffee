@@ -13,6 +13,13 @@ class window.Main
         @_map_search_area_layer = undefined
 
         $(document).ready ()=>
+            # Asynchronus request to start app.php/init.
+            # if database is old it will be refreshed here,
+            # hopefully before document ready is called
+            # otherwise we rely on database integrity
+            $.ajax
+                'url': "parkplatz/web/app.php/init"
+
             # Load global config.
             $.ajax
                 'url': 'config.json'
@@ -27,7 +34,9 @@ class window.Main
                     @loadXML(
                         "XSLT_Stations.xsl",
                         "parkplatz/web/app.php/dbstation",
-                        "station"
+                        "station",
+                        ()->
+                            $('#station').select2()
                     )
 
                     $('#station').change ()=>
@@ -37,10 +46,18 @@ class window.Main
                         else
                             @update(option)
 
+                    $('#radius').change ()=>
+                        @update('#station option:selected')
+
+                    $('.filter').change ()=>
+                        @applyFiltersOnList()
+                        @applyFiltersOnMap()
+
                     $(document).on 'markerClicked', (e)=>
                         e.modal.find('.station-btn').click ()=>
                             e.modal.modal('hide')
                             `_this.update(this)`
+        
 
     ##
     # Init JS generated UI elements.
@@ -85,9 +102,12 @@ class window.Main
             2,
             'img/parkinggarage.png',
             '#003399',
-            1,
-            new CustomXMLLotFormat()
+            true,
+            new CustomXMLLotFormat(),
+            false
         )
+
+        @applyFiltersOnMap()
 
     ##
     # Loads the xml data from given url into the station layer.
@@ -96,13 +116,13 @@ class window.Main
         if @_map_station_layer?
             @_map.removeLayer(@_map_station_layer)
 
-        @_station_lot_layer = @_map.addPois(
+        @_map_station_layer = @_map.addPois(
             'Bahnhöfe',
             url,
             1,
             'img/dbstation.png',
             '#C20C0C',
-            1,
+            true,
             new CustomXMLDBStationFormat()
         )
 
@@ -121,7 +141,7 @@ class window.Main
     ##
     # Load given xml and transform it using xsl and write the result into given container.
     ##
-    loadXML: (xslurl, xmlurl, container_id)->
+    loadXML: (xslurl, xmlurl, container_id, callback)->
         $.ajax
             "url": xmlurl
             "dataType": "xml"
@@ -131,6 +151,9 @@ class window.Main
                     "dataType": "xml"
                     "success": (xsl)=>
                         @xsltTransform(xml, xsl, container_id)
+                        if callback?
+                            callback()
+                            return
 
     ##
     # Transform given xml with given xsl document and write the result into given container.
@@ -159,6 +182,10 @@ class window.Main
         lat = parseFloat($(element).attr('data-latitude'))
         radius = parseInt($('#radius').val())
 
+        $("#station option[data-longitude='#{lon}'][data-latitude='#{lat}']") \
+        .attr('selected','selected')
+        $('#station').select2()
+
         if lon && lat && radius
             # Url to xml that contains info about stations.
             url = "parkplatz/web/app.php/dbrange?radius=#{radius}&long=#{lon}&lat=#{lat}" 
@@ -173,7 +200,142 @@ class window.Main
             @loadXML(
                 "XSLT_Lots.xsl",
                 url,
-                "table"
+                "table",
+                ()=>
+                    @applyFiltersOnList()
             )
+    
+    ##
+    # Shows and hides rows on lot list according to selected filters.
+    ##
+    applyFiltersOnList: ()->
+        freeval = $("#free").val()
+        payval = $("#pay").val()
+        housechecked = $('#house').prop('checked')
+        openchecked = $('#open').prop('checked')
+        freecheked = $('#freeofcharge').prop('checked')
+
+        $('.lots-list .list-group-item').each ()=>
+            `$(this)`.show()
+
+            # Number of free parking spaces is given as a category value.
+            category = `$(this)`.attr('data-category')
+            if freeval != 0 && category? && parseInt(freeval) > category
+                `$(this)`.show()
+
+            # Payment method.
+            zahlungMedien = `$(this)`.attr('data-zahlungMedien').toLowerCase()
+            if payval == "1" && (zahlungMedien.indexOf("ec-karte") == -1)
+                `$(this)`.hide()
+            else if payval == "2" && (zahlungMedien.indexOf("kreditkarte") == -1)
+                `$(this)`.hide()
+            else if payval == "3" && zahlungMedien.indexOf("münzen")  == -1 && zahlungMedien.indexOf("bargeld")  == -1
+                `$(this)`.hide()
+
+            # Parking type.
+            parkraumParkart = `$(this)`.attr("data-parkraumParkart").toLowerCase()
+            if housechecked && parkraumParkart != "parkhaus" && parkraumParkart != "tiefgarage"
+                `$(this)`.hide()
+
+            # Opening hours.
+            opening = `$(this)`.attr("data-parkraumoeffnungszeiten")
+            if openchecked && opening? && !@isOpen(opening)
+                `$(this)`.hide()
+
+    ##
+    # Shows and hides markers on map according to selected filters.
+    ##
+    applyFiltersOnMap: ()->
+        freeval = $("#free").val()
+        payval = $("#pay").val()
+        housechecked = $('#house').prop('checked')
+        openchecked = $('#open').prop('checked')
+        freecheked = $('#freeofcharge').prop('checked')
+
+        for feature in @_map_lot_layer.features
+            if feature.style?
+                delete feature.style
+
+            # Number of free parking spaces is given as a category value.
+            if feature.attributes["Freie Stellplätze"]?
+                min_free = parseInt(feature.attributes["Freie Stellplätze"])
+                switch freeval
+                    when "1"
+                        if min_free < 1 then feature.style = {"display": "none"}
+                    when "2"
+                        if min_free <= 10 then feature.style = {"display": "none"}
+                    when "3"
+                        if min_free <= 30 then feature.style = {"display": "none"}
+
+            # Payment method.
+            if feature.attributes["Zahlung"]?
+                zahlungMedien = feature.attributes["Zahlung"].toLowerCase()
+                if payval == "1" && (zahlungMedien.indexOf("ec-karte") == -1)
+                    feature.style = {"display": "none"}
+                else if payval == "2" && (zahlungMedien.indexOf("kreditkarte") == -1)
+                    feature.style = {"display": "none"}
+                else if payval == "3" && zahlungMedien.indexOf("münzen")  == -1 && zahlungMedien.indexOf("bargeld")  == -1
+                    feature.style = {"display": "none"}
+            else if payval != "0"
+                feature.style = {"display": "none"}
+
+            # Parking type.
+            if feature.attributes["Parkart"]?
+                parkraumParkart = feature.attributes["Parkart"].toLowerCase()
+                if housechecked && parkraumParkart != "parkhaus" && parkraumParkart != "tiefgarage"
+                    feature.style = {"display": "none"}
+            else if housechecked
+                feature.style = {"display": "none"}
+
+            # Opening hours.
+            if openchecked && !@isOpen(feature.attributes["Öffnungszeiten"])
+                feature.style = {"display": "none"}
+
+        @_map_lot_layer.redraw()
+
+    ##
+    # Checks if according to given opening hours the lot is open.
+    #
+    isOpen: (opening)->
+        firstsplit = opening.split(",")
+        # time is given from Mo to Sun
+        if firstsplit.length == 1
+            times = firstsplit[0].split(".")
+            time = times[0].split(" - ")
+            start = time[0].split(":")
+            end = time[1].split(":")
+            end[1] = end[1].split(" ")[0]
+            jetzt = new Date()
+            open = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(),start[0], start[1], "0")
+            close = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(), end[0], end[1], "0")
+            if !(jetzt.getTime() > open.getTime() && jetzt.getTime() < close.getTime())
+                return false
+
+        # Different times for weekend and working days.
+        else if firstsplit.length == 3
+            mo = firstsplit[0].split(": ")
+            mot = mo[1].split(" - ")
+            mostart = mot[0].split(":")
+            moend = mot[1].split(":")
+            moend[1] = moend[1].split(" ")[0]
+            sa = firstsplit[1].split(": ")
+            sat = sa[1].split(" - ")
+            sastart = sat[0].split(":")
+            saend = sat[1].split(":")
+            saend[1] = saend[1].split(" ")[0]
+            jetzt = new Date()
+            if jetzt.getDay == 0
+                return false
+            else if jetzt.getDay == 6
+                open = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(), sastart[0], sastart[1], "0")
+                close = new Date(jetzt.getFullYear(), jetzt.getMonth(),jetzt.getDate(), saend[0], saend[1], "0")
+                if !(jetzt.getTime > open.getTime() && jetzt.getTime() < close.getTime())
+                    return false
+                else
+                    open = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(), mostart[0], mostart[1], "0")
+                    close = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(), moend[0], moend[1], "0")
+                    if (jetzt < open) || (jetzt > close)
+                         return false
+        true
 
 new Main()

@@ -2,7 +2,7 @@
 (function() {
   window.CustomXMLLotFormat = OpenLayers.Class(OpenLayers.Format.XML, {
     read: function(doc) {
-      var attributes, child, features, geom, i, label, lat, len, lon, lot, map, marker, nr, ref, xml_key;
+      var attributes, child, features, geom, i, label, lat, len, lon, lot, map, marker, nr, ref, text, xml_key;
       if (typeof doc === "string") {
         doc = OpenLayers.Format.XML.prototype.read.apply(this, [data]);
       }
@@ -20,6 +20,7 @@
           "Zufahrt": "parkraumZufahrt",
           "Entfernung": "parkraumEntfernung",
           "Stellplätze": "parkraumStellplaetze",
+          "Freie Stellplätze": "category",
           "Öffnungszeiten": "parkraumOeffnungszeiten",
           "Betreiber": "parkraumBetreiber",
           "Zahlung": "zahlungMedien",
@@ -37,6 +38,23 @@
           if (child.length > 0 && !$(child).is(':empty')) {
             attributes[label] = $(child).text();
           }
+        }
+        if (attributes["Freie Stellplätze"] != null) {
+          text = "";
+          switch (attributes["Freie Stellplätze"]) {
+            case "1":
+              text = '1 - 10';
+              break;
+            case "2":
+              text = '11 - 30';
+              break;
+            case "3":
+              text = '31 - 50';
+              break;
+            case "4":
+              text = '51+';
+          }
+          attributes['Freie Stellplätze'] = text;
         }
         marker = new OpenLayers.Feature.Vector(geom, attributes);
         features.push(marker);

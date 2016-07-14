@@ -227,13 +227,16 @@
       return layer;
     };
 
-    Map.prototype.addPois = function(title, pois_url, poi_type_id, icon_url, cluster_color, display, format) {
+    Map.prototype.addPois = function(title, pois_url, poi_type_id, icon_url, cluster_color, display, format, cluster_pois) {
       var cluster_rule, icon_rule, is_cluster, layer, options;
       if (display == null) {
         display = true;
       }
       if (format == null) {
         format = new OpenLayers.Format.GeoJSON();
+      }
+      if (cluster_pois == null) {
+        cluster_pois = true;
       }
       is_cluster = new OpenLayers.Filter.Comparison({
         type: OpenLayers.Filter.Comparison.GREATER_THAN,
@@ -271,14 +274,6 @@
       });
       options = {
         projection: "EPSG:4326",
-        strategies: [
-          new OpenLayers.Strategy.Fixed(), new OpenLayers.Strategy.Cluster({
-            distance: 70,
-            threshold: 2,
-            animationMethod: OpenLayers.Easing.Expo.easeOut,
-            animationDuration: 5
-          })
-        ],
         protocol: new OpenLayers.Protocol.HTTP({
           url: pois_url,
           "format": format
@@ -287,6 +282,15 @@
           rules: [cluster_rule, icon_rule]
         }))
       };
+      options.strategies = [new OpenLayers.Strategy.Fixed()];
+      if (cluster_pois) {
+        options.strategies.push(new OpenLayers.Strategy.Cluster({
+          distance: 70,
+          threshold: 2,
+          animationMethod: OpenLayers.Easing.Expo.easeOut,
+          animationDuration: 5
+        }));
+      }
       layer = new OpenLayers.Layer.Vector(title, options);
       layer.setVisibility(display);
       if (this._poi_select_feature == null) {

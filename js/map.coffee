@@ -430,6 +430,9 @@ class window.Map
     # @param OpenLayers.Format format
     #  The format in which the pois are supplied.
     #
+    # @param cluster_pois
+    #  Whether to cluster pois or not.
+    #
     # @return OpenLayers.Layer.Vector
     #  The layer with the POIs.
     ##
@@ -441,6 +444,7 @@ class window.Map
         cluster_color
         display = true
         format = new OpenLayers.Format.GeoJSON() 
+        cluster_pois = true
     ) ->
         # Filter to distinguish between pois and clusters.
         is_cluster =  new OpenLayers.Filter.Comparison(
@@ -482,15 +486,6 @@ class window.Map
 
         options =
             projection: "EPSG:4326"
-            strategies: [
-                new OpenLayers.Strategy.Fixed()
-                new OpenLayers.Strategy.Cluster(
-                    distance: 70
-                    threshold: 2
-                    animationMethod: OpenLayers.Easing.Expo.easeOut
-                    animationDuration: 5
-                )
-            ]
             protocol: new OpenLayers.Protocol.HTTP(
                 url: pois_url
                 "format": format
@@ -499,6 +494,16 @@ class window.Map
                 null
                 rules: [cluster_rule, icon_rule]
             ))
+
+        options.strategies = [new OpenLayers.Strategy.Fixed()]
+
+        if cluster_pois
+            options.strategies.push new OpenLayers.Strategy.Cluster(
+                distance: 70
+                threshold: 2
+                animationMethod: OpenLayers.Easing.Expo.easeOut
+                animationDuration: 5
+            )
 
         layer = new OpenLayers.Layer.Vector(title, options)
         layer.setVisibility(display)

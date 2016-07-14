@@ -32,3 +32,13 @@
   border-left: none;
   border-right: none;
 }
+
+.mapDialog .markerTable,
+.mapDialog .markerTable table {
+    width: 100%;
+}
+
+.mapDialog .markerTable th,
+.mapDialog .markerTable td {
+    padding: 5px;
+}

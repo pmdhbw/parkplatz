@@ -8,6 +8,9 @@
       this._map_search_area_layer = void 0;
       $(document).ready((function(_this) {
         return function() {
+          $.ajax({
+            'url': "parkplatz/web/app.php/init"
+          });
           return $.ajax({
             'url': 'config.json',
             'dataType': 'json',
@@ -16,7 +19,9 @@
               _this.styleUI();
               _this._map = new Map("map");
               _this.resetMap();
-              _this.loadXML("XSLT_Stations.xsl", "parkplatz/web/app.php/dbstation", "station");
+              _this.loadXML("XSLT_Stations.xsl", "parkplatz/web/app.php/dbstation", "station", function() {
+                return $('#station').select2();
+              });
               $('#station').change(function() {
                 var option;
                 option = $(this).children('option:selected');
@@ -25,6 +30,13 @@
                 } else {
                   return _this.update(option);
                 }
+              });
+              $('#radius').change(function() {
+                return _this.update('#station option:selected');
+              });
+              $('.filter').change(function() {
+                _this.applyFiltersOnList();
+                return _this.applyFiltersOnMap();
               });
               return $(document).on('markerClicked', function(e) {
                 return e.modal.find('.station-btn').click(function() {
@@ -66,14 +78,15 @@
       if (this._map_lot_layer != null) {
         this._map.removeLayer(this._map_lot_layer);
       }
-      return this._map_lot_layer = this._map.addPois('Parkplätze', url, 2, 'img/parkinggarage.png', '#003399', 1, new CustomXMLLotFormat());
+      this._map_lot_layer = this._map.addPois('Parkplätze', url, 2, 'img/parkinggarage.png', '#003399', true, new CustomXMLLotFormat(), false);
+      return this.applyFiltersOnMap();
     };
 
     Main.prototype.loadStationLayer = function(url) {
       if (this._map_station_layer != null) {
         this._map.removeLayer(this._map_station_layer);
       }
-      return this._station_lot_layer = this._map.addPois('Bahnhöfe', url, 1, 'img/dbstation.png', '#C20C0C', 1, new CustomXMLDBStationFormat());
+      return this._map_station_layer = this._map.addPois('Bahnhöfe', url, 1, 'img/dbstation.png', '#C20C0C', true, new CustomXMLDBStationFormat());
     };
 
     Main.prototype.setSearchAreaLayer = function(wkt) {
@@ -83,7 +96,7 @@
       return this._search_area_layer = this._map.addShapes('Suchbereich', [wkt]);
     };
 
-    Main.prototype.loadXML = function(xslurl, xmlurl, container_id) {
+    Main.prototype.loadXML = function(xslurl, xmlurl, container_id, callback) {
       return $.ajax({
         "url": xmlurl,
         "dataType": "xml",
@@ -93,7 +106,10 @@
               "url": xslurl,
               "dataType": "xml",
               "success": function(xsl) {
-                return _this.xsltTransform(xml, xsl, container_id);
+                _this.xsltTransform(xml, xsl, container_id);
+                if (callback != null) {
+                  callback();
+                }
               }
             });
           };
@@ -121,14 +137,180 @@
       lon = parseFloat($(element).attr('data-longitude'));
       lat = parseFloat($(element).attr('data-latitude'));
       radius = parseInt($('#radius').val());
+      $("#station option[data-longitude='" + lon + "'][data-latitude='" + lat + "']").attr('selected', 'selected');
+      $('#station').select2();
       if (lon && lat && radius) {
         url = "parkplatz/web/app.php/dbrange?radius=" + radius + "&long=" + lon + "&lat=" + lat;
         wkt = "CIRCLE (" + lon + " " + lat + " " + radius + ")";
         this.loadLotLayer(url);
         this.setSearchAreaLayer(wkt);
         this._map.zoomToExtent(this._search_area_layer);
-        return this.loadXML("XSLT_Lots.xsl", url, "table");
+        return this.loadXML("XSLT_Lots.xsl", url, "table", (function(_this) {
+          return function() {
+            return _this.applyFiltersOnList();
+          };
+        })(this));
       }
+    };
+
+    Main.prototype.applyFiltersOnList = function() {
+      var freecheked, freeval, housechecked, openchecked, payval;
+      freeval = $("#free").val();
+      payval = $("#pay").val();
+      housechecked = $('#house').prop('checked');
+      openchecked = $('#open').prop('checked');
+      freecheked = $('#freeofcharge').prop('checked');
+      return $('.lots-list .list-group-item').each((function(_this) {
+        return function() {
+          var category, opening, parkraumParkart, zahlungMedien;
+          $(this).show();
+          category = $(this).attr('data-category');
+          if (freeval !== 0 && (category != null) && parseInt(freeval) > category) {
+            $(this).show();
+          }
+          zahlungMedien = $(this).attr('data-zahlungMedien').toLowerCase();
+          if (payval === "1" && (zahlungMedien.indexOf("ec-karte") === -1)) {
+            $(this).hide();
+          } else if (payval === "2" && (zahlungMedien.indexOf("kreditkarte") === -1)) {
+            $(this).hide();
+          } else if (payval === "3" && zahlungMedien.indexOf("münzen") === -1 && zahlungMedien.indexOf("bargeld") === -1) {
+            $(this).hide();
+          }
+          parkraumParkart = $(this).attr("data-parkraumParkart").toLowerCase();
+          if (housechecked && parkraumParkart !== "parkhaus" && parkraumParkart !== "tiefgarage") {
+            $(this).hide();
+          }
+          opening = $(this).attr("data-parkraumoeffnungszeiten");
+          if (openchecked && (opening != null) && !_this.isOpen(opening)) {
+            return $(this).hide();
+          }
+        };
+      })(this));
+    };
+
+    Main.prototype.applyFiltersOnMap = function() {
+      var feature, freecheked, freeval, housechecked, i, len, min_free, openchecked, parkraumParkart, payval, ref, zahlungMedien;
+      freeval = $("#free").val();
+      payval = $("#pay").val();
+      housechecked = $('#house').prop('checked');
+      openchecked = $('#open').prop('checked');
+      freecheked = $('#freeofcharge').prop('checked');
+      ref = this._map_lot_layer.features;
+      for (i = 0, len = ref.length; i < len; i++) {
+        feature = ref[i];
+        if (feature.style != null) {
+          delete feature.style;
+        }
+        if (feature.attributes["Freie Stellplätze"] != null) {
+          min_free = parseInt(feature.attributes["Freie Stellplätze"]);
+          switch (freeval) {
+            case "1":
+              if (min_free < 1) {
+                feature.style = {
+                  "display": "none"
+                };
+              }
+              break;
+            case "2":
+              if (min_free <= 10) {
+                feature.style = {
+                  "display": "none"
+                };
+              }
+              break;
+            case "3":
+              if (min_free <= 30) {
+                feature.style = {
+                  "display": "none"
+                };
+              }
+          }
+        }
+        if (feature.attributes["Zahlung"] != null) {
+          zahlungMedien = feature.attributes["Zahlung"].toLowerCase();
+          if (payval === "1" && (zahlungMedien.indexOf("ec-karte") === -1)) {
+            feature.style = {
+              "display": "none"
+            };
+          } else if (payval === "2" && (zahlungMedien.indexOf("kreditkarte") === -1)) {
+            feature.style = {
+              "display": "none"
+            };
+          } else if (payval === "3" && zahlungMedien.indexOf("münzen") === -1 && zahlungMedien.indexOf("bargeld") === -1) {
+            feature.style = {
+              "display": "none"
+            };
+          }
+        } else if (payval !== "0") {
+          feature.style = {
+            "display": "none"
+          };
+        }
+        if (feature.attributes["Parkart"] != null) {
+          parkraumParkart = feature.attributes["Parkart"].toLowerCase();
+          if (housechecked && parkraumParkart !== "parkhaus" && parkraumParkart !== "tiefgarage") {
+            feature.style = {
+              "display": "none"
+            };
+          }
+        } else if (housechecked) {
+          feature.style = {
+            "display": "none"
+          };
+        }
+        if (openchecked && !this.isOpen(feature.attributes["Öffnungszeiten"])) {
+          feature.style = {
+            "display": "none"
+          };
+        }
+      }
+      return this._map_lot_layer.redraw();
+    };
+
+    Main.prototype.isOpen = function(opening) {
+      var close, end, firstsplit, jetzt, mo, moend, mostart, mot, open, sa, saend, sastart, sat, start, time, times;
+      firstsplit = opening.split(",");
+      if (firstsplit.length === 1) {
+        times = firstsplit[0].split(".");
+        time = times[0].split(" - ");
+        start = time[0].split(":");
+        end = time[1].split(":");
+        end[1] = end[1].split(" ")[0];
+        jetzt = new Date();
+        open = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(), start[0], start[1], "0");
+        close = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(), end[0], end[1], "0");
+        if (!(jetzt.getTime() > open.getTime() && jetzt.getTime() < close.getTime())) {
+          return false;
+        }
+      } else if (firstsplit.length === 3) {
+        mo = firstsplit[0].split(": ");
+        mot = mo[1].split(" - ");
+        mostart = mot[0].split(":");
+        moend = mot[1].split(":");
+        moend[1] = moend[1].split(" ")[0];
+        sa = firstsplit[1].split(": ");
+        sat = sa[1].split(" - ");
+        sastart = sat[0].split(":");
+        saend = sat[1].split(":");
+        saend[1] = saend[1].split(" ")[0];
+        jetzt = new Date();
+        if (jetzt.getDay === 0) {
+          return false;
+        } else if (jetzt.getDay === 6) {
+          open = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(), sastart[0], sastart[1], "0");
+          close = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(), saend[0], saend[1], "0");
+          if (!(jetzt.getTime > open.getTime() && jetzt.getTime() < close.getTime())) {
+            return false;
+          } else {
+            open = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(), mostart[0], mostart[1], "0");
+            close = new Date(jetzt.getFullYear(), jetzt.getMonth(), jetzt.getDate(), moend[0], moend[1], "0");
+            if ((jetzt < open) || (jetzt > close)) {
+              return false;
+            }
+          }
+        }
+      }
+      return true;
     };
 
     return Main;

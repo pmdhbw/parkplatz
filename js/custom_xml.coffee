@@ -18,6 +18,7 @@ window.CustomXMLLotFormat = OpenLayers.Class OpenLayers.Format.XML,
                 "Zufahrt" : "parkraumZufahrt"
                 "Entfernung" : "parkraumEntfernung"
                 "Stellplätze" : "parkraumStellplaetze"
+                "Freie Stellplätze" : "category"
                 "Öffnungszeiten" : "parkraumOeffnungszeiten"
                 "Betreiber" : "parkraumBetreiber"
                 "Zahlung" : "zahlungMedien"
@@ -34,6 +35,15 @@ window.CustomXMLLotFormat = OpenLayers.Class OpenLayers.Format.XML,
                 child = $(lot).children(xml_key)
                 if child.length > 0 && !$(child).is(':empty') 
                     attributes[label] = $(child).text()
+
+            if attributes["Freie Stellplätze"]?
+                text=""
+                switch attributes["Freie Stellplätze"]
+                    when "1" then text='1 - 10'
+                    when "2" then text='11 - 30'
+                    when "3" then text='31 - 50'
+                    when "4" then text='51+'
+                attributes['Freie Stellplätze'] = text
 
             marker = new OpenLayers.Feature.Vector(geom, attributes)
             features.push(marker)
