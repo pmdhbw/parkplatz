@@ -27,7 +27,6 @@ class window.Main
                 'success': (config)=>
                     window.Config = config;
 
-                    @styleUI()
                     @_map = new Map("map")
                     @resetMap()
 
@@ -36,8 +35,12 @@ class window.Main
                         "parkplatz/web/app.php/dbstation",
                         "station",
                         ()->
-                            $('#station').select2()
+                            $('#station').trigger('change.select2')
                     )
+
+                    # selects
+                    $('[data-toggle="select"]').select2
+                        minimumResultsForSearch: -1
 
                     $('#station').change ()=>
                         option = `$(this)`.children('option:selected')
@@ -49,7 +52,12 @@ class window.Main
                     $('#radius').change ()=>
                         @update('#station option:selected')
 
-                    $('.filter').change ()=>
+                    $('.filter[data-toggle="switch"]').bootstrapSwitch
+                        onSwitchChange: ()=>
+                            @applyFiltersOnList()
+                            @applyFiltersOnMap()
+
+                    $('.filter[data-toggle="select"]').change ()=>
                         @applyFiltersOnList()
                         @applyFiltersOnMap()
 
@@ -65,13 +73,10 @@ class window.Main
     # because this can't be really done with CSS.
     ##
     styleUI: ()->
-        # selects
-        $('[data-toggle="select"]').select2()
 
         # check boxes
         $('[data-toggle="checkbox"]').radiocheck()
         $('[data-toggle="radio"]').radiocheck()
-        $('[data-toggle="switch"]').bootstrapSwitch()
 
     ##
     # Set map to intial state.
@@ -184,7 +189,7 @@ class window.Main
 
         $("#station option[data-longitude='#{lon}'][data-latitude='#{lat}']") \
         .attr('selected','selected')
-        $('#station').select2()
+        $('#station').trigger('change.select2')
 
         if lon && lat && radius
             # Url to xml that contains info about stations.

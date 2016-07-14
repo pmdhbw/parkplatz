@@ -4,7 +4,7 @@
 	<meta name="author" content="PMDHBW" />
 	<meta name="description" content="Website zur Suche von Parkplätzen bei Bahnhöfen">
 	<meta name="keywords" content="DHBW, DB, Deutsche Bahn, Parkplatz, Suche, Parkplatzsuche">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta content="width=device-width, initial-scale=1" name="viewport">
 	<meta charset="utf-8"/>
     <title>DB-Parkplatzsuche</title>
 	<link rel="icon" type="image/vnd.microsoft.icon" href="/favicon.ico">
@@ -40,14 +40,14 @@
       <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12 col-lg-push-3 col-md-push-3">
         <div class="container-fluid filter">
           <div class="row">
-            <div class="col-lg-12">
+            <div class="col-sm-12">
               <span class="filter-header">Filter</span>
             </div>
           </div>
 
           <div class="row">
-            <div class="col-lg-8"><label for="radius">Suchradius</label></div>
-            <div class="col-lg-4">
+            <div class="col-sm-8"><label for="radius">Suchradius</label></div>
+            <div class="col-sm-4">
               <select
                 id="radius"
                 class="form-control select select-primary select2-offscreen filter"
@@ -62,8 +62,8 @@
           </div>
 
           <div class="row">
-            <div class="col-lg-8"><label>freie Parkplätze (falls Daten vorhanden)</label></div>
-            <div class="col-lg-4">
+            <div class="col-sm-8"><label>freie Parkplätze (falls Daten vorhanden)</label></div>
+            <div class="col-sm-4">
               <select
                 id="free"
                 class="form-control select select-primary select2-offscreen filter"
@@ -79,8 +79,8 @@
           </div>
 
           <div class="row">
-            <div class="col-lg-8"><label for="pay">Zahlungsart</label></div>
-            <div class="col-lg-4">
+            <div class="col-sm-8"><label for="pay">Zahlungsart</label></div>
+            <div class="col-sm-4">
               <select
                 id="pay"
                 class="form-control select select-primary select2-offscreen filter"
@@ -94,27 +94,35 @@
             </div>
           </div>
 
-          <div class="row rowslim">
-            <div class="col-lg-8"><label for="house">zeige nur Parkhäuser/ Tiefgaragen</label></div>
-            <div class="col-lg-4">
-              <input
-                id="house"
-                class="form-control filter"
-                type="checkbox"
-                data-toggle="checkbox"
-              >
+          <div class="row">
+            <div class="col-sm-8 col-xs-8"><label for="house">zeige nur Parkhäuser/ Tiefgaragen</label></div>
+            <div class="col-sm-4 col-xs-4">
+              <div class="bootstrap-switch-square pull-right">
+                <input
+                  id="house"
+                  class="form-control filter"
+                  type="checkbox"
+                  data-toggle="switch"
+                  data-off-text="<span class='fui-cross'></span>"
+                  data-on-text="<span class='fui-check'></span>"
+                >
+              </div>
             </div>
           </div>
 
-          <div class="row rowslim">
-            <div class="col-lg-8"><label for="open">zeige nur aktuell offene</label></div>
-            <div class="col-lg-4">
-              <input
-                id="open"
-                class="form-control filter"
-                type="checkbox"
-                data-toggle="checkbox"
-              >
+          <div class="row">
+            <div class="col-sm-8 col-xs-8"><label for="open">zeige nur aktuell offene</label></div>
+            <div class="col-sm-4 col-xs-4">
+              <div class="bootstrap-switch-square pull-right">
+                <input
+                  id="open"
+                  class="form-control filter"
+                  type="checkbox"
+                  data-toggle="switch"
+                  data-off-text="<span class='fui-cross'></span>"
+                  data-on-text="<span class='fui-check'></span>"
+                >
+              </div>
             </div>
           </div>
         </div>

@@ -16,11 +16,13 @@
             'dataType': 'json',
             'success': function(config) {
               window.Config = config;
-              _this.styleUI();
               _this._map = new Map("map");
               _this.resetMap();
               _this.loadXML("XSLT_Stations.xsl", "parkplatz/web/app.php/dbstation", "station", function() {
-                return $('#station').select2();
+                return $('#station').trigger('change.select2');
+              });
+              $('[data-toggle="select"]').select2({
+                minimumResultsForSearch: -1
               });
               $('#station').change(function() {
                 var option;
@@ -34,7 +36,13 @@
               $('#radius').change(function() {
                 return _this.update('#station option:selected');
               });
-              $('.filter').change(function() {
+              $('.filter[data-toggle="switch"]').bootstrapSwitch({
+                onSwitchChange: function() {
+                  _this.applyFiltersOnList();
+                  return _this.applyFiltersOnMap();
+                }
+              });
+              $('.filter[data-toggle="select"]').change(function() {
                 _this.applyFiltersOnList();
                 return _this.applyFiltersOnMap();
               });
@@ -51,10 +59,8 @@
     }
 
     Main.prototype.styleUI = function() {
-      $('[data-toggle="select"]').select2();
       $('[data-toggle="checkbox"]').radiocheck();
-      $('[data-toggle="radio"]').radiocheck();
-      return $('[data-toggle="switch"]').bootstrapSwitch();
+      return $('[data-toggle="radio"]').radiocheck();
     };
 
     Main.prototype.resetMap = function() {
@@ -138,7 +144,7 @@
       lat = parseFloat($(element).attr('data-latitude'));
       radius = parseInt($('#radius').val());
       $("#station option[data-longitude='" + lon + "'][data-latitude='" + lat + "']").attr('selected', 'selected');
-      $('#station').select2();
+      $('#station').trigger('change.select2');
       if (lon && lat && radius) {
         url = "parkplatz/web/app.php/dbrange?radius=" + radius + "&long=" + lon + "&lat=" + lat;
         wkt = "CIRCLE (" + lon + " " + lat + " " + radius + ")";
