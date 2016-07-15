@@ -33,13 +33,13 @@
   border-right: none;
 }
 
-.mapDialog .markerTable,
-.mapDialog .markerTable table {
+.lotDialog .markerTable,
+.lotDialog .markerTable table {
     width: 100%;
 }
 
-.mapDialog .markerTable th,
-.mapDialog .markerTable td {
+.lotDialog .markerTable th,
+.lotDialog .markerTable td {
     padding: 5px;
 }
 
