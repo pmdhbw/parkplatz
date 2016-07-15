@@ -143,6 +143,7 @@
       lon = parseFloat($(element).attr('data-longitude'));
       lat = parseFloat($(element).attr('data-latitude'));
       radius = parseInt($('#radius').val());
+      $("#station option[selected]").removeAttr('selected');
       $("#station option[data-longitude='" + lon + "'][data-latitude='" + lat + "']").attr('selected', 'selected');
       $('#station').trigger('change.select2');
       if (lon && lat && radius) {
