@@ -171,8 +171,8 @@
           var category, opening, parkraumParkart, zahlungMedien;
           $(this).show();
           category = $(this).attr('data-category');
-          if (freeval !== 0 && (category != null) && parseInt(freeval) > category) {
-            $(this).show();
+          if (freeval !== 0 && category && parseInt(freeval) > category) {
+            $(this).hide();
           }
           zahlungMedien = $(this).attr('data-zahlungMedien').toLowerCase();
           if (payval === "1" && (zahlungMedien.indexOf("ec-karte") === -1)) {
@@ -226,6 +226,13 @@
               break;
             case "3":
               if (min_free <= 30) {
+                feature.style = {
+                  "display": "none"
+                };
+              }
+              break;
+            case "4":
+              if (min_free <= 50) {
                 feature.style = {
                   "display": "none"
                 };

@@ -225,8 +225,8 @@ class window.Main
 
             # Number of free parking spaces is given as a category value.
             category = `$(this)`.attr('data-category')
-            if freeval != 0 && category? && parseInt(freeval) > category
-                `$(this)`.show()
+            if freeval != 0 && category && parseInt(freeval) > category
+                `$(this)`.hide()
 
             # Payment method.
             zahlungMedien = `$(this)`.attr('data-zahlungMedien').toLowerCase()
@@ -271,6 +271,8 @@ class window.Main
                         if min_free <= 10 then feature.style = {"display": "none"}
                     when "3"
                         if min_free <= 30 then feature.style = {"display": "none"}
+                    when "4"
+                        if min_free <= 50 then feature.style = {"display": "none"}
 
             # Payment method.
             if feature.attributes["Zahlung"]?
