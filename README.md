@@ -2,7 +2,7 @@
 ===============================
 Die Webseite ist unter http://www.parkplaetze.wo-zu-finden.de zu erreichen!
 
-Voraussetzungen:
+###Voraussetzungen:
 
 Zum Ausführen muss der gewählte Webserver PHP unterstützen. Zusätzlich dazu muss eine MySql Datenbank vorhanden sein (MariaDB funktioniert auch) und ein User mit dessen Passwort muss zur Verfügung stehen.
 
