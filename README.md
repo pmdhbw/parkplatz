@@ -1,13 +1,12 @@
-Die Webseite ist unter http://www.parkplaetze.wo-zu-finden.de zu erreichen!
-
 Aufsetzen der Parkplatz-Website:
+________________________________
+Die Webseite ist unter http://www.parkplaetze.wo-zu-finden.de zu erreichen!
 
 Voraussetzungen:
 
-
 Zum Ausführen muss der gewählte Webserver PHP unterstützen. Zusätzlich dazu muss eine MySql Datenbank vorhanden sein (MariaDB funktioniert auch) und ein User mit dessen Passwort muss zur Verfügung stehen.
-Durchführung einer lokalen Installation:
 
+###Durchführung einer lokalen Installation:
 
 1.	Als Webserver Bundle ist am besten XAMPP zu verwenden, dieses kann hier https://www.apachefriends.org/de/index.html heruntergeladen werden. Die Standardkonfiguration der Installation ist ausreichend.
 2.	Nun XAMPP starten und den Webserver Apache starten, danach unter localhost:80 testen.(1)
